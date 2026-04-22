@@ -3,114 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Ideal Point</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
 body {margin:0;font-family:'Inter',sans-serif;background:#f6f7fb;color:#111;}
-
-.header {
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 25px;
-background:#fff;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-position:sticky;
-top:0;
-z-index:10;
-}
-
-.logo {font-weight:700;font-size:20px;}
-.contacts a {margin-left:15px;text-decoration:none;color:#111;}
-
-.search-bar {
-padding:15px;
-text-align:center;
-}
-
-.search-bar input {
-width:300px;
-padding:12px;
-border-radius:10px;
-border:1px solid #ddd;
-}
-
-.categories {
-display:flex;
-gap:10px;
-padding:10px 15px;
-overflow:auto;
-}
-
-.cat {
-padding:8px 15px;
-background:#fff;
-border-radius:20px;
-border:1px solid #ddd;
-cursor:pointer;
-white-space:nowrap;
-}
-
-.cat.active {
-background:#111;
-color:#fff;
-}
-
-.container {
-display:grid;
-grid-template-columns:220px 1fr;
-}
-
-.sidebar {
-background:#fff;
-padding:15px;
-border-right:1px solid #eee;
-}
-
-.sidebar h3 {margin-top:0;}
-
-.sidebar div {
-margin:10px 0;
-cursor:pointer;
-}
-
-.products {
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:20px;
-padding:20px;
-}
-
-.card {
-background:#fff;
-border-radius:16px;
-padding:15px;
-box-shadow:0 5px 20px rgba(0,0,0,0.05);
-}
-
-.card img {
-width:100%;
-height:180px;
-object-fit:contain;
-}
-
-.name {font-weight:600;margin-top:10px;}
-.old {text-decoration:line-through;color:#999;font-size:14px;}
-.price {font-weight:700;margin-top:5px;}
-
-.btn {
-display:block;
-margin-top:10px;
-padding:10px;
-background:#111;
-color:#fff;
-border-radius:10px;
-text-align:center;
-text-decoration:none;
-}
+.header {display:flex;justify-content:space-between;padding:15px 25px;background:#fff;}
+.logo {font-weight:700;}
+.grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px;}
+.card {background:#fff;padding:15px;border-radius:16px;}
+.card img {width:100%;height:180px;object-fit:contain;}
+.price {font-weight:700;}
+.old {text-decoration:line-through;color:#999;}
+.btn {display:block;margin-top:10px;padding:10px;background:#111;color:#fff;border-radius:10px;text-align:center;text-decoration:none;}
 </style>
 </head>
 
@@ -118,97 +24,108 @@ text-decoration:none;
 
 <div class="header">
 <div class="logo">Ideal Point</div>
-<div class="contacts">
-<a href="tel:+79699696767">📞 Позвонить</a>
-<a href="https://t.me/iDeal_Point_Level">Telegram</a>
-</div>
+<div>📞 +7 969 969 67 67</div>
 </div>
 
-<div class="search-bar">
-<input id="search" placeholder="Поиск товара...">
-</div>
-
-<div class="categories">
-<div class="cat active" onclick="setCat('all',this)">Все</div>
-<div class="cat" onclick="setCat('iphone',this)">iPhone</div>
-<div class="cat" onclick="setCat('mac',this)">Mac</div>
-<div class="cat" onclick="setCat('ipad',this)">iPad</div>
-<div class="cat" onclick="setCat('airpods',this)">AirPods</div>
-<div class="cat" onclick="setCat('ps',this)">PlayStation</div>
-</div>
-
-<div class="container">
-
-<div class="sidebar">
-<h3>Категории</h3>
-<div onclick="filter('iphone')">iPhone</div>
-<div onclick="filter('mac')">Mac</div>
-<div onclick="filter('ipad')">iPad</div>
-<div onclick="filter('airpods')">AirPods</div>
-<div onclick="filter('ps')">PlayStation</div>
-</div>
-
-<div id="products" class="products"></div>
-
-</div>
+<div id="products" class="grid"></div>
 
 <script>
 
-let current = "all";
-
 let products = [
 
-{ name:"iPhone 16 Pro", price:129900, cat:"iphone", img:"https://images.unsplash.com/photo-1695048133142-1a20484c3d35"},
-{ name:"iPhone 17 Pro Max", price:159900, cat:"iphone", img:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd"},
+/* 🔥 iPhone 17 */
+{name:"iPhone 17 256GB Black", price:62900},
+{name:"iPhone 17 256GB Blue", price:62200},
+{name:"iPhone 17 256GB White", price:62900},
+{name:"iPhone 17 512GB Black", price:80700},
 
-{ name:"MacBook Air M3", price:119900, cat:"mac", img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
-{ name:"MacBook Pro", price:159900, cat:"mac", img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
+/* 🔥 17e */
+{name:"iPhone 17e 256GB Black", price:48600},
+{name:"iPhone 17e 256GB White", price:48100},
+{name:"iPhone 17e 512GB Black", price:70500},
 
-{ name:"iPad Pro", price:109900, cat:"ipad", img:"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"},
+/* 🔥 17 Air */
+{name:"iPhone 17 Air 256GB Blue", price:67000},
+{name:"iPhone 17 Air 512GB Blue", price:79100},
 
-{ name:"AirPods Pro 2", price:20900, cat:"airpods", img:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"},
+/* 🔥 17 Pro */
+{name:"iPhone 17 Pro 256GB Blue", price:100800},
+{name:"iPhone 17 Pro 512GB Blue", price:118500},
+{name:"iPhone 17 Pro 1TB Blue", price:132200},
 
-{ name:"PlayStation 5", price:64900, cat:"ps", img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"}
+/* 🔥 17 Pro Max */
+{name:"iPhone 17 Pro Max 256GB", price:106500},
+{name:"iPhone 17 Pro Max 512GB", price:124000},
+{name:"iPhone 17 Pro Max 1TB", price:140000},
+
+/* ⌚ Watch */
+{name:"Apple Watch SE2", price:14600},
+{name:"Apple Watch SE3", price:19300},
+{name:"Apple Watch S10", price:23300},
+{name:"Apple Watch S11", price:25900},
+{name:"Apple Watch Ultra 2", price:49600},
+{name:"Apple Watch Ultra 3", price:59300},
+
+/* 📱 iPad */
+{name:"iPad 11 128GB WiFi", price:28800},
+{name:"iPad Air M4 256GB", price:57000},
+{name:"iPad Pro M5 512GB", price:92200},
+
+/* 💻 Mac */
+{name:"MacBook Air M3 8/512", price:86000},
+{name:"MacBook Air M4 16/512", price:91000},
+{name:"MacBook Pro M5 16/512", price:122500},
+
+/* 🎧 AirPods */
+{name:"AirPods 4", price:8800},
+{name:"AirPods Pro 2", price:14000},
+{name:"AirPods Pro 3", price:17500},
+{name:"AirPods Max", price:40000},
+
+/* 🎮 PS */
+{name:"PS5 Pro Digital 2TB", price:74500},
+{name:"PS5 Slim Disk", price:45800},
+{name:"DualSense Controller", price:5500},
+
+/* ✏️ */
+{name:"Apple Pencil 2", price:7900},
+{name:"Apple Pencil USB-C", price:8500},
+{name:"Apple Pencil Pro", price:10500},
+
+/* 🖱 */
+{name:"Magic Mouse USB-C", price:9000},
+{name:"Magic Mouse Silver", price:8000}
 
 ];
 
 function price(p){return p-3000;}
 
-function render(list){
-const container=document.getElementById("products");
-container.innerHTML="";
+function img(name){
+if(name.includes("iPhone")) return "https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd";
+if(name.includes("Mac")) return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8";
+if(name.includes("iPad")) return "https://images.unsplash.com/photo-1587033411391-5d9e51cce126";
+if(name.includes("AirPods")) return "https://images.unsplash.com/photo-1588156979435-379b9d802b0e";
+if(name.includes("Watch")) return "https://images.unsplash.com/photo-1511732351155-1865efcb7b7c";
+if(name.includes("PS5")) return "https://images.unsplash.com/photo-1606813907291-d86efa9b94db";
+return "https://images.unsplash.com/photo-1587829741301-dc798b83add3";
+}
 
-list.forEach(p=>{
-container.innerHTML+=`
+function render(){
+let html="";
+products.forEach(p=>{
+html+=`
 <div class="card">
-<img src="${p.img}">
-<div class="name">${p.name}</div>
+<img src="${img(p.name)}">
+<h3>${p.name}</h3>
 <div class="old">${p.price} ₽</div>
 <div class="price">${price(p.price)} ₽</div>
 <a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${p.name}">Купить</a>
-</div>
-`;
+</div>`;
 });
+document.getElementById("products").innerHTML=html;
 }
 
-render(products);
-
-function setCat(cat,el){
-document.querySelectorAll(".cat").forEach(c=>c.classList.remove("active"));
-el.classList.add("active");
-current=cat;
-filter(cat);
-}
-
-function filter(cat){
-if(cat==="all") return render(products);
-render(products.filter(p=>p.cat===cat));
-}
-
-document.getElementById("search").oninput=e=>{
-let val=e.target.value.toLowerCase();
-render(products.filter(p=>p.name.toLowerCase().includes(val)));
-};
+render();
 
 </script>
 
