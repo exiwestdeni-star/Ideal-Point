@@ -1,83 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ideal Point</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body {margin:0;font-family:Inter;background:#f5f6fa;}
+.header {display:flex;justify-content:space-between;padding:15px;background:#fff;}
+.grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px;}
+.card {background:#fff;padding:15px;border-radius:12px;}
+.card img {width:100%;height:160px;object-fit:contain;}
+.price {font-weight:600;}
+.old {text-decoration:line-through;color:#999;}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div>Ideal Point</div>
+<div>📞 +7 969 969 67 67</div>
+</div>
+
+<div id="products" class="grid"></div>
+
 <script>
 
 let products = [
-
-/* 📱 iPhone 17 */
-{name:"iPhone 17 256GB Black", price:59900, cat:"iphone"},
-{name:"iPhone 17 256GB Blue", price:59200, cat:"iphone"},
-{name:"iPhone 17 256GB White", price:59900, cat:"iphone"},
-{name:"iPhone 17 256GB Sage", price:59600, cat:"iphone"},
-{name:"iPhone 17 256GB Lavender", price:60000, cat:"iphone"},
-
-{name:"iPhone 17 512GB Black", price:77700, cat:"iphone"},
-{name:"iPhone 17 512GB Blue", price:77200, cat:"iphone"},
-{name:"iPhone 17 512GB White", price:80000, cat:"iphone"},
-
-/* 📱 17e */
-{name:"iPhone 17e 256GB Black", price:45600, cat:"iphone"},
-{name:"iPhone 17e 256GB Pink", price:45300, cat:"iphone"},
-{name:"iPhone 17e 256GB White", price:45100, cat:"iphone"},
-
-{name:"iPhone 17e 512GB Black", price:67500, cat:"iphone"},
-{name:"iPhone 17e 512GB Pink", price:67000, cat:"iphone"},
-
-/* 📱 17 Air */
-{name:"iPhone 17 Air 256GB Blue", price:64000, cat:"iphone"},
-{name:"iPhone 17 Air 256GB Gold", price:66300, cat:"iphone"},
-{name:"iPhone 17 Air 512GB Black", price:77900, cat:"iphone"},
-
-/* 📱 Pro */
-{name:"iPhone 17 Pro 256GB Blue", price:97800, cat:"iphone"},
-{name:"iPhone 17 Pro 256GB White", price:97000, cat:"iphone"},
-{name:"iPhone 17 Pro 512GB Blue", price:115500, cat:"iphone"},
-{name:"iPhone 17 Pro 1TB Blue", price:129200, cat:"iphone"},
-
-/* 📱 Pro Max */
-{name:"iPhone 17 Pro Max 256GB Black", price:103500, cat:"iphone"},
-{name:"iPhone 17 Pro Max 256GB Blue", price:106400, cat:"iphone"},
-{name:"iPhone 17 Pro Max 512GB Blue", price:126600, cat:"iphone"},
-{name:"iPhone 17 Pro Max 1TB Blue", price:137000, cat:"iphone"},
-
-/* ⌚ WATCH */
-{name:"Apple Watch SE2 44mm", price:11600, cat:"watch"},
-{name:"Apple Watch SE3 44mm", price:17800, cat:"watch"},
-{name:"Apple Watch S10 46mm", price:20900, cat:"watch"},
-{name:"Apple Watch S11 46mm", price:25100, cat:"watch"},
-{name:"Apple Watch Ultra 2", price:46600, cat:"watch"},
-{name:"Apple Watch Ultra 3", price:56300, cat:"watch"},
-
-/* 📱 iPad */
-{name:"iPad 11 128GB WiFi", price:25800, cat:"ipad"},
-{name:"iPad Air M4 256GB", price:54000, cat:"ipad"},
-{name:"iPad Pro M5 512GB", price:89200, cat:"ipad"},
-
-/* 💻 Mac */
-{name:"MacBook Air M3 8/512", price:83000, cat:"mac"},
-{name:"MacBook Air M4 16/512", price:88000, cat:"mac"},
-{name:"MacBook Pro M5 16/512", price:119500, cat:"mac"},
-
-/* 🎧 AirPods */
-{name:"AirPods 4", price:5800, cat:"airpods"},
-{name:"AirPods Pro 2", price:11000, cat:"airpods"},
-{name:"AirPods Pro 3", price:14500, cat:"airpods"},
-{name:"AirPods Max", price:37000, cat:"airpods"},
-
-/* 🎮 PS */
-{name:"PS5 Pro 2TB", price:71500, cat:"ps"},
-{name:"PS5 Slim Disk", price:42800, cat:"ps"},
-{name:"DualSense Controller", price:2500, cat:"ps"},
-
-/* ✏️ */
-{name:"Apple Pencil 2", price:4900, cat:"access"},
-{name:"Apple Pencil USB-C", price:5500, cat:"access"},
-{name:"Apple Pencil Pro", price:7500, cat:"access"},
-
-/* 🖱 */
-{name:"Magic Mouse USB-C", price:6000, cat:"access"},
-{name:"Magic Mouse Silver", price:5000, cat:"access"}
-
+{name:"iPhone 17 256GB Black", price:59900},
+{name:"iPhone 17 Pro 256GB Blue", price:97800},
+{name:"iPhone 17 Pro Max 512GB", price:126600},
+{name:"MacBook Air M4 16/512", price:88000},
+{name:"AirPods Pro 2", price:11000},
+{name:"PS5 Pro 2TB", price:71500}
 ];
 
-function price(p){return p;}
+function img(name){
+if(name.includes("iPhone")) return "https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd";
+if(name.includes("Mac")) return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8";
+if(name.includes("AirPods")) return "https://images.unsplash.com/photo-1588156979435-379b9d802b0e";
+if(name.includes("PS5")) return "https://images.unsplash.com/photo-1606813907291-d86efa9b94db";
+return "";
+}
+
+function render(){
+let html="";
+products.forEach(p=>{
+html+=`
+<div class="card">
+<img src="${img(p.name)}">
+<h3>${p.name}</h3>
+<div class="price">${p.price} ₽</div>
+</div>`;
+});
+document.getElementById("products").innerHTML=html;
+}
+
+render();
 
 </script>
+
+</body>
+</html>
