@@ -1,17 +1,34 @@
 [
-  {
-    "name": "iPhone 15 128GB",
-    "oldPrice": 53200,
-    "price": 50200
-  },
-  {
-    "name": "iPhone 15 Pro 256GB",
-    "oldPrice": 78200,
-    "price": 75200
-  },
-  {
-    "name": "PlayStation 5",
-    "oldPrice": 62000,
-    "price": 59000
-  }
+  {"name":"iPhone 16 128GB","oldPrice":89900,"price":86900,"category":"iphone"},
+  {"name":"iPhone 16 256GB","oldPrice":99900,"price":96900,"category":"iphone"},
+  {"name":"iPhone 16 Pro 256GB","oldPrice":119900,"price":116900,"category":"iphone"},
+  {"name":"iPhone 16 Pro Max 256GB","oldPrice":134900,"price":131900,"category":"iphone"},
+
+  {"name":"iPhone 17 256GB","oldPrice":109900,"price":106900,"category":"iphone"},
+  {"name":"iPhone 17 Pro 256GB","oldPrice":129900,"price":126900,"category":"iphone"},
+  {"name":"iPhone 17 Pro Max 256GB","oldPrice":149900,"price":146900,"category":"iphone"},
+
+  {"name":"AirPods 2","oldPrice":12900,"price":9900,"category":"airpods"},
+  {"name":"AirPods 3","oldPrice":16900,"price":13900,"category":"airpods"},
+  {"name":"AirPods Pro 2","oldPrice":20900,"price":17900,"category":"airpods"},
+  {"name":"AirPods Max","oldPrice":64900,"price":61900,"category":"airpods"},
+
+  {"name":"iPad 10 64GB","oldPrice":49900,"price":46900,"category":"ipad"},
+  {"name":"iPad Air 256GB","oldPrice":74900,"price":71900,"category":"ipad"},
+  {"name":"iPad Pro 11 256GB","oldPrice":109900,"price":106900,"category":"ipad"},
+  {"name":"iPad Pro 12.9 256GB","oldPrice":129900,"price":126900,"category":"ipad"},
+
+  {"name":"MacBook Air M2 256GB","oldPrice":109900,"price":106900,"category":"mac"},
+  {"name":"MacBook Air M3 256GB","oldPrice":119900,"price":116900,"category":"mac"},
+  {"name":"MacBook Pro M3 512GB","oldPrice":179900,"price":176900,"category":"mac"},
+
+  {"name":"Apple Pencil 1","oldPrice":12900,"price":9900,"category":"accessories"},
+  {"name":"Apple Pencil 2","oldPrice":15900,"price":12900,"category":"accessories"},
+  {"name":"Apple Pencil USB-C","oldPrice":11900,"price":8900,"category":"accessories"},
+
+  {"name":"Magic Mouse","oldPrice":11900,"price":8900,"category":"accessories"},
+  {"name":"Magic Keyboard","oldPrice":19900,"price":16900,"category":"accessories"},
+
+  {"name":"PlayStation 5","oldPrice":64900,"price":61900,"category":"ps"},
+  {"name":"PlayStation 5 Slim","oldPrice":69900,"price":66900,"category":"ps"}
 ]
