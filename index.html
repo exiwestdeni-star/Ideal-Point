@@ -20,11 +20,19 @@ header {
     color:#FFD700;
 }
 
+.sub {
+    text-align:center;
+    color:#aaa;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
 .controls {
     display:flex;
     gap:10px;
     padding:15px;
     flex-wrap:wrap;
+    justify-content:center;
 }
 
 input, select {
@@ -67,6 +75,11 @@ input, select {
     color:#888;
 }
 
+.stock {
+    color:#00ff88;
+    font-size:13px;
+}
+
 .btn {
     display:inline-block;
     margin-top:10px;
@@ -82,6 +95,7 @@ input, select {
 <body>
 
 <header>IDEAL POINT</header>
+<div class="sub">Гарантия • Оригинал • Быстрая доставка</div>
 
 <div class="controls">
     <input type="text" id="search" placeholder="Поиск...">
@@ -119,9 +133,10 @@ function render(products){
             <div class="card">
                 <img src="${getImage(item.name)}">
                 <h3>${item.name}</h3>
+                <div class="stock">В наличии</div>
                 <div class="old">${item.price + 3000} ₽</div>
                 <div class="price">${item.price} ₽</div>
-                <a class="btn" href="https://t.me/iDeal_Point_Level">Купить</a>
+                <a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${item.name}">Купить</a>
             </div>
         `;
     });
