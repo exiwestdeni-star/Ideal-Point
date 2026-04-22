@@ -6,90 +6,18 @@
 <title>Ideal Point</title>
 
 <style>
-body {
-    margin:0;
-    font-family:-apple-system, Arial;
-    background:#000;
-    color:#fff;
-}
-
-header {
-    background:#111;
-    padding:20px;
-    text-align:center;
-    font-size:28px;
-    color:#FFD700;
-}
-
-.sub {
-    text-align:center;
-    color:#aaa;
-    font-size:14px;
-    margin-bottom:10px;
-}
-
-.controls {
-    display:flex;
-    gap:10px;
-    padding:15px;
-    flex-wrap:wrap;
-    justify-content:center;
-}
-
-input, select {
-    padding:10px;
-    border-radius:8px;
-    border:none;
-}
-
-.products {
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-    gap:20px;
-    padding:20px;
-}
-
-.card {
-    background:#111;
-    border-radius:12px;
-    padding:15px;
-    text-align:center;
-    transition:0.3s;
-}
-
-.card:hover {
-    transform:scale(1.05);
-}
-
-.card img {
-    width:100%;
-    border-radius:10px;
-}
-
-.price {
-    color:#FFD700;
-    font-size:20px;
-}
-
-.old {
-    text-decoration:line-through;
-    color:#777;
-}
-
-.stock {
-    color:#00ff88;
-    font-size:13px;
-}
-
-.btn {
-    display:block;
-    margin-top:10px;
-    padding:10px;
-    background:#FFD700;
-    color:#000;
-    border-radius:8px;
-    text-decoration:none;
-}
+body {margin:0;font-family:-apple-system,Arial;background:#000;color:#fff;}
+header {background:#111;padding:20px;text-align:center;font-size:28px;color:#FFD700;}
+.sub {text-align:center;color:#aaa;font-size:14px;}
+.controls {display:flex;gap:10px;padding:15px;justify-content:center;flex-wrap:wrap;}
+input,select {padding:10px;border-radius:8px;border:none;}
+.products {display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px;}
+.card {background:#111;border-radius:12px;padding:15px;text-align:center;transition:0.3s;}
+.card:hover {transform:scale(1.05);}
+.price {color:#FFD700;font-size:20px;}
+.old {text-decoration:line-through;color:#777;}
+.stock {color:#00ff88;font-size:13px;}
+.btn {display:block;margin-top:10px;padding:10px;background:#FFD700;color:#000;border-radius:8px;text-decoration:none;}
 </style>
 </head>
 
@@ -99,79 +27,84 @@ input, select {
 <div class="sub">Гарантия • Оригинал • Быстрая доставка</div>
 
 <div class="controls">
-    <input type="text" id="search" placeholder="Поиск...">
-    
-    <select id="category">
-        <option value="all">Все категории</option>
-        <option value="iphone">iPhone</option>
-        <option value="mac">Mac</option>
-        <option value="ipad">iPad</option>
-        <option value="airpods">AirPods</option>
-        <option value="ps">PlayStation</option>
-    </select>
+<input id="search" placeholder="Поиск...">
+<select id="category">
+<option value="all">Все категории</option>
+<option value="iphone">iPhone</option>
+<option value="mac">Mac</option>
+<option value="ipad">iPad</option>
+<option value="airpods">AirPods</option>
+<option value="ps">PlayStation</option>
+</select>
 </div>
 
-<div class="products" id="products"></div>
+<div id="products" class="products"></div>
 
 <script>
-let allProducts = [];
 
-function getImage(name){
-    if(name.includes("iPhone")) return "https://source.unsplash.com/400x300/?iphone";
-    if(name.includes("Mac")) return "https://source.unsplash.com/400x300/?macbook";
-    if(name.includes("iPad")) return "https://source.unsplash.com/400x300/?ipad";
-    if(name.includes("AirPods")) return "https://source.unsplash.com/400x300/?airpods";
-    if(name.includes("PlayStation")) return "https://source.unsplash.com/400x300/?playstation";
-    return "https://source.unsplash.com/400x300/?technology";
+// 🔥 ВСЕ ТОВАРЫ (БЕЗ СЕРВЕРА)
+let products = [
+
+{ name:"iPhone 16 256GB", price:109900, category:"iphone"},
+{ name:"iPhone 16 Pro 256GB", price:129900, category:"iphone"},
+{ name:"iPhone 16 Pro Max 256GB", price:149900, category:"iphone"},
+{ name:"iPhone 17 256GB", price:119900, category:"iphone"},
+{ name:"iPhone 17 Pro 256GB", price:139900, category:"iphone"},
+{ name:"iPhone 17 Pro Max 256GB", price:159900, category:"iphone"},
+
+{ name:"MacBook Air M3", price:119900, category:"mac"},
+{ name:"MacBook Pro M3", price:159900, category:"mac"},
+
+{ name:"iPad 10", price:59900, category:"ipad"},
+{ name:"iPad Pro M2", price:109900, category:"ipad"},
+
+{ name:"AirPods 2", price:13900, category:"airpods"},
+{ name:"AirPods Pro 2", price:20900, category:"airpods"},
+
+{ name:"PlayStation 5", price:64900, category:"ps"},
+{ name:"DualSense Controller", price:7900, category:"ps"},
+
+];
+
+// 🔥 МИНУС 3000 СЛУЧАЙНО
+function dynamicPrice(price){
+return price - Math.floor(Math.random()*1000 + 2000);
 }
 
-function render(products){
-    const container = document.getElementById("products");
-    container.innerHTML = "";
+function render(list){
+const container = document.getElementById("products");
+container.innerHTML="";
 
-    products.forEach(item => {
-        container.innerHTML += `
-            <div class="card">
-                <img src="${getImage(item.name)}">
-                <h3>${item.name}</h3>
-                <div class="stock">В наличии</div>
-                <div class="old">${item.price + 3000} ₽</div>
-                <div class="price">${item.price} ₽</div>
-                <a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${item.name}">Купить</a>
-            </div>
-        `;
-    });
-}
+list.forEach(item=>{
+const finalPrice = dynamicPrice(item.price);
 
-async function loadProducts(){
-    try{
-        const res = await fetch("https://ideal-point.onrender.com/products");
-        const data = await res.json();
-        allProducts = data;
-        render(data);
-    }catch{
-        document.getElementById("products").innerHTML = "<p>Ошибка загрузки</p>";
-    }
-}
-
-loadProducts();
-
-document.getElementById("search").addEventListener("input", e=>{
-    const value = e.target.value.toLowerCase();
-    const filtered = allProducts.filter(p => p.name.toLowerCase().includes(value));
-    render(filtered);
+container.innerHTML += `
+<div class="card">
+<h3>${item.name}</h3>
+<div class="stock">В наличии</div>
+<div class="old">${item.price} ₽</div>
+<div class="price">${finalPrice} ₽</div>
+<a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${item.name}">Купить</a>
+</div>
+`;
 });
+}
 
-document.getElementById("category").addEventListener("change", e=>{
-    const value = e.target.value;
+render(products);
 
-    if(value === "all"){
-        render(allProducts);
-    } else {
-        const filtered = allProducts.filter(p => p.category === value);
-        render(filtered);
-    }
-});
+// 🔍 поиск
+document.getElementById("search").oninput = e=>{
+const val = e.target.value.toLowerCase();
+render(products.filter(p=>p.name.toLowerCase().includes(val)));
+};
+
+// 📦 категории
+document.getElementById("category").onchange = e=>{
+const val = e.target.value;
+if(val==="all") return render(products);
+render(products.filter(p=>p.category===val));
+};
+
 </script>
 
 </body>
