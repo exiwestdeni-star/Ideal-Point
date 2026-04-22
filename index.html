@@ -5,205 +5,148 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ideal Point</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;font-family:Inter;background:#f5f6fa;color:#111}
-.header{display:flex;justify-content:space-between;padding:15px;background:#fff}
-.banner{padding:40px;text-align:center;background:#111;color:#fff}
-.controls{padding:10px;background:#fff}
-input,select{padding:10px;border-radius:8px;border:1px solid #ddd}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px}
-.card{background:#fff;padding:15px;border-radius:12px;cursor:pointer}
-.card img{width:100%;height:180px;object-fit:contain}
-.price{font-weight:700}
+body{
+margin:0;
+font-family: 'Inter', sans-serif;
+background:#f5f5f7;
+color:#111;
+}
 
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center}
-.modal-content{background:#fff;padding:20px;border-radius:12px;width:320px;text-align:center}
+header{
+text-align:center;
+padding:40px 20px;
+font-size:32px;
+font-weight:700;
+}
 
-.colors span{display:inline-block;width:20px;height:20px;border-radius:50%;margin:5px;border:1px solid #ccc;cursor:pointer}
-.memory button{margin:5px;padding:6px 10px;border:1px solid #ccc;border-radius:6px}
+.grid{
+display:grid;
+grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+gap:20px;
+padding:30px;
+max-width:1300px;
+margin:auto;
+}
 
-.btn{display:block;margin-top:10px;padding:10px;background:#111;color:#fff;border-radius:8px;text-decoration:none}
+.card{
+background:#fff;
+border-radius:20px;
+padding:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.08);
+transition:.3s;
+}
 
-.cart{position:fixed;bottom:20px;right:20px;background:#111;color:#fff;padding:12px 18px;border-radius:50px}
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card img{
+width:100%;
+border-radius:12px;
+}
+
+.title{
+font-size:18px;
+font-weight:600;
+margin:10px 0;
+}
+
+.price{
+font-size:22px;
+font-weight:700;
+margin:10px 0;
+}
+
+button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:black;
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+
+button:hover{
+background:#333;
+}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-<div><b>Ideal Point</b></div>
-<div>📞 +7 969 969 67 67</div>
+<header>IDEAL POINT</header>
+
+<div class="grid">
+
+<div class="card">
+<img src="images/iphone17pro-black.webp">
+<div class="title">iPhone 17 Pro Black</div>
+<div class="price">от 94 300 ₽</div>
+<button>Купить</button>
 </div>
 
-<div class="banner">
-<h2>Apple техника</h2>
-<p>Цены ниже рынка</p>
+<div class="card">
+<img src="images/iphone17pro-white.webp">
+<div class="title">iPhone 17 Pro White</div>
+<div class="price">от 94 700 ₽</div>
+<button>Купить</button>
 </div>
 
-<div class="controls">
-<input id="search" placeholder="Поиск...">
-<select id="category">
-<option value="all">Все</option>
-<option value="iphone">iPhone</option>
-<option value="mac">Mac</option>
-<option value="ipad">iPad</option>
-<option value="watch">Watch</option>
-<option value="airpods">AirPods</option>
-<option value="ps">PS</option>
-</select>
+<div class="card">
+<img src="images/iphone17pro-orange.webp">
+<div class="title">iPhone 17 Pro Orange</div>
+<div class="price">от 94 300 ₽</div>
+<button>Купить</button>
 </div>
 
-<div id="products" class="grid"></div>
-
-<div id="modal" class="modal">
-<div class="modal-content">
-<img id="modalImg" style="width:100%;height:150px;object-fit:contain">
-<h3 id="modalName"></h3>
-<div id="modalPrice"></div>
-<div id="colors"></div>
-<div id="memory"></div>
-<a id="buyBtn" class="btn">Купить</a>
-</div>
+<div class="card">
+<img src="images/iphone17-black.webp">
+<div class="title">iPhone 17 Black</div>
+<div class="price">от 59 000 ₽</div>
+<button>Купить</button>
 </div>
 
-<div class="cart" onclick="checkout()">🛒</div>
+<div class="card">
+<img src="images/iphone17-white.webp">
+<div class="title">iPhone 17 White</div>
+<div class="price">от 61 400 ₽</div>
+<button>Купить</button>
+</div>
 
-<script>
+<div class="card">
+<img src="images/iphone17-blue.webp">
+<div class="title">iPhone 17 Blue</div>
+<div class="price">от 62 200 ₽</div>
+<button>Купить</button>
+</div>
 
-let cart=[];
-let current=null;
+<div class="card">
+<img src="images/iphone17e-purple.webp">
+<div class="title">iPhone 17e Purple</div>
+<div class="price">от 44 700 ₽</div>
+<button>Купить</button>
+</div>
 
-let products=[
+<div class="card">
+<img src="images/airpods-pro2.webp">
+<div class="title">AirPods Pro 2</div>
+<div class="price">14 000 ₽</div>
+<button>Купить</button>
+</div>
 
-{
-name:"iPhone 17",
-cat:"iphone",
-price:62900,
-colors:["Black","Blue","White"],
-images:[
-"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
-"https://images.unsplash.com/photo-1512499617640-c2f999098c01",
-"https://images.unsplash.com/photo-1510552776732-03e61cf4b144"
-],
-memory:["256GB","512GB"]
-},
+<div class="card">
+<img src="images/airpods4.webp">
+<div class="title">AirPods 4</div>
+<div class="price">8 800 ₽</div>
+<button>Купить</button>
+</div>
 
-{
-name:"iPhone 17 Pro",
-cat:"iphone",
-price:100800,
-colors:["Blue","White"],
-images:[
-"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
-"https://images.unsplash.com/photo-1580910051074-3eb694886505"
-],
-memory:["256GB","512GB"]
-},
-
-{
-name:"MacBook Air",
-cat:"mac",
-price:91000,
-colors:["Silver"],
-images:["https://images.unsplash.com/photo-1517336714731-489689fd1ca8"],
-memory:["512GB"]
-},
-
-{
-name:"iPad Pro",
-cat:"ipad",
-price:89200,
-colors:["Gray"],
-images:["https://images.unsplash.com/photo-1587033411391-5d9e51cce126"],
-memory:["256GB","512GB"]
-},
-
-{
-name:"Apple Watch",
-cat:"watch",
-price:25900,
-colors:["Black"],
-images:["https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"],
-memory:["46mm"]
-},
-
-{
-name:"AirPods Pro 2",
-cat:"airpods",
-price:14000,
-colors:["White"],
-images:["https://images.unsplash.com/photo-1588156979435-379b9d802b0e"],
-memory:["—"]
-},
-
-{
-name:"PS5",
-cat:"ps",
-price:74500,
-colors:["White"],
-images:["https://images.unsplash.com/photo-1606813907291-d86efa9b94db"],
-memory:["1TB"]
-}
-
-];
-
-function render(){
-let val=document.getElementById("search").value.toLowerCase();
-let cat=document.getElementById("category").value;
-
-let html="";
-products.filter(p=>(cat==="all"||p.cat===cat)&&p.name.toLowerCase().includes(val))
-.forEach((p,i)=>{
-html+=`
-<div class="card" onclick="openModal(${i})">
-<img src="${p.images[0]}">
-<h3>${p.name}</h3>
-<div class="price">${p.price-3000} ₽</div>
-</div>`;
-});
-document.getElementById("products").innerHTML=html;
-}
-
-function openModal(i){
-current=products[i];
-document.getElementById("modal").style.display="flex";
-document.getElementById("modalImg").src=current.images[0];
-document.getElementById("modalName").innerText=current.name;
-document.getElementById("modalPrice").innerText=(current.price-3000)+" ₽";
-
-let cHTML="";
-current.colors.forEach((c,i)=>{cHTML+=`<span onclick="changeColor(${i})"></span>`});
-document.getElementById("colors").innerHTML=cHTML;
-
-let mHTML="";
-current.memory.forEach(m=>{mHTML+=`<button>${m}</button>`});
-document.getElementById("memory").innerHTML=mHTML;
-
-document.getElementById("buyBtn").href=
-"https://t.me/iDeal_Point_Level?text=Хочу "+current.name;
-}
-
-function changeColor(i){
-document.getElementById("modalImg").src=current.images[i];
-}
-
-function checkout(){
-let text="Хочу заказать:\n"+cart.join("\n");
-window.open("https://t.me/iDeal_Point_Level?text="+encodeURIComponent(text));
-}
-
-document.getElementById("modal").onclick=e=>{
-if(e.target.id==="modal") e.currentTarget.style.display="none";
-};
-
-document.getElementById("search").oninput=render;
-document.getElementById("category").onchange=render;
-
-render();
-
-</script>
+</div>
 
 </body>
 </html>
