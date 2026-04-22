@@ -1,159 +1,107 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Ideal Point</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
-<style>
-body {margin:0;font-family:Inter;background:#f5f6fa;}
-
-.header {
-display:flex;
-justify-content:space-between;
-padding:15px 20px;
-background:#fff;
-}
-
-.controls {
-display:flex;
-gap:10px;
-padding:15px;
-flex-wrap:wrap;
-}
-
-input,select {
-padding:10px;
-border-radius:8px;
-border:1px solid #ddd;
-}
-
-.grid {
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:20px;
-padding:20px;
-}
-
-.card {
-background:#fff;
-padding:15px;
-border-radius:12px;
-}
-
-.card img {
-width:100%;
-height:160px;
-object-fit:contain;
-}
-
-.price {font-weight:600;}
-.old {text-decoration:line-through;color:#999;font-size:13px;}
-
-.btn {
-display:block;
-margin-top:10px;
-padding:10px;
-background:#111;
-color:#fff;
-text-align:center;
-border-radius:8px;
-text-decoration:none;
-}
-</style>
-</head>
-
-<body>
-
-<div class="header">
-<div><b>Ideal Point</b></div>
-<div>📞 +7 969 969 67 67</div>
-</div>
-
-<div class="controls">
-<input id="search" placeholder="Поиск...">
-<select id="category">
-<option value="all">Все</option>
-<option value="iphone">iPhone</option>
-<option value="mac">Mac</option>
-<option value="ipad">iPad</option>
-<option value="watch">Watch</option>
-<option value="airpods">AirPods</option>
-<option value="ps">PS</option>
-</select>
-</div>
-
-<div id="products" class="grid"></div>
-
 <script>
 
 let products = [
 
-/* 📱 iPhone */
-{name:"iPhone 17 256GB Black",price:59900,cat:"iphone",img:"https://cdn.shopify.com/s/files/1/0057/8938/4802/products/iphone-14-pro-max.png"},
-{name:"iPhone 17 256GB Blue",price:59200,cat:"iphone",img:"https://cdn.shopify.com/s/files/1/0057/8938/4802/products/iphone-14-pro.png"},
-{name:"iPhone 17 256GB White",price:59900,cat:"iphone",img:"https://cdn.shopify.com/s/files/1/0057/8938/4802/products/iphone-13.png"},
+/* 📱 iPhone 17 */
+{
+name:"iPhone 17 256GB Black",
+price:59900,
+cat:"iphone",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-1.jpg"
+},
 
-{name:"iPhone 17 Pro 256GB Blue",price:97800,cat:"iphone",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro"},
-{name:"iPhone 17 Pro 512GB Blue",price:115500,cat:"iphone",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro"},
+/* 📱 iPhone 17 Air */
+{
+name:"iPhone 17 Air 256GB Blue",
+price:64000,
+cat:"iphone",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-plus-1.jpg"
+},
 
-{name:"iPhone 17 Pro Max 256GB Black",price:103500,cat:"iphone",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max"},
-{name:"iPhone 17 Pro Max 512GB Blue",price:126600,cat:"iphone",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max"},
+/* 📱 iPhone 17 Pro */
+{
+name:"iPhone 17 Pro 256GB Blue",
+price:97800,
+cat:"iphone",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg"
+},
+
+/* 📱 iPhone 17 Pro Max */
+{
+name:"iPhone 17 Pro Max 512GB Blue",
+price:126600,
+cat:"iphone",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-max-1.jpg"
+},
 
 /* 💻 Mac */
-{name:"MacBook Air M4 16/512",price:88000,cat:"mac",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air"},
-{name:"MacBook Pro M5 16/512",price:119500,cat:"mac",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro"},
+{
+name:"MacBook Air M4",
+price:88000,
+cat:"mac",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-macbook-air-15-2023-1.jpg"
+},
+
+{
+name:"MacBook Pro M5",
+price:119500,
+cat:"mac",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-macbook-pro-14-2023-1.jpg"
+},
 
 /* 📱 iPad */
-{name:"iPad Air 256GB",price:54000,cat:"ipad",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air"},
-{name:"iPad Pro 512GB",price:89200,cat:"ipad",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro"},
+{
+name:"iPad Air",
+price:54000,
+cat:"ipad",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-ipad-air-2022-1.jpg"
+},
+
+{
+name:"iPad Pro",
+price:89200,
+cat:"ipad",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-ipad-pro-2022-1.jpg"
+},
 
 /* ⌚ Watch */
-{name:"Apple Watch S11",price:25100,cat:"watch",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-series-9"},
-{name:"Apple Watch Ultra 3",price:56300,cat:"watch",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-ultra"},
+{
+name:"Apple Watch S11",
+price:25100,
+cat:"watch",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-watch-series-9-1.jpg"
+},
+
+{
+name:"Apple Watch Ultra 3",
+price:56300,
+cat:"watch",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-watch-ultra-2-1.jpg"
+},
 
 /* 🎧 */
-{name:"AirPods Pro 2",price:11000,cat:"airpods",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-pro"},
-{name:"AirPods Max",price:37000,cat:"airpods",img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max"},
+{
+name:"AirPods Pro 2",
+price:11000,
+cat:"airpods",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-airpods-pro-2-1.jpg"
+},
+
+{
+name:"AirPods Max",
+price:37000,
+cat:"airpods",
+img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-airpods-max-1.jpg"
+},
 
 /* 🎮 */
-{name:"PS5 Pro 2TB",price:71500,cat:"ps",img:"https://upload.wikimedia.org/wikipedia/commons/0/0d/PlayStation_5.jpg"},
-{name:"PS5 Slim",price:42800,cat:"ps",img:"https://upload.wikimedia.org/wikipedia/commons/0/0d/PlayStation_5.jpg"}
+{
+name:"PS5 Pro",
+price:71500,
+cat:"ps",
+img:"https://fdn2.gsmarena.com/vv/pics/sony/sony-playstation-5-1.jpg"
+}
 
 ];
 
-function render(){
-let val=document.getElementById("search").value.toLowerCase();
-let cat=document.getElementById("category").value;
-
-let filtered=products.filter(p=>{
-return (cat==="all"||p.cat===cat) &&
-p.name.toLowerCase().includes(val);
-});
-
-let html="";
-filtered.forEach(p=>{
-html+=`
-<div class="card">
-<img src="${p.img}">
-<h3>${p.name}</h3>
-<div class="price">${p.price} ₽</div>
-<a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${p.name}">Купить</a>
-</div>`;
-});
-
-document.getElementById("products").innerHTML=html;
-}
-
-render();
-
-document.getElementById("search").oninput=render;
-document.getElementById("category").onchange=render;
-
 </script>
-
-</body>
-</html>
