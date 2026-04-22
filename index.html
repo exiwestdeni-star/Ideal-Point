@@ -22,14 +22,18 @@ top:0;
 background:#fff;
 display:flex;
 justify-content:space-between;
+align-items:center;
 padding:15px 25px;
 box-shadow:0 2px 10px rgba(0,0,0,0.05);
-z-index:10;
 }
 
 .logo {
 font-weight:700;
 font-size:18px;
+}
+
+.contacts {
+font-size:14px;
 }
 
 .filters {
@@ -59,11 +63,6 @@ border-radius:16px;
 padding:15px;
 text-align:center;
 box-shadow:0 5px 20px rgba(0,0,0,0.05);
-transition:0.3s;
-}
-
-.card:hover {
-transform:translateY(-5px);
 }
 
 .card img {
@@ -98,20 +97,20 @@ text-decoration:none;
 
 <div class="header">
 <div class="logo">Ideal Point</div>
-<a href="https://t.me/iDeal_Point_Level">Telegram</a>
+<div class="contacts">
+📞 +7 969 67 67
+</div>
 </div>
 
 <div class="filters">
 <input id="search" placeholder="Поиск...">
 <select id="category">
-<option value="all">Все категории</option>
+<option value="all">Все</option>
 <option value="iphone">iPhone</option>
 <option value="mac">Mac</option>
 <option value="ipad">iPad</option>
 <option value="airpods">AirPods</option>
-<option value="watch">Watch</option>
 <option value="ps">PlayStation</option>
-<option value="access">Аксессуары</option>
 </select>
 </div>
 
@@ -119,44 +118,31 @@ text-decoration:none;
 
 <script>
 
+// 🔥 СТАБИЛЬНЫЕ КАРТИНКИ
+function img(type){
+const images = {
+iphone:"https://i.imgur.com/1bX5QH6.png",
+mac:"https://i.imgur.com/6VBx3io.png",
+ipad:"https://i.imgur.com/9Y7G6Yy.png",
+airpods:"https://i.imgur.com/0kZ6m0P.png",
+ps:"https://i.imgur.com/5c6XK5S.png"
+};
+return images[type];
+}
+
 let products = [
 
-/* IPHONE */
-{ name:"iPhone 16 256GB", price:109900, cat:"iphone", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro"},
-{ name:"iPhone 16 Pro 256GB", price:129900, cat:"iphone", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro"},
-{ name:"iPhone 16 Pro Max", price:149900, cat:"iphone", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro"},
-{ name:"iPhone 17 Pro", price:139900, cat:"iphone", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro"},
-{ name:"iPhone 17 Pro Max", price:159900, cat:"iphone", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro"},
+{ name:"iPhone 16 Pro", price:129900, cat:"iphone"},
+{ name:"iPhone 17 Pro Max", price:159900, cat:"iphone"},
 
-/* MAC */
-{ name:"MacBook Air M2", price:99900, cat:"mac", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air"},
-{ name:"MacBook Air M3", price:119900, cat:"mac", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air"},
-{ name:"MacBook Pro 14", price:159900, cat:"mac", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro"},
-{ name:"MacBook Pro 16", price:199900, cat:"mac", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro"},
+{ name:"MacBook Air M3", price:119900, cat:"mac"},
+{ name:"MacBook Pro M3", price:159900, cat:"mac"},
 
-/* IPAD */
-{ name:"iPad 10", price:59900, cat:"ipad", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad"},
-{ name:"iPad Air", price:89900, cat:"ipad", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air"},
-{ name:"iPad Pro", price:119900, cat:"ipad", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro"},
+{ name:"iPad Pro", price:109900, cat:"ipad"},
 
-/* AIRPODS */
-{ name:"AirPods 2", price:13900, cat:"airpods", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-2nd-gen"},
-{ name:"AirPods 3", price:17900, cat:"airpods", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-3rd-gen"},
-{ name:"AirPods Pro 2", price:20900, cat:"airpods", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-pro"},
+{ name:"AirPods Pro 2", price:20900, cat:"airpods"},
 
-/* WATCH */
-{ name:"Apple Watch SE", price:29900, cat:"watch", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-se"},
-{ name:"Apple Watch Series 9", price:39900, cat:"watch", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-series-9"},
-{ name:"Apple Watch Ultra", price:79900, cat:"watch", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-ultra"},
-
-/* PS */
-{ name:"PlayStation 5", price:64900, cat:"ps", img:"https://upload.wikimedia.org/wikipedia/commons/0/0d/PlayStation_5.jpg"},
-{ name:"DualSense", price:7900, cat:"ps", img:"https://upload.wikimedia.org/wikipedia/commons/5/5f/PS5_DualSense_Controller.png"},
-
-/* ACCESS */
-{ name:"Magic Mouse", price:9900, cat:"access", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/magic-mouse"},
-{ name:"Magic Keyboard", price:14900, cat:"access", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/magic-keyboard"},
-{ name:"Apple Pencil", price:11900, cat:"access", img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-pencil"},
+{ name:"PlayStation 5", price:64900, cat:"ps"}
 
 ];
 
@@ -164,12 +150,12 @@ function price(p){ return p - 3000; }
 
 function render(list){
 const container = document.getElementById("products");
-container.innerHTML = "";
+container.innerHTML="";
 
 list.forEach(item=>{
 container.innerHTML += `
 <div class="card">
-<img src="${item.img}">
+<img src="${img(item.cat)}" onerror="this.src='https://i.imgur.com/Z6X7Z9L.png'">
 <h3>${item.name}</h3>
 <div class="old">${item.price} ₽</div>
 <div class="price">${price(item.price)} ₽</div>
@@ -181,11 +167,13 @@ container.innerHTML += `
 
 render(products);
 
+// поиск
 document.getElementById("search").oninput = e=>{
 const val = e.target.value.toLowerCase();
 render(products.filter(p=>p.name.toLowerCase().includes(val)));
 };
 
+// категории
 document.getElementById("category").onchange = e=>{
 const val = e.target.value;
 if(val==="all") return render(products);
