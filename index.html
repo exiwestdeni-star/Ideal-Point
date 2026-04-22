@@ -8,14 +8,68 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;font-family:Inter;background:#f5f5f7}
-header{display:flex;justify-content:space-between;padding:20px;background:#fff}
+body{margin:0;font-family:Inter;background:#f5f5f7;color:#111}
+
+header{
+display:flex;
+justify-content:space-between;
+padding:20px 30px;
+background:#fff;
+box-shadow:0 2px 10px rgba(0,0,0,.05)
+}
+
 .logo{font-weight:700}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:25px;padding:25px}
-.card{background:#fff;padding:15px;border-radius:15px;box-shadow:0 5px 20px rgba(0,0,0,.05)}
-.card img{width:100%;height:180px;object-fit:contain}
+
+.categories{
+display:flex;
+gap:10px;
+padding:15px;
+flex-wrap:wrap;
+}
+
+.cat{
+padding:8px 14px;
+background:#fff;
+border-radius:20px;
+cursor:pointer;
+border:1px solid #eee
+}
+
+.cat.active{background:#000;color:#fff}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:20px;
+padding:20px
+}
+
+.card{
+background:#fff;
+border-radius:15px;
+padding:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.05)
+}
+
+.card img{
+width:100%;
+height:180px;
+object-fit:contain
+}
+
+.title{font-weight:600;margin:10px 0}
 .price{font-weight:700}
-.btn{margin-top:10px;padding:10px;background:#000;color:#fff;border:none;border-radius:10px;width:100%}
+
+.btn{
+margin-top:10px;
+padding:10px;
+background:#000;
+color:#fff;
+border:none;
+border-radius:10px;
+width:100%;
+cursor:pointer
+}
 </style>
 </head>
 
@@ -26,65 +80,83 @@ header{display:flex;justify-content:space-between;padding:20px;background:#fff}
 <div>+7 969 969 67 67</div>
 </header>
 
-<div class="grid">
+<div class="categories">
+<div class="cat active" onclick="filter('all')">Все</div>
+<div class="cat" onclick="filter('iphone')">iPhone</div>
+<div class="cat" onclick="filter('watch')">Watch</div>
+<div class="cat" onclick="filter('ipad')">iPad</div>
+<div class="cat" onclick="filter('mac')">MacBook</div>
+<div class="cat" onclick="filter('airpods')">AirPods</div>
+<div class="cat" onclick="filter('ps')">PlayStation</div>
+<div class="cat" onclick="filter('access')">Аксессуары</div>
+</div>
 
+<div id="products" class="grid"></div>
+
+<script>
+
+const products = [
+
+/* iPhone */
+{cat:"iphone",name:"iPhone 17 256GB Black",price:62900,img:"https://images.unsplash.com/photo-1510552776732-03e61cf4b144"},
+{cat:"iphone",name:"iPhone 17 256GB Blue",price:62200,img:"https://images.unsplash.com/photo-1512499617640-c2f999098c01"},
+{cat:"iphone",name:"iPhone 17 Pro 256GB",price:94300,img:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd"},
+{cat:"iphone",name:"iPhone 17 Pro Max 256GB",price:102500,img:"https://images.unsplash.com/photo-1580910051074-3eb694886505"},
+
+/* Watch */
+{cat:"watch",name:"Apple Watch S11",price:25900,img:"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"},
+{cat:"watch",name:"Apple Watch Ultra 3",price:59300,img:"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"},
+
+/* iPad */
+{cat:"ipad",name:"iPad Air M4",price:57000,img:"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"},
+{cat:"ipad",name:"iPad Pro M5",price:96000,img:"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"},
+
+/* Mac */
+{cat:"mac",name:"MacBook Air M4",price:91000,img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
+
+/* AirPods */
+{cat:"airpods",name:"AirPods Pro 2",price:14000,img:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"},
+{cat:"airpods",name:"AirPods 4",price:8800,img:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"},
+
+/* PS */
+{cat:"ps",name:"PS5 Pro",price:74500,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
+{cat:"ps",name:"DualSense Controller",price:5500,img:"https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf"},
+
+/* Access */
+{cat:"access",name:"Apple Pencil Pro",price:10500,img:"https://images.unsplash.com/photo-1587829741301-dc798b83add3"},
+{cat:"access",name:"Magic Mouse",price:9000,img:"https://images.unsplash.com/photo-1587829741301-dc798b83add3"}
+
+]
+
+function render(list){
+let html=""
+list.forEach(p=>{
+html+=`
 <div class="card">
-<img src="https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd">
-<div>iPhone 17 Pro</div>
-<div class="price">94 300 ₽</div>
-<button class="btn">Купить</button>
-</div>
+<img src="${p.img}">
+<div class="title">${p.name}</div>
+<div class="price">${p.price} ₽</div>
+<button class="btn" onclick="order('${p.name}')">Купить</button>
+</div>`
+})
+document.getElementById("products").innerHTML=html
+}
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1510552776732-03e61cf4b144">
-<div>iPhone 17</div>
-<div class="price">59 000 ₽</div>
-<button class="btn">Купить</button>
-</div>
+function filter(cat){
+document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'))
+event.target.classList.add('active')
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9">
-<div>iPhone 17e</div>
-<div class="price">44 700 ₽</div>
-<button class="btn">Купить</button>
-</div>
+if(cat==="all") render(products)
+else render(products.filter(p=>p.cat===cat))
+}
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
-<div>MacBook</div>
-<div class="price">86 000 ₽</div>
-<button class="btn">Купить</button>
-</div>
+function order(name){
+window.open("https://t.me/iDeal_Point_Level?text=Хочу купить "+name)
+}
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1587033411391-5d9e51cce126">
-<div>iPad</div>
-<div class="price">45 000 ₽</div>
-<button class="btn">Купить</button>
-</div>
+render(products)
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1511732351155-1865efcb7b7c">
-<div>Apple Watch</div>
-<div class="price">25 900 ₽</div>
-<button class="btn">Купить</button>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1588156979435-379b9d802b0e">
-<div>AirPods Pro 2</div>
-<div class="price">14 000 ₽</div>
-<button class="btn">Купить</button>
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf">
-<div>PS5</div>
-<div class="price">74 500 ₽</div>
-<button class="btn">Купить</button>
-</div>
-
-</div>
+</script>
 
 </body>
 </html>
