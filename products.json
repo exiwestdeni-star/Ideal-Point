@@ -1,9 +1,255 @@
-[
-  {"name":"iPhone 16 128GB","price":86900,"category":"iphone"},
-  {"name":"iPhone 16 256GB","price":96900,"category":"iphone"},
-  {"name":"iPhone 16 Pro 256GB","price":116900,"category":"iphone"},
-  {"name":"iPhone 16 Pro Max 256GB","price":131900,"category":"iphone"},
-  {"name":"AirPods Pro 2","price":17900,"category":"airpods"},
-  {"name":"MacBook Air M3","price":116900,"category":"mac"},
-  {"name":"PlayStation 5","price":61900,"category":"ps"}
+const products = [
+
+/* ================= iPhone 17 ================= */
+
+{
+cat:"iphone",
+name:"iPhone 17",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select",
+blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select",
+white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select",
+sage:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select",
+lavander:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select"
+},
+memory:{
+"256GB":59000,
+"512GB":80200
+}
+},
+
+/* ================= iPhone 17e ================= */
+
+{
+cat:"iphone",
+name:"iPhone 17e",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select",
+pink:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select",
+white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"
+},
+memory:{
+"256GB":44700,
+"512GB":64000
+}
+},
+
+/* ================= iPhone 17 Air ================= */
+
+{
+cat:"iphone",
+name:"iPhone 17 Air",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-blue-select",
+gold:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-blue-select",
+blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-blue-select",
+white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-blue-select"
+},
+memory:{
+"256GB":67000,
+"512GB":79100,
+"1TB":89200
+}
+},
+
+/* ================= iPhone 17 Pro ================= */
+
+{
+cat:"iphone",
+name:"iPhone 17 Pro",
+colors:{
+blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select",
+white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select",
+orange:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select"
+},
+memory:{
+"256GB":94300,
+"512GB":105200,
+"1TB":120900
+}
+},
+
+/* ================= iPhone 17 Pro Max ================= */
+
+{
+cat:"iphone",
+name:"iPhone 17 Pro Max",
+colors:{
+blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select",
+white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select",
+orange:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select"
+},
+memory:{
+"256GB":102500,
+"512GB":114500,
+"1TB":124900,
+"2TB":141300
+}
+},
+
+/* ================= WATCH ================= */
+
+{
+cat:"watch",
+name:"Apple Watch SE",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-se-midnight-select"
+},
+memory:{
+"44mm":14300
+}
+},
+
+{
+cat:"watch",
+name:"Apple Watch S11",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s9-midnight-select"
+},
+memory:{
+"42mm":25900,
+"46mm":28100
+}
+},
+
+{
+cat:"watch",
+name:"Apple Watch Ultra 3",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra-2-select"
+},
+memory:{
+"Standard":57000
+}
+},
+
+/* ================= AIRPODS ================= */
+
+{
+cat:"access",
+name:"AirPods 4",
+colors:{
+white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-3rd-gen-select"
+},
+memory:{
+"—":8800
+}
+},
+
+{
+cat:"access",
+name:"AirPods Pro 2",
+colors:{
+white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-pro-2nd-gen-select"
+},
+memory:{
+"—":14000
+}
+},
+
+{
+cat:"access",
+name:"AirPods Max",
+colors:{
+orange:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-select"
+},
+memory:{
+"—":40000
+}
+},
+
+/* ================= IPAD ================= */
+
+{
+cat:"ipad",
+name:"iPad 11",
+colors:{
+blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-10th-gen-blue-select"
+},
+memory:{
+"128GB":28500,
+"256GB":37700,
+"512GB":50100
+}
+},
+
+{
+cat:"ipad",
+name:"iPad Air",
+colors:{
+blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-select"
+},
+memory:{
+"128GB":47000,
+"256GB":57000
+}
+},
+
+{
+cat:"ipad",
+name:"iPad Pro",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-13-select"
+},
+memory:{
+"256GB":96000,
+"512GB":102000
+}
+},
+
+/* ================= MAC ================= */
+
+{
+cat:"mac",
+name:"MacBook Air",
+colors:{
+midnight:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-13-midnight-select"
+},
+memory:{
+"256GB":69000,
+"512GB":91000,
+"1TB":104000
+}
+},
+
+{
+cat:"mac",
+name:"MacBook Pro",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-14-spaceblack-select"
+},
+memory:{
+"512GB":122500,
+"1TB":136000,
+"2TB":243000
+}
+},
+
+/* ================= PS ================= */
+
+{
+cat:"ps",
+name:"PlayStation 5",
+colors:{
+white:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"
+},
+memory:{
+"Standard":45200,
+"Pro":74500
+}
+},
+
+/* ================= ACCESS ================= */
+
+{
+cat:"access",
+name:"Magic Mouse",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/magic-mouse-2024-black-select"
+},
+memory:{
+"—":9000
+}
+}
+
 ]
