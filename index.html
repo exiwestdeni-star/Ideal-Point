@@ -10,33 +10,10 @@
 
 <style>
 body {margin:0;font-family:Inter;background:#f5f6fa;}
-
-.header {
-display:flex;
-justify-content:space-between;
-padding:15px;
-background:#fff;
-}
-
-.grid {
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:20px;
-padding:20px;
-}
-
-.card {
-background:#fff;
-padding:15px;
-border-radius:12px;
-}
-
-.card img {
-width:100%;
-height:160px;
-object-fit:contain;
-}
-
+.header {display:flex;justify-content:space-between;padding:15px;background:#fff;}
+.grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px;}
+.card {background:#fff;padding:15px;border-radius:12px;}
+.card img {width:100%;height:160px;object-fit:contain;}
 .price {font-weight:600;}
 </style>
 </head>
@@ -54,23 +31,65 @@ object-fit:contain;
 
 let products = [
 
-{ name:"iPhone 17", price:59900, img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-1.jpg" },
+/* 📱 iPhone */
+{
+name:"iPhone 17",
+price:59900,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15"
+},
 
-{ name:"iPhone 17 Air", price:64000, img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-plus-1.jpg" },
+{
+name:"iPhone 17 Air",
+price:64000,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-plus"
+},
 
-{ name:"iPhone 17 Pro", price:97800, img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg" },
+{
+name:"iPhone 17 Pro",
+price:97800,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro"
+},
 
-{ name:"iPhone 17 Pro Max", price:126600, img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-max-1.jpg" },
+{
+name:"iPhone 17 Pro Max",
+price:126600,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max"
+},
 
-{ name:"MacBook Air", price:88000, img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-macbook-air-15-2023-1.jpg" },
+/* 💻 Mac */
+{
+name:"MacBook",
+price:88000,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air"
+},
 
-{ name:"iPad Pro", price:89200, img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-ipad-pro-2022-1.jpg" },
+/* 📱 iPad */
+{
+name:"iPad",
+price:54000,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air"
+},
 
-{ name:"Apple Watch Ultra", price:56300, img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-watch-ultra-2-1.jpg" },
+/* ⌚ Watch */
+{
+name:"Apple Watch",
+price:25000,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-series-9"
+},
 
-{ name:"AirPods Pro 2", price:11000, img:"https://fdn2.gsmarena.com/vv/pics/apple/apple-airpods-pro-2-1.jpg" },
+/* 🎧 */
+{
+name:"AirPods",
+price:11000,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-pro"
+},
 
-{ name:"PS5", price:71500, img:"https://fdn2.gsmarena.com/vv/pics/sony/sony-playstation-5-1.jpg" }
+/* 🎮 */
+{
+name:"PlayStation 5",
+price:71500,
+img:"https://upload.wikimedia.org/wikipedia/commons/0/0d/PlayStation_5.jpg"
+}
 
 ];
 
