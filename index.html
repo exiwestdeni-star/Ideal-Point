@@ -5,41 +5,205 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ideal Point</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;font-family:Inter;background:#f5f5f7}
-header{display:flex;justify-content:space-between;padding:20px;background:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;padding:20px}
-.card{background:#fff;padding:15px;border-radius:15px}
-.card img{width:100%;height:180px;object-fit:contain}
-.price{font-weight:700}
+body{margin:0;font-family:Inter;background:#f5f5f7;color:#111}
+
+/* HEADER */
+header{
+display:flex;
+justify-content:space-between;
+padding:20px 30px;
+background:#fff;
+box-shadow:0 2px 10px rgba(0,0,0,.05)
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+padding:30px;
+max-width:1300px;
+margin:auto
+}
+
+/* CARD */
+.card{
+background:#fff;
+border-radius:20px;
+padding:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.05);
+transition:.3s
+}
+.card:hover{transform:translateY(-5px)}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:contain
+}
+
+.title{font-weight:600;margin:10px 0}
+.price{font-size:20px;font-weight:700}
+
+/* OPTIONS */
+.colors span{
+display:inline-block;
+width:18px;height:18px;
+border-radius:50%;
+margin:5px;
+cursor:pointer;
+border:1px solid #ccc
+}
+
+.memory button{
+margin:4px;
+padding:5px 10px;
+border-radius:8px;
+border:1px solid #ccc;
+cursor:pointer
+}
+
+.activeOpt{
+background:#000;color:#fff
+}
+
+/* BUTTON */
+.btn{
+margin-top:10px;
+padding:10px;
+border:none;
+border-radius:10px;
+background:#000;
+color:#fff;
+cursor:pointer;
+width:100%
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-<div>IDEAL POINT</div>
+<div><b>IDEAL POINT</b></div>
 <div>+7 969 969 67 67</div>
 </header>
 
 <div id="products" class="grid"></div>
 
-<script src="data.js"></script>
 <script>
 
+const products=[
+
+{
+name:"iPhone 17 Pro Max",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-black-select",
+white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select",
+blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select"
+},
+memory:{
+"256GB":102500,
+"512GB":114500,
+"1TB":124900,
+"2TB":141300
+}
+},
+
+{
+name:"iPhone 17",
+colors:{
+black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select",
+blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select",
+pink:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select"
+},
+memory:{
+"256GB":59000,
+"512GB":80200
+}
+},
+
+{
+name:"AirPods Pro 2",
+colors:{
+white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-pro-2nd-gen-select"
+},
+memory:{
+"—":14000
+}
+},
+
+{
+name:"MacBook Air M4",
+colors:{
+silver:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-13-midnight-select",
+midnight:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-13-midnight-select"
+},
+memory:{
+"256GB":80200,
+"512GB":91000
+}
+}
+
+]
+
 function render(){
+
 let html=""
-products.forEach(p=>{
+
+products.forEach((p,i)=>{
+
+let firstColor=Object.keys(p.colors)[0]
+let firstMemory=Object.keys(p.memory)[0]
+
 html+=`
 <div class="card">
-<img src="${p.img}">
-<div>${p.name}</div>
-<div class="price">${p.price} ₽</div>
-</div>`
+
+<img id="img${i}" src="${p.colors[firstColor]}">
+
+<div class="title">${p.name}</div>
+
+<div class="colors">
+${Object.keys(p.colors).map(c=>`
+<span style="background:${c}" onclick="changeColor(${i},'${c}')"></span>
+`).join("")}
+</div>
+
+<div class="memory">
+${Object.keys(p.memory).map(m=>`
+<button onclick="changeMemory(${i},'${m}',this)">${m}</button>
+`).join("")}
+</div>
+
+<div id="price${i}" class="price">${p.memory[firstMemory]} ₽</div>
+
+<button class="btn" onclick="buy('${p.name}')">Купить</button>
+
+</div>
+`
 })
+
 document.getElementById("products").innerHTML=html
+}
+
+function changeColor(i,color){
+document.getElementById("img"+i).src=products[i].colors[color]
+}
+
+function changeMemory(i,m,el){
+document.getElementById("price"+i).innerText=products[i].memory[m]+" ₽"
+
+document.querySelectorAll(`#products .card:nth-child(${i+1}) .memory button`)
+.forEach(b=>b.classList.remove("activeOpt"))
+
+el.classList.add("activeOpt")
+}
+
+function buy(name){
+window.open("https://t.me/iDeal_Point_Level?text=Хочу "+name)
 }
 
 render()
