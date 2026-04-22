@@ -3,20 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Ideal Point</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-body {margin:0;font-family:'Inter',sans-serif;background:#f6f7fb;color:#111;}
-.header {display:flex;justify-content:space-between;padding:15px 25px;background:#fff;}
-.logo {font-weight:700;}
+body {margin:0;font-family:Inter;background:#f5f6fa;}
+.header {display:flex;justify-content:space-between;padding:15px 20px;background:#fff;}
+.logo {font-weight:600;}
+.controls {display:flex;gap:10px;padding:15px;}
+input,select {padding:10px;border-radius:8px;border:1px solid #ddd;}
 .grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px;}
-.card {background:#fff;padding:15px;border-radius:16px;}
-.card img {width:100%;height:180px;object-fit:contain;}
-.price {font-weight:700;}
-.old {text-decoration:line-through;color:#999;}
-.btn {display:block;margin-top:10px;padding:10px;background:#111;color:#fff;border-radius:10px;text-align:center;text-decoration:none;}
+.card {background:#fff;padding:15px;border-radius:12px;}
+.card img {width:100%;height:160px;object-fit:contain;}
+.price {font-weight:600;}
+.old {text-decoration:line-through;color:#999;font-size:13px;}
+.btn {display:block;margin-top:10px;padding:10px;background:#111;color:#fff;text-align:center;border-radius:8px;text-decoration:none;}
 </style>
 </head>
 
@@ -27,74 +30,53 @@ body {margin:0;font-family:'Inter',sans-serif;background:#f6f7fb;color:#111;}
 <div>📞 +7 969 969 67 67</div>
 </div>
 
+<div class="controls">
+<input id="search" placeholder="Поиск...">
+<select id="category">
+<option value="all">Все</option>
+<option value="iphone">iPhone</option>
+<option value="mac">Mac</option>
+<option value="ipad">iPad</option>
+<option value="watch">Watch</option>
+<option value="airpods">AirPods</option>
+<option value="ps">PlayStation</option>
+</select>
+
+<select id="memory">
+<option value="all">Память</option>
+<option value="256">256GB</option>
+<option value="512">512GB</option>
+<option value="1tb">1TB</option>
+</select>
+</div>
+
 <div id="products" class="grid"></div>
 
 <script>
 
 let products = [
 
-/* 🔥 iPhone 17 */
-{name:"iPhone 17 256GB Black", price:62900},
-{name:"iPhone 17 256GB Blue", price:62200},
-{name:"iPhone 17 256GB White", price:62900},
-{name:"iPhone 17 512GB Black", price:80700},
+{name:"iPhone 17 256GB",price:62900,cat:"iphone",mem:"256"},
+{name:"iPhone 17 512GB",price:80700,cat:"iphone",mem:"512"},
+{name:"iPhone 17 Pro 256GB",price:100800,cat:"iphone",mem:"256"},
+{name:"iPhone 17 Pro 512GB",price:118500,cat:"iphone",mem:"512"},
+{name:"iPhone 17 Pro Max 1TB",price:140000,cat:"iphone",mem:"1tb"},
 
-/* 🔥 17e */
-{name:"iPhone 17e 256GB Black", price:48600},
-{name:"iPhone 17e 256GB White", price:48100},
-{name:"iPhone 17e 512GB Black", price:70500},
+{name:"MacBook Air M3 512GB",price:86000,cat:"mac",mem:"512"},
+{name:"MacBook Air M4 512GB",price:91000,cat:"mac",mem:"512"},
+{name:"MacBook Pro M5 1TB",price:136000,cat:"mac",mem:"1tb"},
 
-/* 🔥 17 Air */
-{name:"iPhone 17 Air 256GB Blue", price:67000},
-{name:"iPhone 17 Air 512GB Blue", price:79100},
+{name:"iPad Pro 512GB",price:92200,cat:"ipad",mem:"512"},
+{name:"iPad Air 256GB",price:57000,cat:"ipad",mem:"256"},
 
-/* 🔥 17 Pro */
-{name:"iPhone 17 Pro 256GB Blue", price:100800},
-{name:"iPhone 17 Pro 512GB Blue", price:118500},
-{name:"iPhone 17 Pro 1TB Blue", price:132200},
+{name:"Apple Watch Ultra 3",price:59300,cat:"watch"},
+{name:"Apple Watch S11",price:25900,cat:"watch"},
 
-/* 🔥 17 Pro Max */
-{name:"iPhone 17 Pro Max 256GB", price:106500},
-{name:"iPhone 17 Pro Max 512GB", price:124000},
-{name:"iPhone 17 Pro Max 1TB", price:140000},
+{name:"AirPods Pro 2",price:14000,cat:"airpods"},
+{name:"AirPods Max",price:40000,cat:"airpods"},
 
-/* ⌚ Watch */
-{name:"Apple Watch SE2", price:14600},
-{name:"Apple Watch SE3", price:19300},
-{name:"Apple Watch S10", price:23300},
-{name:"Apple Watch S11", price:25900},
-{name:"Apple Watch Ultra 2", price:49600},
-{name:"Apple Watch Ultra 3", price:59300},
-
-/* 📱 iPad */
-{name:"iPad 11 128GB WiFi", price:28800},
-{name:"iPad Air M4 256GB", price:57000},
-{name:"iPad Pro M5 512GB", price:92200},
-
-/* 💻 Mac */
-{name:"MacBook Air M3 8/512", price:86000},
-{name:"MacBook Air M4 16/512", price:91000},
-{name:"MacBook Pro M5 16/512", price:122500},
-
-/* 🎧 AirPods */
-{name:"AirPods 4", price:8800},
-{name:"AirPods Pro 2", price:14000},
-{name:"AirPods Pro 3", price:17500},
-{name:"AirPods Max", price:40000},
-
-/* 🎮 PS */
-{name:"PS5 Pro Digital 2TB", price:74500},
-{name:"PS5 Slim Disk", price:45800},
-{name:"DualSense Controller", price:5500},
-
-/* ✏️ */
-{name:"Apple Pencil 2", price:7900},
-{name:"Apple Pencil USB-C", price:8500},
-{name:"Apple Pencil Pro", price:10500},
-
-/* 🖱 */
-{name:"Magic Mouse USB-C", price:9000},
-{name:"Magic Mouse Silver", price:8000}
+{name:"PS5 Pro",price:74500,cat:"ps"},
+{name:"PS5 Slim",price:45800,cat:"ps"}
 
 ];
 
@@ -107,12 +89,22 @@ if(name.includes("iPad")) return "https://images.unsplash.com/photo-158703341139
 if(name.includes("AirPods")) return "https://images.unsplash.com/photo-1588156979435-379b9d802b0e";
 if(name.includes("Watch")) return "https://images.unsplash.com/photo-1511732351155-1865efcb7b7c";
 if(name.includes("PS5")) return "https://images.unsplash.com/photo-1606813907291-d86efa9b94db";
-return "https://images.unsplash.com/photo-1587829741301-dc798b83add3";
+return "";
 }
 
 function render(){
+let val=document.getElementById("search").value.toLowerCase();
+let cat=document.getElementById("category").value;
+let mem=document.getElementById("memory").value;
+
+let filtered=products.filter(p=>{
+return (cat==="all"||p.cat===cat) &&
+(mem==="all"||p.mem===mem) &&
+p.name.toLowerCase().includes(val);
+});
+
 let html="";
-products.forEach(p=>{
+filtered.forEach(p=>{
 html+=`
 <div class="card">
 <img src="${img(p.name)}">
@@ -122,10 +114,15 @@ html+=`
 <a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${p.name}">Купить</a>
 </div>`;
 });
+
 document.getElementById("products").innerHTML=html;
 }
 
 render();
+
+document.getElementById("search").oninput=render;
+document.getElementById("category").onchange=render;
+document.getElementById("memory").onchange=render;
 
 </script>
 
