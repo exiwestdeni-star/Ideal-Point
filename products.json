@@ -3,14 +3,7 @@
   {"name":"iPhone 16 256GB","price":96900,"category":"iphone"},
   {"name":"iPhone 16 Pro 256GB","price":116900,"category":"iphone"},
   {"name":"iPhone 16 Pro Max 256GB","price":131900,"category":"iphone"},
-
-  {"name":"iPhone 17 256GB","price":106900,"category":"iphone"},
-  {"name":"iPhone 17 Pro 256GB","price":126900,"category":"iphone"},
-  {"name":"iPhone 17 Pro Max 256GB","price":146900,"category":"iphone"},
-
   {"name":"AirPods Pro 2","price":17900,"category":"airpods"},
   {"name":"MacBook Air M3","price":116900,"category":"mac"},
-  {"name":"iPad Pro","price":106900,"category":"ipad"},
-
   {"name":"PlayStation 5","price":61900,"category":"ps"}
 ]
