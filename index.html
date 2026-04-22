@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Ideal Point</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
@@ -11,7 +12,7 @@
 body {
 margin:0;
 font-family:'Inter',sans-serif;
-background:#f5f5f7;
+background:#f2f2f5;
 color:#111;
 }
 
@@ -31,19 +32,13 @@ font-weight:700;
 font-size:18px;
 }
 
-.nav a {
-margin-left:20px;
-text-decoration:none;
-color:#111;
-}
-
 .hero {
 text-align:center;
-padding:80px 20px;
+padding:60px 20px;
 }
 
 .hero h1 {
-font-size:42px;
+font-size:36px;
 }
 
 .hero p {
@@ -72,10 +67,10 @@ padding:20px;
 
 .card {
 background:#fff;
-border-radius:18px;
+border-radius:16px;
 padding:15px;
 text-align:center;
-box-shadow:0 10px 30px rgba(0,0,0,0.05);
+box-shadow:0 5px 20px rgba(0,0,0,0.05);
 transition:0.3s;
 }
 
@@ -91,12 +86,11 @@ object-fit:contain;
 
 .price {
 font-weight:700;
-margin-top:5px;
 }
 
 .old {
 text-decoration:line-through;
-color:#999;
+color:#888;
 font-size:14px;
 }
 
@@ -110,16 +104,6 @@ border-radius:10px;
 text-decoration:none;
 }
 
-.filter {
-text-align:center;
-margin-top:10px;
-}
-
-select {
-padding:10px;
-border-radius:10px;
-}
-
 </style>
 </head>
 
@@ -127,32 +111,16 @@ border-radius:10px;
 
 <div class="header">
 <div class="logo">Ideal Point</div>
-<div class="nav">
-<a href="#">Каталог</a>
 <a href="https://t.me/iDeal_Point_Level">Telegram</a>
-</div>
 </div>
 
 <div class="hero">
-<h1>Премиальная техника Apple</h1>
+<h1>Каталог техники Apple</h1>
 <p>Цены ниже рынка на 3000 ₽</p>
 </div>
 
 <div class="search-box">
-<input id="search" placeholder="Поиск товара...">
-</div>
-
-<div class="filter">
-<select id="category">
-<option value="all">Все категории</option>
-<option value="iphone">iPhone</option>
-<option value="mac">Mac</option>
-<option value="ipad">iPad</option>
-<option value="airpods">AirPods</option>
-<option value="watch">Watch</option>
-<option value="ps">PlayStation</option>
-<option value="access">Аксессуары</option>
-</select>
+<input id="search" placeholder="Поиск...">
 </div>
 
 <div id="products" class="grid"></div>
@@ -161,34 +129,20 @@ border-radius:10px;
 
 let products = [
 
-{ name:"iPhone 16 256GB", price:109900, cat:"iphone"},
-{ name:"iPhone 16 Pro 256GB", price:129900, cat:"iphone"},
-{ name:"iPhone 17 Pro Max 512GB", price:169900, cat:"iphone"},
+{ name:"iPhone 16 Pro", price:129900, img:"https://cdn.shopify.com/s/files/1/0057/8938/4802/products/iphone-14-pro-max.png"},
+{ name:"iPhone 17 Pro Max", price:159900, img:"https://cdn.shopify.com/s/files/1/0057/8938/4802/products/iphone-14-pro.png"},
 
-{ name:"MacBook Air M3", price:119900, cat:"mac"},
-{ name:"MacBook Pro M3", price:159900, cat:"mac"},
+{ name:"MacBook Air M3", price:119900, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air"},
 
-{ name:"iPad Pro M4", price:119900, cat:"ipad"},
+{ name:"iPad Pro", price:109900, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro"},
 
-{ name:"AirPods Pro 2", price:20900, cat:"airpods"},
+{ name:"AirPods Pro 2", price:20900, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-pro"},
 
-{ name:"Apple Watch Ultra 2", price:79900, cat:"watch"},
+{ name:"Apple Watch Ultra", price:79900, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-ultra"},
 
-{ name:"PlayStation 5", price:64900, cat:"ps"},
-
-{ name:"Magic Keyboard", price:14900, cat:"access"}
+{ name:"PlayStation 5", price:64900, img:"https://upload.wikimedia.org/wikipedia/commons/0/0d/PlayStation_5.jpg"}
 
 ];
-
-function getImage(name){
-if(name.includes("iPhone")) return "https://source.unsplash.com/300x300/?iphone";
-if(name.includes("Mac")) return "https://source.unsplash.com/300x300/?macbook";
-if(name.includes("iPad")) return "https://source.unsplash.com/300x300/?ipad";
-if(name.includes("AirPods")) return "https://source.unsplash.com/300x300/?airpods";
-if(name.includes("Watch")) return "https://source.unsplash.com/300x300/?applewatch";
-if(name.includes("PlayStation")) return "https://source.unsplash.com/300x300/?playstation";
-return "https://source.unsplash.com/300x300/?tech";
-}
 
 function price(p){ return p - 3000; }
 
@@ -199,7 +153,7 @@ container.innerHTML = "";
 list.forEach(item=>{
 container.innerHTML += `
 <div class="card">
-<img src="${getImage(item.name)}">
+<img src="${item.img}">
 <h3>${item.name}</h3>
 <div class="old">${item.price} ₽</div>
 <div class="price">${price(item.price)} ₽</div>
@@ -214,12 +168,6 @@ render(products);
 document.getElementById("search").oninput = e=>{
 const val = e.target.value.toLowerCase();
 render(products.filter(p=>p.name.toLowerCase().includes(val)));
-};
-
-document.getElementById("category").onchange = e=>{
-const val = e.target.value;
-if(val==="all") return render(products);
-render(products.filter(p=>p.cat===val));
 };
 
 </script>
