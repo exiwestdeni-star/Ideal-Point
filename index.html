@@ -9,329 +9,184 @@
 
 <style>
 body{margin:0;font-family:Inter;background:#f5f6fa;color:#111}
-.header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#fff;position:sticky;top:0;z-index:10;border-bottom:1px solid #eee}
-.logo{font-weight:700}
-.banner{padding:40px 20px;text-align:center;background:#111;color:#fff}
-.controls{display:flex;gap:10px;padding:12px 16px;flex-wrap:wrap;background:#fff;border-bottom:1px solid #eee}
+.header{display:flex;justify-content:space-between;padding:15px;background:#fff}
+.banner{padding:40px;text-align:center;background:#111;color:#fff}
+.controls{padding:10px;background:#fff}
 input,select{padding:10px;border-radius:8px;border:1px solid #ddd}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;padding:18px}
-.card{background:#fff;border-radius:12px;padding:12px;cursor:pointer;box-shadow:0 5px 18px rgba(0,0,0,.05)}
-.card img{width:100%;height:170px;object-fit:contain}
-.price{font-weight:700;margin-top:6px}
-.old{color:#999;text-decoration:line-through;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px}
+.card{background:#fff;padding:15px;border-radius:12px;cursor:pointer}
+.card img{width:100%;height:180px;object-fit:contain}
+.price{font-weight:700}
 
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center}
-.modal-content{background:#fff;border-radius:12px;padding:16px;width:340px}
-.colors span{display:inline-block;width:22px;height:22px;border-radius:50%;margin:4px;border:1px solid #ccc;cursor:pointer}
-.memory button{margin:4px;padding:6px 10px;border-radius:6px;border:1px solid #ccc;cursor:pointer}
-.btn{display:block;margin-top:12px;padding:10px;background:#111;color:#fff;border-radius:8px;text-align:center;text-decoration:none}
-.cart{position:fixed;right:16px;bottom:16px;background:#111;color:#fff;border-radius:50px;padding:12px 16px;cursor:pointer}
+.modal-content{background:#fff;padding:20px;border-radius:12px;width:320px;text-align:center}
+
+.colors span{display:inline-block;width:20px;height:20px;border-radius:50%;margin:5px;border:1px solid #ccc;cursor:pointer}
+.memory button{margin:5px;padding:6px 10px;border:1px solid #ccc;border-radius:6px}
+
+.btn{display:block;margin-top:10px;padding:10px;background:#111;color:#fff;border-radius:8px;text-decoration:none}
+
+.cart{position:fixed;bottom:20px;right:20px;background:#111;color:#fff;padding:12px 18px;border-radius:50px}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <div class="logo">Ideal Point</div>
-  <div>📞 +7 969 969 67 67</div>
+<div><b>Ideal Point</b></div>
+<div>📞 +7 969 969 67 67</div>
 </div>
 
 <div class="banner">
-  <h2>Премиальная техника Apple</h2>
-  <p>Ниже рынка • Быстрая связь в Telegram</p>
+<h2>Apple техника</h2>
+<p>Цены ниже рынка</p>
 </div>
 
 <div class="controls">
-  <input id="search" placeholder="Поиск...">
-  <select id="category">
-    <option value="all">Все</option>
-    <option value="iphone">iPhone</option>
-    <option value="watch">Watch</option>
-    <option value="ipad">iPad</option>
-    <option value="mac">Mac</option>
-    <option value="airpods">AirPods</option>
-    <option value="ps">PlayStation</option>
-    <option value="access">Аксессуары</option>
-  </select>
+<input id="search" placeholder="Поиск...">
+<select id="category">
+<option value="all">Все</option>
+<option value="iphone">iPhone</option>
+<option value="mac">Mac</option>
+<option value="ipad">iPad</option>
+<option value="watch">Watch</option>
+<option value="airpods">AirPods</option>
+<option value="ps">PS</option>
+</select>
 </div>
 
 <div id="products" class="grid"></div>
 
 <div id="modal" class="modal">
-  <div class="modal-content">
-    <img id="modalImg" style="width:100%;height:160px;object-fit:contain">
-    <h3 id="modalName"></h3>
-    <div id="modalPrice" class="price"></div>
-
-    <div class="colors" id="colors"></div>
-    <div class="memory" id="memory"></div>
-
-    <a id="buyBtn" class="btn">Купить</a>
-  </div>
+<div class="modal-content">
+<img id="modalImg" style="width:100%;height:150px;object-fit:contain">
+<h3 id="modalName"></h3>
+<div id="modalPrice"></div>
+<div id="colors"></div>
+<div id="memory"></div>
+<a id="buyBtn" class="btn">Купить</a>
+</div>
 </div>
 
 <div class="cart" onclick="checkout()">🛒</div>
 
 <script>
 
-// 🔥 КАТАЛОГ (по твоему прайсу, логично сгруппировано)
-let products = [
+let cart=[];
+let current=null;
 
-/* ================= iPhone 17 ================= */
+let products=[
+
 {
 name:"iPhone 17",
 cat:"iphone",
-basePrice:62900,
-colors:["Black","Blue","White","Sage","Lavender"],
+price:62900,
+colors:["Black","Blue","White"],
 images:[
 "https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
 "https://images.unsplash.com/photo-1512499617640-c2f999098c01",
-"https://images.unsplash.com/photo-1512499617640-c2f999098c01",
-"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
-"https://images.unsplash.com/photo-1512499617640-c2f999098c01"
+"https://images.unsplash.com/photo-1510552776732-03e61cf4b144"
 ],
 memory:["256GB","512GB"]
 },
 
-/* ================= iPhone 17 Air ================= */
-{
-name:"iPhone 17 Air",
-cat:"iphone",
-basePrice:70800,
-colors:["Black","Blue","Gold","White"],
-images:[
-"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
-"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
-"https://images.unsplash.com/photo-1512499617640-c2f999098c01",
-"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9"
-],
-memory:["256GB","512GB","1TB"]
-},
-
-/* ================= iPhone 17 Pro ================= */
 {
 name:"iPhone 17 Pro",
 cat:"iphone",
-basePrice:100800,
-colors:["Blue","White","Orange"],
+price:100800,
+colors:["Blue","White"],
 images:[
 "https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
-"https://images.unsplash.com/photo-1580910051074-3eb694886505",
-"https://images.unsplash.com/photo-1605236453806-6ff36851218e"
+"https://images.unsplash.com/photo-1580910051074-3eb694886505"
 ],
-memory:["256GB","512GB","1TB"]
-},
-
-/* ================= iPhone 17 Pro Max ================= */
-{
-name:"iPhone 17 Pro Max",
-cat:"iphone",
-basePrice:106500,
-colors:["Blue","White","Orange"],
-images:[
-"https://images.unsplash.com/photo-1580910051074-3eb694886505",
-"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
-"https://images.unsplash.com/photo-1605236453806-6ff36851218e"
-],
-memory:["256GB","512GB","1TB","2TB"]
-},
-
-/* ================= WATCH ================= */
-{
-name:"Apple Watch S11",
-cat:"watch",
-basePrice:25900,
-colors:["Black","Silver","Gold"],
-images:[
-"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c",
-"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c",
-"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"
-],
-memory:["42mm","46mm"]
+memory:["256GB","512GB"]
 },
 
 {
-name:"Apple Watch Ultra 3",
-cat:"watch",
-basePrice:59300,
-colors:["Black","Natural"],
-images:[
-"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c",
-"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"
-],
-memory:["One size"]
-},
-
-/* ================= iPad ================= */
-{
-name:"iPad Air M4",
-cat:"ipad",
-basePrice:57000,
-colors:["Blue","Purple","Gray"],
-images:[
-"https://images.unsplash.com/photo-1587033411391-5d9e51cce126",
-"https://images.unsplash.com/photo-1587033411391-5d9e51cce126",
-"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"
-],
-memory:["128GB","256GB"]
-},
-
-{
-name:"iPad Pro M5",
-cat:"ipad",
-basePrice:96000,
-colors:["Black","Silver"],
-images:[
-"https://images.unsplash.com/photo-1587033411391-5d9e51cce126",
-"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"
-],
-memory:["256GB","512GB","1TB","2TB"]
-},
-
-/* ================= Mac ================= */
-{
-name:"MacBook Air M4",
+name:"MacBook Air",
 cat:"mac",
-basePrice:91000,
-colors:["Midnight","Silver","Starlight"],
-images:[
-"https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-"https://images.unsplash.com/photo-1517336714731-489689fd1ca8",
-"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
-],
-memory:["256GB","512GB","1TB"]
+price:91000,
+colors:["Silver"],
+images:["https://images.unsplash.com/photo-1517336714731-489689fd1ca8"],
+memory:["512GB"]
 },
 
-/* ================= AirPods ================= */
+{
+name:"iPad Pro",
+cat:"ipad",
+price:89200,
+colors:["Gray"],
+images:["https://images.unsplash.com/photo-1587033411391-5d9e51cce126"],
+memory:["256GB","512GB"]
+},
+
+{
+name:"Apple Watch",
+cat:"watch",
+price:25900,
+colors:["Black"],
+images:["https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"],
+memory:["46mm"]
+},
+
 {
 name:"AirPods Pro 2",
 cat:"airpods",
-basePrice:14000,
+price:14000,
 colors:["White"],
 images:["https://images.unsplash.com/photo-1588156979435-379b9d802b0e"],
 memory:["—"]
 },
 
 {
-name:"AirPods Max",
-cat:"airpods",
-basePrice:40000,
-colors:["Orange","Starlight"],
-images:[
-"https://images.unsplash.com/photo-1585386959984-a4155224a1ad",
-"https://images.unsplash.com/photo-1585386959984-a4155224a1ad"
-],
-memory:["—"]
-},
-
-/* ================= PS ================= */
-{
-name:"PS5 Pro",
+name:"PS5",
 cat:"ps",
-basePrice:74500,
+price:74500,
 colors:["White"],
 images:["https://images.unsplash.com/photo-1606813907291-d86efa9b94db"],
-memory:["2TB"]
-},
-
-{
-name:"DualSense Controller",
-cat:"ps",
-basePrice:5500,
-colors:["White","Black","Blue","Red","Purple"],
-images:[
-"https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf",
-"https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf",
-"https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf",
-"https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf",
-"https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf"
-],
-memory:["—"]
-},
-
-/* ================= Аксессуары ================= */
-{
-name:"Apple Pencil Pro",
-cat:"access",
-basePrice:10500,
-colors:["White"],
-images:["https://images.unsplash.com/photo-1587829741301-dc798b83add3"],
-memory:["—"]
-},
-
-{
-name:"Magic Mouse USB-C",
-cat:"access",
-basePrice:9000,
-colors:["Black","Silver"],
-images:[
-"https://images.unsplash.com/photo-1587829741301-dc798b83add3",
-"https://images.unsplash.com/photo-1587829741301-dc798b83add3"
-],
-memory:["—"]
+memory:["1TB"]
 }
 
 ];
 
-let cart=[], current=null, selectedMemory="";
-
-// 🔍 РЕНДЕР
 function render(){
 let val=document.getElementById("search").value.toLowerCase();
 let cat=document.getElementById("category").value;
 
 let html="";
-products
-.filter(p=>(cat==="all"||p.cat===cat) && p.name.toLowerCase().includes(val))
+products.filter(p=>(cat==="all"||p.cat===cat)&&p.name.toLowerCase().includes(val))
 .forEach((p,i)=>{
 html+=`
 <div class="card" onclick="openModal(${i})">
 <img src="${p.images[0]}">
 <h3>${p.name}</h3>
-<div class="price">${p.basePrice-3000} ₽</div>
+<div class="price">${p.price-3000} ₽</div>
 </div>`;
 });
 document.getElementById("products").innerHTML=html;
 }
 
-// 🪟 МОДАЛКА
 function openModal(i){
 current=products[i];
-selectedMemory="";
-
 document.getElementById("modal").style.display="flex";
 document.getElementById("modalImg").src=current.images[0];
 document.getElementById("modalName").innerText=current.name;
-document.getElementById("modalPrice").innerText=(current.basePrice-3000)+" ₽";
+document.getElementById("modalPrice").innerText=(current.price-3000)+" ₽";
 
-// цвета
-let colorsHTML="";
-current.colors.forEach((c,idx)=>{
-colorsHTML+=`<span title="${c}" style="background:#ddd" onclick="changeColor(${idx})"></span>`;
-});
-document.getElementById("colors").innerHTML=colorsHTML;
+let cHTML="";
+current.colors.forEach((c,i)=>{cHTML+=`<span onclick="changeColor(${i})"></span>`});
+document.getElementById("colors").innerHTML=cHTML;
 
-// память
-let memHTML="";
-current.memory.forEach(m=>{
-memHTML+=`<button onclick="selectMemory('${m}')">${m}</button>`;
-});
-document.getElementById("memory").innerHTML=memHTML;
+let mHTML="";
+current.memory.forEach(m=>{mHTML+=`<button>${m}</button>`});
+document.getElementById("memory").innerHTML=mHTML;
 
-// купить
-document.getElementById("buyBtn").onclick=()=>addToCart();
+document.getElementById("buyBtn").href=
+"https://t.me/iDeal_Point_Level?text=Хочу "+current.name;
 }
 
 function changeColor(i){
 document.getElementById("modalImg").src=current.images[i];
-}
-
-function selectMemory(m){selectedMemory=m}
-
-// 🛒
-function addToCart(){
-cart.push(current.name+" "+(selectedMemory||""));
-alert("Добавлено");
 }
 
 function checkout(){
@@ -339,7 +194,6 @@ let text="Хочу заказать:\n"+cart.join("\n");
 window.open("https://t.me/iDeal_Point_Level?text="+encodeURIComponent(text));
 }
 
-// закрытие
 document.getElementById("modal").onclick=e=>{
 if(e.target.id==="modal") e.currentTarget.style.display="none";
 };
