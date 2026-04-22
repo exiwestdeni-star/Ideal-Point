@@ -9,48 +9,75 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-body {
-margin:0;
-font-family:'Inter',sans-serif;
-background:#f4f4f6;
-color:#111;
-}
+body {margin:0;font-family:'Inter',sans-serif;background:#f6f7fb;color:#111;}
 
 .header {
-position:sticky;
-top:0;
-background:#fff;
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:15px 25px;
+background:#fff;
 box-shadow:0 2px 10px rgba(0,0,0,0.05);
+position:sticky;
+top:0;
+z-index:10;
 }
 
-.logo {
-font-weight:700;
-font-size:18px;
-}
+.logo {font-weight:700;font-size:20px;}
+.contacts a {margin-left:15px;text-decoration:none;color:#111;}
 
-.contacts {
-font-size:14px;
-}
-
-.filters {
-display:flex;
-gap:10px;
+.search-bar {
 padding:15px;
-justify-content:center;
-flex-wrap:wrap;
+text-align:center;
 }
 
-input,select {
-padding:10px;
+.search-bar input {
+width:300px;
+padding:12px;
 border-radius:10px;
 border:1px solid #ddd;
 }
 
-.grid {
+.categories {
+display:flex;
+gap:10px;
+padding:10px 15px;
+overflow:auto;
+}
+
+.cat {
+padding:8px 15px;
+background:#fff;
+border-radius:20px;
+border:1px solid #ddd;
+cursor:pointer;
+white-space:nowrap;
+}
+
+.cat.active {
+background:#111;
+color:#fff;
+}
+
+.container {
+display:grid;
+grid-template-columns:220px 1fr;
+}
+
+.sidebar {
+background:#fff;
+padding:15px;
+border-right:1px solid #eee;
+}
+
+.sidebar h3 {margin-top:0;}
+
+.sidebar div {
+margin:10px 0;
+cursor:pointer;
+}
+
+.products {
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
 gap:20px;
@@ -61,7 +88,6 @@ padding:20px;
 background:#fff;
 border-radius:16px;
 padding:15px;
-text-align:center;
 box-shadow:0 5px 20px rgba(0,0,0,0.05);
 }
 
@@ -71,15 +97,9 @@ height:180px;
 object-fit:contain;
 }
 
-.price {
-font-weight:700;
-}
-
-.old {
-text-decoration:line-through;
-color:#888;
-font-size:14px;
-}
+.name {font-weight:600;margin-top:10px;}
+.old {text-decoration:line-through;color:#999;font-size:14px;}
+.price {font-weight:700;margin-top:5px;}
 
 .btn {
 display:block;
@@ -88,6 +108,7 @@ padding:10px;
 background:#111;
 color:#fff;
 border-radius:10px;
+text-align:center;
 text-decoration:none;
 }
 </style>
@@ -98,68 +119,73 @@ text-decoration:none;
 <div class="header">
 <div class="logo">Ideal Point</div>
 <div class="contacts">
-📞 +7 969 67 67
+<a href="tel:+79699696767">📞 Позвонить</a>
+<a href="https://t.me/iDeal_Point_Level">Telegram</a>
 </div>
 </div>
 
-<div class="filters">
-<input id="search" placeholder="Поиск...">
-<select id="category">
-<option value="all">Все</option>
-<option value="iphone">iPhone</option>
-<option value="mac">Mac</option>
-<option value="ipad">iPad</option>
-<option value="airpods">AirPods</option>
-<option value="ps">PlayStation</option>
-</select>
+<div class="search-bar">
+<input id="search" placeholder="Поиск товара...">
 </div>
 
-<div id="products" class="grid"></div>
+<div class="categories">
+<div class="cat active" onclick="setCat('all',this)">Все</div>
+<div class="cat" onclick="setCat('iphone',this)">iPhone</div>
+<div class="cat" onclick="setCat('mac',this)">Mac</div>
+<div class="cat" onclick="setCat('ipad',this)">iPad</div>
+<div class="cat" onclick="setCat('airpods',this)">AirPods</div>
+<div class="cat" onclick="setCat('ps',this)">PlayStation</div>
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+<h3>Категории</h3>
+<div onclick="filter('iphone')">iPhone</div>
+<div onclick="filter('mac')">Mac</div>
+<div onclick="filter('ipad')">iPad</div>
+<div onclick="filter('airpods')">AirPods</div>
+<div onclick="filter('ps')">PlayStation</div>
+</div>
+
+<div id="products" class="products"></div>
+
+</div>
 
 <script>
 
-// 🔥 СТАБИЛЬНЫЕ КАРТИНКИ
-function img(type){
-const images = {
-iphone:"https://i.imgur.com/1bX5QH6.png",
-mac:"https://i.imgur.com/6VBx3io.png",
-ipad:"https://i.imgur.com/9Y7G6Yy.png",
-airpods:"https://i.imgur.com/0kZ6m0P.png",
-ps:"https://i.imgur.com/5c6XK5S.png"
-};
-return images[type];
-}
+let current = "all";
 
 let products = [
 
-{ name:"iPhone 16 Pro", price:129900, cat:"iphone"},
-{ name:"iPhone 17 Pro Max", price:159900, cat:"iphone"},
+{ name:"iPhone 16 Pro", price:129900, cat:"iphone", img:"https://images.unsplash.com/photo-1695048133142-1a20484c3d35"},
+{ name:"iPhone 17 Pro Max", price:159900, cat:"iphone", img:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd"},
 
-{ name:"MacBook Air M3", price:119900, cat:"mac"},
-{ name:"MacBook Pro M3", price:159900, cat:"mac"},
+{ name:"MacBook Air M3", price:119900, cat:"mac", img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
+{ name:"MacBook Pro", price:159900, cat:"mac", img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
 
-{ name:"iPad Pro", price:109900, cat:"ipad"},
+{ name:"iPad Pro", price:109900, cat:"ipad", img:"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"},
 
-{ name:"AirPods Pro 2", price:20900, cat:"airpods"},
+{ name:"AirPods Pro 2", price:20900, cat:"airpods", img:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"},
 
-{ name:"PlayStation 5", price:64900, cat:"ps"}
+{ name:"PlayStation 5", price:64900, cat:"ps", img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"}
 
 ];
 
-function price(p){ return p - 3000; }
+function price(p){return p-3000;}
 
 function render(list){
-const container = document.getElementById("products");
+const container=document.getElementById("products");
 container.innerHTML="";
 
-list.forEach(item=>{
-container.innerHTML += `
+list.forEach(p=>{
+container.innerHTML+=`
 <div class="card">
-<img src="${img(item.cat)}" onerror="this.src='https://i.imgur.com/Z6X7Z9L.png'">
-<h3>${item.name}</h3>
-<div class="old">${item.price} ₽</div>
-<div class="price">${price(item.price)} ₽</div>
-<a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${item.name}">Купить</a>
+<img src="${p.img}">
+<div class="name">${p.name}</div>
+<div class="old">${p.price} ₽</div>
+<div class="price">${price(p.price)} ₽</div>
+<a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${p.name}">Купить</a>
 </div>
 `;
 });
@@ -167,17 +193,21 @@ container.innerHTML += `
 
 render(products);
 
-// поиск
-document.getElementById("search").oninput = e=>{
-const val = e.target.value.toLowerCase();
-render(products.filter(p=>p.name.toLowerCase().includes(val)));
-};
+function setCat(cat,el){
+document.querySelectorAll(".cat").forEach(c=>c.classList.remove("active"));
+el.classList.add("active");
+current=cat;
+filter(cat);
+}
 
-// категории
-document.getElementById("category").onchange = e=>{
-const val = e.target.value;
-if(val==="all") return render(products);
-render(products.filter(p=>p.cat===val));
+function filter(cat){
+if(cat==="all") return render(products);
+render(products.filter(p=>p.cat===cat));
+}
+
+document.getElementById("search").oninput=e=>{
+let val=e.target.value.toLowerCase();
+render(products.filter(p=>p.name.toLowerCase().includes(val)));
 };
 
 </script>
