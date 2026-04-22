@@ -1,8 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ideal Point</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{margin:0;font-family:Inter;background:#f5f5f7}
+
+/* HEADER */
+header{
+display:flex;
+justify-content:space-between;
+padding:20px;
+background:#fff;
+box-shadow:0 2px 10px rgba(0,0,0,.05)
+}
+
+.search{
+padding:10px;
+border-radius:10px;
+border:1px solid #ddd
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:20px
+}
+
+.card{
+background:#fff;
+padding:15px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,.05)
+}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:contain
+}
+
+.price{font-weight:700;margin-top:5px}
+
+/* OPTIONS */
+.colors span{
+display:inline-block;
+width:18px;height:18px;
+border-radius:50%;
+margin:4px;
+cursor:pointer;
+border:1px solid #ccc
+}
+
+.memory button{
+margin:3px;
+padding:5px 8px;
+border-radius:6px;
+border:1px solid #ccc;
+cursor:pointer
+}
+
+.activeOpt{
+background:#000;
+color:#fff
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<b>IDEAL POINT</b>
+<input class="search" placeholder="Поиск..." oninput="search(this.value)">
+<div>+7 969 969 67 67</div>
+</header>
+
+<div id="products" class="grid"></div>
+
+<script>
+
+let searchText=""
+
+/* ================= ТВОЙ КАТАЛОГ ================= */
+
+const products=[
+
+{
+cat:"iphone",
+name:"iPhone 17",
+colors:{
+black:"img/iphone17-black.png",
+blue:"img/iphone17-blue.png",
+white:"img/iphone17-white.png"
+},
+memory:{
+"256GB":59000,
+"512GB":80200
+}
+},
+
+{
+cat:"iphone",
+name:"iPhone 17 Pro",
+colors:{
+blue:"img/iphone17pro-blue.png",
+white:"img/iphone17pro-white.png"
+},
+memory:{
+"256GB":94300,
+"512GB":105200,
+"1TB":120900
+}
+},
+
+{
+cat:"iphone",
+name:"iPhone 17 Pro Max",
+colors:{
+blue:"img/iphone17promax-blue.png",
+white:"img/iphone17promax-white.png"
+},
+memory:{
+"256GB":102500,
+"512GB":114500,
+"1TB":124900
+}
+},
+
+{
+cat:"access",
+name:"AirPods Pro 2",
+colors:{
+white:"img/airpodspro.png"
+},
+memory:{
+"—":14000
+}
+},
+
+{
+cat:"mac",
+name:"MacBook Air",
+colors:{
+silver:"img/macbook.png"
+},
+memory:{
+"256GB":80200,
+"512GB":91000
+}
+}
+
+]
+
+/* ================= ЛОГИКА ================= */
+
 function render(){
 
 let list=products.filter(p=>{
-return (currentFilter==="all"||p.cat===currentFilter)
-&& p.name.toLowerCase().includes(searchText.toLowerCase())
+return p.name.toLowerCase().includes(searchText.toLowerCase())
 })
 
 let html=""
@@ -19,6 +180,12 @@ html+=`
 
 <div>${p.name}</div>
 
+<div class="colors">
+${Object.keys(p.colors).map(c=>`
+<span style="background:${c}" onclick="changeColor(${i},'${c}')"></span>
+`).join("")}
+</div>
+
 <div class="memory">
 ${Object.keys(p.memory).map(m=>`
 <button onclick="changeMemory(${i},'${m}',this)">${m}</button>
@@ -33,3 +200,28 @@ ${Object.keys(p.memory).map(m=>`
 
 document.getElementById("products").innerHTML=html
 }
+
+function changeColor(i,color){
+document.getElementById("img"+i).src=products[i].colors[color]
+}
+
+function changeMemory(i,m,el){
+document.getElementById("price"+i).innerText=products[i].memory[m]+" ₽"
+
+document.querySelectorAll(`#products .card:nth-child(${i+1}) .memory button`)
+.forEach(b=>b.classList.remove("activeOpt"))
+
+el.classList.add("activeOpt")
+}
+
+function search(val){
+searchText=val
+render()
+}
+
+render()
+
+</script>
+
+</body>
+</html>
