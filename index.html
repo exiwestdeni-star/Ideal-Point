@@ -86,11 +86,6 @@ body {
   font-size:18px;
 }
 
-.old {
-  text-decoration:line-through;
-  color:#777;
-}
-
 .stock {
   color:#00ff88;
   font-size:13px;
@@ -116,7 +111,7 @@ body {
 <div class="top">
   <div>
     <div class="logo">Ideal Point</div>
-    <p style="color:#aaa;font-size:14px;">⭐ Гарантия • Проверенная техника • Быстрая доставка</p>
+    <p style="color:#aaa;font-size:14px;">Гарантия • Быстрая доставка • Проверенная техника</p>
   </div>
   <div class="contact">
     <a href="https://t.me/iDeal_Point_Level">Telegram</a>
@@ -125,7 +120,7 @@ body {
 
 <div class="banner">
   <h2>🔥 iPhone 16 / 17 в наличии</h2>
-  <p>Цены ниже рынка • Пиши прямо сейчас</p>
+  <p>Пиши сейчас и получи лучшую цену</p>
   <a class="btn" href="https://t.me/iDeal_Point_Level">Написать</a>
 </div>
 
@@ -135,7 +130,6 @@ body {
   <button onclick="filter('airpods')">AirPods</button>
   <button onclick="filter('ipad')">iPad</button>
   <button onclick="filter('mac')">MacBook</button>
-  <button onclick="filter('accessories')">Аксессуары</button>
   <button onclick="filter('ps')">PlayStation</button>
 </div>
 
@@ -157,14 +151,13 @@ function render(data){
   const container = document.getElementById("products");
   container.innerHTML = "";
 
-  data.forEach((p,i)=>{
+  data.forEach(p=>{
     container.innerHTML += `
       <div class="card">
         <img src="https://source.unsplash.com/400x300/?${p.name}">
         <h3>${p.name}</h3>
-        <div class="old">${p.oldPrice} ₽</div>
         <div class="price">${p.price} ₽</div>
-        <div class="stock">Осталось 2 шт</div>
+        <div class="stock">В наличии</div>
         <a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${p.name}">Купить</a>
       </div>
     `;
