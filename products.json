@@ -25,7 +25,6 @@
   {"name":"Apple Pencil 1","oldPrice":12900,"price":9900,"category":"accessories"},
   {"name":"Apple Pencil 2","oldPrice":15900,"price":12900,"category":"accessories"},
   {"name":"Apple Pencil USB-C","oldPrice":11900,"price":8900,"category":"accessories"},
-
   {"name":"Magic Mouse","oldPrice":11900,"price":8900,"category":"accessories"},
   {"name":"Magic Keyboard","oldPrice":19900,"price":16900,"category":"accessories"},
 
