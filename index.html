@@ -1,145 +1,3 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ideal Point</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-<style>
-body{margin:0;font-family:Inter;background:#f5f5f7}
-
-/* HEADER */
-header{
-display:flex;
-justify-content:space-between;
-padding:20px 30px;
-background:#fff;
-box-shadow:0 2px 10px rgba(0,0,0,.05)
-}
-
-.search{
-padding:10px;
-width:250px;
-border-radius:10px;
-border:1px solid #ddd
-}
-
-/* FILTERS */
-.filters{
-display:flex;
-gap:10px;
-padding:15px;
-flex-wrap:wrap;
-justify-content:center
-}
-
-.btnFilter{
-padding:8px 14px;
-background:#fff;
-border:1px solid #ddd;
-border-radius:20px;
-cursor:pointer
-}
-
-.active{background:#000;color:#fff}
-
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:20px;
-padding:20px;
-max-width:1300px;
-margin:auto
-}
-
-/* CARD */
-.card{
-background:#fff;
-padding:15px;
-border-radius:15px;
-box-shadow:0 10px 30px rgba(0,0,0,.05);
-transition:.3s
-}
-.card:hover{transform:translateY(-5px)}
-
-.card img{
-width:100%;
-height:180px;
-object-fit:contain
-}
-
-.price{font-weight:700;margin-top:5px}
-
-/* OPTIONS */
-.memory button{
-margin:4px;
-padding:5px 8px;
-border-radius:6px;
-border:1px solid #ccc;
-cursor:pointer
-}
-
-.activeOpt{
-background:#000;
-color:#fff
-}
-
-</style>
-</head>
-
-<body>
-
-<header>
-<b>IDEAL POINT</b>
-<input class="search" placeholder="Поиск..." oninput="search(this.value)">
-<div>+7 969 969 67 67</div>
-</header>
-
-<div class="filters">
-<button class="btnFilter active" onclick="filter('all',this)">Все</button>
-<button class="btnFilter" onclick="filter('iphone',this)">iPhone</button>
-<button class="btnFilter" onclick="filter('watch',this)">Watch</button>
-<button class="btnFilter" onclick="filter('ipad',this)">iPad</button>
-<button class="btnFilter" onclick="filter('mac',this)">Mac</button>
-<button class="btnFilter" onclick="filter('ps',this)">PS</button>
-<button class="btnFilter" onclick="filter('access',this)">Аксессуары</button>
-</div>
-
-<div id="products" class="grid"></div>
-
-<script>
-
-let currentFilter="all"
-let searchText=""
-
-const products=[
-
-// ================= IPHONE =================
-{cat:"iphone",name:"iPhone 17 256GB",price:59000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"},
-{cat:"iphone",name:"iPhone 17 512GB",price:80200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"},
-{cat:"iphone",name:"iPhone 17 Pro 256GB",price:94300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select"},
-{cat:"iphone",name:"iPhone 17 Pro Max 1TB",price:124900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select"},
-
-// ================= WATCH =================
-{cat:"watch",name:"Apple Watch S11",price:25900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s9-midnight-select"},
-
-// ================= IPAD =================
-{cat:"ipad",name:"iPad Air M4",price:47000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-select"},
-
-// ================= MAC =================
-{cat:"mac",name:"MacBook Air M4",price:91000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-13-midnight-select"},
-
-// ================= PS =================
-{cat:"ps",name:"PS5 Pro",price:74500,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
-
-// ================= ACCESS =================
-{cat:"access",name:"AirPods Pro 2",price:14000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-pro-2nd-gen-select"}
-
-]
-
 function render(){
 
 let list=products.filter(p=>{
@@ -149,36 +7,29 @@ return (currentFilter==="all"||p.cat===currentFilter)
 
 let html=""
 
-list.forEach(p=>{
+list.forEach((p,i)=>{
+
+let firstColor = Object.keys(p.colors)[0]
+let firstMemory = Object.keys(p.memory)[0]
+
 html+=`
 <div class="card">
-<img src="${p.img}">
+
+<img id="img${i}" src="${p.colors[firstColor]}">
+
 <div>${p.name}</div>
-<div class="price">${p.price} ₽</div>
+
+<div class="memory">
+${Object.keys(p.memory).map(m=>`
+<button onclick="changeMemory(${i},'${m}',this)">${m}</button>
+`).join("")}
+</div>
+
+<div id="price${i}" class="price">${p.memory[firstMemory]} ₽</div>
+
 </div>
 `
 })
 
 document.getElementById("products").innerHTML=html
 }
-
-function filter(cat,btn){
-currentFilter=cat
-
-document.querySelectorAll('.btnFilter').forEach(b=>b.classList.remove('active'))
-btn.classList.add('active')
-
-render()
-}
-
-function search(val){
-searchText=val
-render()
-}
-
-render()
-
-</script>
-
-</body>
-</html>
