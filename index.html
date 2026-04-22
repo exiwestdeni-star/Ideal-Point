@@ -10,6 +10,7 @@
 <style>
 body{margin:0;font-family:Inter;background:#f5f5f7}
 
+/* HEADER */
 header{
 display:flex;
 justify-content:space-between;
@@ -24,6 +25,7 @@ border-radius:10px;
 border:1px solid #ddd
 }
 
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -46,6 +48,7 @@ object-fit:contain
 
 .price{font-weight:700;margin-top:5px}
 
+/* OPTIONS */
 .colors span{
 display:inline-block;
 width:18px;height:18px;
@@ -84,9 +87,10 @@ color:#fff
 
 let searchText=""
 
-const products=[
+/* ================= ПОЛНЫЙ КАТАЛОГ ================= */
 
-// iPhone 17
+const products = [
+
 {
 name:"iPhone 17",
 colors:{
@@ -100,7 +104,34 @@ memory:{
 }
 },
 
-// iPhone 17 Pro
+{
+name:"iPhone 17e",
+colors:{
+black:"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
+pink:"https://images.unsplash.com/photo-1510557880182-3f8d1eab2c1e",
+white:"https://images.unsplash.com/photo-1512499617640-c2f999098c01"
+},
+memory:{
+"256GB":44700,
+"512GB":64000
+}
+},
+
+{
+name:"iPhone 17 Air",
+colors:{
+black:"https://images.unsplash.com/photo-1580910051074-3eb694886505",
+gold:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab",
+blue:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
+white:"https://images.unsplash.com/photo-1598327105666-5b89351aff97"
+},
+memory:{
+"256GB":67000,
+"512GB":79100,
+"1TB":89200
+}
+},
+
 {
 name:"iPhone 17 Pro",
 colors:{
@@ -114,7 +145,6 @@ memory:{
 }
 },
 
-// iPhone 17 Pro Max
 {
 name:"iPhone 17 Pro Max",
 colors:{
@@ -124,34 +154,83 @@ white:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab"
 memory:{
 "256GB":102500,
 "512GB":114500,
-"1TB":124900
+"1TB":124900,
+"2TB":141300
 }
 },
 
-// AirPods
 {
-name:"AirPods Pro 2",
+name:"Apple Watch",
 colors:{
-white:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"
+black:"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"
 },
 memory:{
-"—":14000
+"SE":14300,
+"S11":25900,
+"Ultra":57000
 }
 },
 
-// MacBook
 {
-name:"MacBook Air",
+name:"iPad",
+colors:{
+silver:"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"
+},
+memory:{
+"iPad 11":28500,
+"Air":47000,
+"Pro":96000
+}
+},
+
+{
+name:"MacBook",
 colors:{
 silver:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
 },
 memory:{
-"256GB":80200,
-"512GB":91000
+"Air":69000,
+"Air M4":91000,
+"Pro":122500
+}
+},
+
+{
+name:"PlayStation 5",
+colors:{
+white:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"
+},
+memory:{
+"Slim":45200,
+"Pro":74500
+}
+},
+
+{
+name:"AirPods",
+colors:{
+white:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"
+},
+memory:{
+"4":8800,
+"Pro 2":14000,
+"Max":40000
+}
+},
+
+{
+name:"Magic Mouse",
+colors:{
+black:"https://images.unsplash.com/photo-1587829741301-dc798b83add3"
+},
+memory:{
+"USB-C":9000
 }
 }
 
 ]
+
+/* ================= ЛОГИКА ================= */
 
 function render(){
 
