@@ -19,16 +19,16 @@ body {
   padding:20px;
 }
 
+.logo {
+  font-size:26px;
+  color:#FFD700;
+  font-weight:600;
+}
+
 .top {
   display:flex;
   justify-content:space-between;
   align-items:center;
-}
-
-.logo {
-  font-size:24px;
-  font-weight:600;
-  color:#FFD700;
 }
 
 .contact a {
@@ -62,12 +62,6 @@ body {
   border:1px solid #FFD700;
   border-radius:8px;
   cursor:pointer;
-  transition:0.3s;
-}
-
-.filters button:hover {
-  background:#FFD700;
-  color:#000;
 }
 
 .grid {
@@ -80,11 +74,23 @@ body {
   background:#111;
   padding:15px;
   border-radius:16px;
+  position:relative;
   transition:0.3s;
 }
 
 .card:hover {
   transform:translateY(-5px);
+}
+
+.badge {
+  position:absolute;
+  top:10px;
+  left:10px;
+  background:#FFD700;
+  color:#000;
+  padding:5px 10px;
+  border-radius:6px;
+  font-size:12px;
 }
 
 .card img {
@@ -95,13 +101,18 @@ body {
 .price {
   color:#FFD700;
   font-size:18px;
-  margin-top:5px;
 }
 
 .old {
   text-decoration:line-through;
   color:#777;
   font-size:14px;
+}
+
+.stock {
+  color:#00ff88;
+  font-size:13px;
+  margin-top:5px;
 }
 
 .btn {
@@ -115,7 +126,6 @@ body {
   text-decoration:none;
 }
 </style>
-
 </head>
 
 <body>
@@ -130,7 +140,7 @@ body {
 </div>
 
 <div class="banner">
-  <h2>iPhone 16 / 17 в наличии 🔥</h2>
+  <h2>🔥 iPhone 16 / 17 в наличии</h2>
   <p>Цены ниже рынка • Быстрая доставка • Гарантия</p>
 </div>
 
@@ -162,14 +172,16 @@ function render(data){
   const container = document.getElementById("products");
   container.innerHTML = "";
 
-  data.forEach(p=>{
+  data.forEach((p, index)=>{
     container.innerHTML += `
       <div class="card">
+        ${index < 3 ? '<div class="badge">ХИТ</div>' : ''}
         <img src="https://source.unsplash.com/400x300/?${p.name}">
         <h3>${p.name}</h3>
         <div class="old">${p.oldPrice} ₽</div>
         <div class="price">${p.price} ₽</div>
-        <a class="btn" href="https://t.me/iDeal_Point_Level">Написать</a>
+        <div class="stock">Осталось 2 шт</div>
+        <a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${p.name}">Купить</a>
       </div>
     `;
   });
