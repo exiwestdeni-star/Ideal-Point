@@ -40,6 +40,20 @@ h1 {
   font-size:14px;
 }
 
+.filters {
+  margin: 20px 0;
+}
+
+.filters button {
+  margin-right: 10px;
+  padding: 8px 15px;
+  background: #111;
+  color: #FFD700;
+  border: 1px solid #FFD700;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 .grid {
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
@@ -101,17 +115,31 @@ h1 {
 
 <p>Apple • PlayStation • Цены ниже рынка</p>
 
+<div class="filters">
+  <button onclick="filterProducts('all')">Все</button>
+  <button onclick="filterProducts('apple')">Apple</button>
+  <button onclick="filterProducts('ps')">PlayStation</button>
+</div>
+
 <div class="grid" id="products"></div>
 
 </div>
 
 <script>
+let allProducts = [];
+
 fetch('/products.json')
 .then(res => res.json())
 .then(data => {
-  const container = document.getElementById('products');
+  allProducts = data;
+  renderProducts(data);
+});
 
-  data.forEach(p => {
+function renderProducts(products) {
+  const container = document.getElementById('products');
+  container.innerHTML = '';
+
+  products.forEach(p => {
     container.innerHTML += `
       <div class="card">
         <img src="${p.image}">
@@ -123,7 +151,14 @@ fetch('/products.json')
       </div>
     `;
   });
-});
+}
+
+function filterProducts(type) {
+  if (type === 'all') return renderProducts(allProducts);
+
+  const filtered = allProducts.filter(p => p.category === type);
+  renderProducts(filtered);
+}
 </script>
 
 </body>
