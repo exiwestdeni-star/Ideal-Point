@@ -9,24 +9,72 @@
 
 <style>
 body{margin:0;font-family:Inter;background:#f5f5f7;color:#111}
-header{display:flex;justify-content:space-between;padding:15px 25px;background:#fff}
-.logo{font-weight:700}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;padding:20px}
-.card{background:#fff;border-radius:15px;padding:15px;box-shadow:0 5px 20px rgba(0,0,0,.05)}
-.card img{width:100%;height:180px;object-fit:contain}
-.price{font-weight:700;margin-top:5px}
-.controls{padding:10px 20px}
-input{padding:10px;width:100%;border-radius:8px;border:1px solid #ddd}
 
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center}
-.modal-box{background:#fff;padding:20px;border-radius:15px;width:320px;text-align:center}
+header{
+display:flex;
+justify-content:space-between;
+padding:20px 30px;
+background:white;
+box-shadow:0 2px 10px rgba(0,0,0,.05)
+}
 
-.colors span{display:inline-block;width:20px;height:20px;border-radius:50%;margin:5px;border:1px solid #ccc;cursor:pointer}
-.memory button{margin:5px;padding:5px 10px}
+.logo{font-size:20px;font-weight:700}
 
-.btn{display:block;margin-top:10px;padding:10px;background:#111;color:#fff;border-radius:8px;text-decoration:none}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:25px;
+padding:30px;
+max-width:1300px;
+margin:auto
+}
 
-.cart{position:fixed;bottom:20px;right:20px;background:#111;color:#fff;padding:12px;border-radius:50px}
+.card{
+background:white;
+border-radius:18px;
+padding:15px;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+transition:.3s
+}
+
+.card:hover{transform:translateY(-5px)}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:contain
+}
+
+.title{font-weight:600;margin:10px 0}
+.price{font-weight:700;font-size:18px}
+
+.btn{
+margin-top:10px;
+padding:10px;
+background:black;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+width:100%
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.5);
+display:none;
+align-items:center;
+justify-content:center
+}
+
+.modal-box{
+background:white;
+padding:20px;
+border-radius:15px;
+width:320px;
+text-align:center
+}
 </style>
 </head>
 
@@ -37,138 +85,102 @@ input{padding:10px;width:100%;border-radius:8px;border:1px solid #ddd}
 <div>+7 969 969 67 67</div>
 </header>
 
-<div class="controls">
-<input id="search" placeholder="Поиск...">
-</div>
+<div class="grid" id="products"></div>
 
-<div id="products" class="grid"></div>
-
-<div id="modal" class="modal">
+<div class="modal" id="modal">
 <div class="modal-box">
-<img id="mImg" style="width:100%;height:150px;object-fit:contain">
+<img id="mImg" style="width:100%;height:160px;object-fit:contain">
 <h3 id="mName"></h3>
-<div id="mPrice"></div>
-
-<div class="colors" id="colors"></div>
-<div class="memory" id="memory"></div>
-
-<a id="buy" class="btn">Купить</a>
+<p id="mPrice"></p>
+<button class="btn" onclick="buy()">Купить</button>
 </div>
 </div>
-
-<div class="cart" onclick="checkout()">🛒</div>
 
 <script>
 
-let cart=[]
-let current=null
-let selectedMemory=""
+let current=""
 
 const products=[
 
 {
 name:"iPhone 17 Pro",
-price:97800,
-colors:["black","blue","silver"],
-images:[
-"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
-"https://images.unsplash.com/photo-1580910051074-3eb694886505",
-"https://images.unsplash.com/photo-1605236453806-6ff36851218e"
-],
-memory:["256GB","512GB","1TB"]
+price:"94 300 ₽",
+img:"https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-black"
 },
 
 {
 name:"iPhone 17",
-price:62900,
-colors:["black","blue","white"],
-images:[
-"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
-"https://images.unsplash.com/photo-1512499617640-c2f999098c01",
-"https://images.unsplash.com/photo-1510552776732-03e61cf4b144"
-],
-memory:["256GB","512GB"]
+price:"59 000 ₽",
+img:"https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-blue"
 },
 
 {
 name:"iPhone 17e",
-price:48000,
-colors:["black","white","pink"],
-images:[
-"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
-"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
-"https://images.unsplash.com/photo-1512499617640-c2f999098c01"
-],
-memory:["256GB","512GB"]
+price:"44 700 ₽",
+img:"https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-midnight"
 },
 
 {
 name:"AirPods Pro 2",
-price:14000,
-colors:["white"],
-images:["https://images.unsplash.com/photo-1588156979435-379b9d802b0e"],
-memory:["—"]
+price:"14 000 ₽",
+img:"https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQD83"
+},
+
+{
+name:"AirPods 4",
+price:"8 800 ₽",
+img:"https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MXK53"
+},
+
+{
+name:"Apple Watch",
+price:"25 900 ₽",
+img:"https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/watch-s9"
+},
+
+{
+name:"MacBook Air",
+price:"86 000 ₽",
+img:"https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/macbook-air"
+},
+
+{
+name:"iPad Pro",
+price:"89 200 ₽",
+img:"https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro"
 }
 
 ]
 
 function render(){
-let val=document.getElementById("search").value.toLowerCase()
 let html=""
-
-products.filter(p=>p.name.toLowerCase().includes(val)).forEach((p,i)=>{
+products.forEach((p,i)=>{
 html+=`
 <div class="card" onclick="openModal(${i})">
-<img src="${p.images[0]}">
-<div>${p.name}</div>
-<div class="price">${p.price-3000} ₽</div>
+<img src="${p.img}">
+<div class="title">${p.name}</div>
+<div class="price">${p.price}</div>
+<button class="btn">Подробнее</button>
 </div>`
 })
-
 document.getElementById("products").innerHTML=html
 }
 
 function openModal(i){
-current=products[i]
-selectedMemory=""
-
+current=products[i].name
 document.getElementById("modal").style.display="flex"
-document.getElementById("mImg").src=current.images[0]
-document.getElementById("mName").innerText=current.name
-document.getElementById("mPrice").innerText=(current.price-3000)+" ₽"
-
-let c=""
-current.colors.forEach((_,i)=>c+=`<span onclick="changeColor(${i})"></span>`)
-document.getElementById("colors").innerHTML=c
-
-let m=""
-current.memory.forEach(x=>m+=`<button onclick="selectMemory('${x}')">${x}</button>`)
-document.getElementById("memory").innerHTML=m
-
-document.getElementById("buy").onclick=add
+document.getElementById("mImg").src=products[i].img
+document.getElementById("mName").innerText=products[i].name
+document.getElementById("mPrice").innerText=products[i].price
 }
 
-function changeColor(i){
-document.getElementById("mImg").src=current.images[i]
+function buy(){
+window.open("https://t.me/iDeal_Point_Level?text=Хочу "+current)
 }
 
-function selectMemory(m){selectedMemory=m}
-
-function add(){
-cart.push(current.name+" "+selectedMemory)
-alert("Добавлено")
+window.onclick=e=>{
+if(e.target.id==="modal") document.getElementById("modal").style.display="none"
 }
-
-function checkout(){
-let text="Хочу:\n"+cart.join("\n")
-window.open("https://t.me/iDeal_Point_Level?text="+encodeURIComponent(text))
-}
-
-document.getElementById("modal").onclick=e=>{
-if(e.target.id==="modal") e.currentTarget.style.display="none"
-}
-
-document.getElementById("search").oninput=render
 
 render()
 
