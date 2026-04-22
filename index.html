@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Ideal Point</title>
+
 <style>
 body{margin:0;font-family:sans-serif;background:#f5f5f7}
 header{padding:20px;background:#fff;display:flex;justify-content:space-between}
@@ -26,72 +27,118 @@ button{margin-top:10px;padding:8px;width:100%}
 
 <script>
 
-/* ВСТАВЛЯЕШЬ СЮДА СВОЙ ПРАЙС */
-const raw = `
-const raw = `
-Sim+eSim 17 256GB Black — 62900
-Sim+eSim 17 256GB Blue — 62200
-AirPods Pro 2 — 14000
-`;
-`;
+var products = [
 
-/* НЕ ТРОГАЙ НИЖЕ */
+{
+name:"iPhone 17",
+variants:[
+{title:"256GB Black",price:62900,img:"https://picsum.photos/300?1"},
+{title:"256GB Blue",price:62200,img:"https://picsum.photos/300?2"},
+{title:"256GB White",price:62900,img:"https://picsum.photos/300?3"},
+{title:"512GB Black",price:80700,img:"https://picsum.photos/300?4"}
+]
+},
 
-function parse(){
-let lines = raw.split("\n").filter(l=>l.trim())
-let products = {}
+{
+name:"iPhone 17 Pro",
+variants:[
+{title:"256GB Blue",price:94300,img:"https://picsum.photos/300?5"},
+{title:"256GB White",price:94700,img:"https://picsum.photos/300?6"},
+{title:"512GB Orange",price:105200,img:"https://picsum.photos/300?7"}
+]
+},
 
-lines.forEach(line=>{
-let name = line.split("—")[0]
-let price = parseInt(line.split("—")[1])
+{
+name:"iPhone 17 Pro Max",
+variants:[
+{title:"256GB Blue",price:103000,img:"https://picsum.photos/300?8"},
+{title:"256GB White",price:104000,img:"https://picsum.photos/300?9"},
+{title:"512GB Blue",price:119000,img:"https://picsum.photos/300?10"},
+{title:"1TB Blue",price:129500,img:"https://picsum.photos/300?11"}
+]
+},
 
-let model = name.split(" ").slice(0,3).join(" ")
+{
+name:"Apple Watch",
+variants:[
+{title:"SE2",price:14400,img:"https://picsum.photos/300?12"},
+{title:"S11",price:25900,img:"https://picsum.photos/300?13"},
+{title:"Ultra 3",price:59300,img:"https://picsum.photos/300?14"}
+]
+},
 
-if(!products[model]) products[model] = []
+{
+name:"iPad",
+variants:[
+{title:"iPad 11 128GB",price:28500,img:"https://picsum.photos/300?15"},
+{title:"iPad Air M4",price:47000,img:"https://picsum.photos/300?16"},
+{title:"iPad Pro M5",price:96000,img:"https://picsum.photos/300?17"}
+]
+},
 
-products[model].push({
-title:name,
-price:price,
-img:"https://picsum.photos/300?"+Math.random()
-})
-})
+{
+name:"MacBook",
+variants:[
+{title:"Air M2",price:69000,img:"https://picsum.photos/300?18"},
+{title:"Air M4",price:91000,img:"https://picsum.photos/300?19"},
+{title:"Pro M5",price:122500,img:"https://picsum.photos/300?20"}
+]
+},
 
-return Object.keys(products).map(k=>({
-name:k,
-variants:products[k]
-}))
+{
+name:"AirPods",
+variants:[
+{title:"AirPods 4",price:8800,img:"https://picsum.photos/300?21"},
+{title:"Pro 2",price:14000,img:"https://picsum.photos/300?22"},
+{title:"Max",price:40000,img:"https://picsum.photos/300?23"}
+]
+},
+
+{
+name:"PlayStation 5",
+variants:[
+{title:"Slim",price:45200,img:"https://picsum.photos/300?24"},
+{title:"Pro",price:74500,img:"https://picsum.photos/300?25"}
+]
 }
 
-let products = parse()
+]
 
 function render(){
-let html=""
-for(let i=0;i<products.length;i++){
-let p=products[i]
 
-html+=`
-<div class="card">
-<img id="img${i}" src="${p.variants[0].img}">
-<h3>${p.name}</h3>
+var html=""
 
-<select onchange="change(${i},this)">
-${p.variants.map((v,index)=>`<option value="${index}">${v.title}</option>`).join("")}
-</select>
+for(var i=0;i<products.length;i++){
 
-<div id="price${i}" class="price">${p.variants[0].price} ₽</div>
+var p=products[i]
 
-<button onclick="buy('${p.name}')">Купить</button>
-</div>
-`
+html+="<div class='card'>"
+
+html+="<img id='img"+i+"' src='"+p.variants[0].img+"'>"
+html+="<h3>"+p.name+"</h3>"
+
+html+="<select onchange='change("+i+",this)'>"
+
+for(var j=0;j<p.variants.length;j++){
+html+="<option value='"+j+"'>"+p.variants[j].title+"</option>"
 }
 
-document.getElementById("app").innerHTML=html
+html+="</select>"
+
+html+="<div id='price"+i+"' class='price'>"+p.variants[0].price+" ₽</div>"
+
+html+="<button onclick='buy(\""+p.name+"\")'>Купить</button>"
+
+html+="</div>"
+}
+
+document.getElementById("app").innerHTML = html
 }
 
 function change(i,el){
-let v=products[i].variants[el.value]
-document.getElementById("img"+i).src=v.img
-document.getElementById("price"+i).innerText=v.price+" ₽"
+var v = products[i].variants[el.value]
+document.getElementById("img"+i).src = v.img
+document.getElementById("price"+i).innerText = v.price + " ₽"
 }
 
 function buy(name){
