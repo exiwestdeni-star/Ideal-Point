@@ -8,11 +8,11 @@
 body{margin:0;font-family:sans-serif;background:#f5f5f7}
 header{padding:20px;background:#fff;display:flex;justify-content:space-between}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;padding:15px}
-.card{background:#fff;padding:15px;border-radius:10px}
-img{width:100%;height:180px;object-fit:contain}
+.card{background:#fff;padding:15px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.05)}
+img{width:100%;height:200px;object-fit:contain}
 .price{font-weight:bold;margin-top:10px}
-select{width:100%;padding:8px;margin-top:8px}
-button{margin-top:10px;padding:8px;width:100%}
+select{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #ddd}
+button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border:none;border-radius:8px}
 </style>
 </head>
 
@@ -32,73 +32,69 @@ var products = [
 {
 name:"iPhone 17",
 variants:[
-{title:"256GB Black",price:62900,img:"https://picsum.photos/300?1"},
-{title:"256GB Blue",price:62200,img:"https://picsum.photos/300?2"},
-{title:"256GB White",price:62900,img:"https://picsum.photos/300?3"},
-{title:"512GB Black",price:80700,img:"https://picsum.photos/300?4"}
+{title:"256GB Black",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select-202309"},
+{title:"256GB Blue",price:62200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select-202309"},
+{title:"256GB White",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select-202309"}
 ]
 },
 
 {
 name:"iPhone 17 Pro",
 variants:[
-{title:"256GB Blue",price:94300,img:"https://picsum.photos/300?5"},
-{title:"256GB White",price:94700,img:"https://picsum.photos/300?6"},
-{title:"512GB Orange",price:105200,img:"https://picsum.photos/300?7"}
+{title:"256GB Blue",price:94300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select-202309"},
+{title:"512GB White",price:105200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select-202309"}
 ]
 },
 
 {
 name:"iPhone 17 Pro Max",
 variants:[
-{title:"256GB Blue",price:103000,img:"https://picsum.photos/300?8"},
-{title:"256GB White",price:104000,img:"https://picsum.photos/300?9"},
-{title:"512GB Blue",price:119000,img:"https://picsum.photos/300?10"},
-{title:"1TB Blue",price:129500,img:"https://picsum.photos/300?11"}
+{title:"256GB Blue",price:102500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select-202309"},
+{title:"512GB White",price:114500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select-202309"}
 ]
 },
 
 {
 name:"Apple Watch",
 variants:[
-{title:"SE2",price:14400,img:"https://picsum.photos/300?12"},
-{title:"S11",price:25900,img:"https://picsum.photos/300?13"},
-{title:"Ultra 3",price:59300,img:"https://picsum.photos/300?14"}
+{title:"SE2",price:14400,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-se-44mm-midnight"},
+{title:"S11",price:25900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s10-black"},
+{title:"Ultra",price:59300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra"}
 ]
 },
 
 {
 name:"iPad",
 variants:[
-{title:"iPad 11 128GB",price:28500,img:"https://picsum.photos/300?15"},
-{title:"iPad Air M4",price:47000,img:"https://picsum.photos/300?16"},
-{title:"iPad Pro M5",price:96000,img:"https://picsum.photos/300?17"}
+{title:"iPad 11",price:28500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-10th-blue"},
+{title:"Air M4",price:47000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-blue"},
+{title:"Pro M5",price:96000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-spaceblack"}
 ]
 },
 
 {
 name:"MacBook",
 variants:[
-{title:"Air M2",price:69000,img:"https://picsum.photos/300?18"},
-{title:"Air M4",price:91000,img:"https://picsum.photos/300?19"},
-{title:"Pro M5",price:122500,img:"https://picsum.photos/300?20"}
+{title:"Air M2",price:69000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight"},
+{title:"Air M4",price:91000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-starlight"},
+{title:"Pro",price:122500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-spaceblack"}
 ]
 },
 
 {
 name:"AirPods",
 variants:[
-{title:"AirPods 4",price:8800,img:"https://picsum.photos/300?21"},
-{title:"Pro 2",price:14000,img:"https://picsum.photos/300?22"},
-{title:"Max",price:40000,img:"https://picsum.photos/300?23"}
+{title:"AirPods 4",price:8800,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4"},
+{title:"Pro 2",price:14000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"},
+{title:"Max",price:40000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max"}
 ]
 },
 
 {
 name:"PlayStation 5",
 variants:[
-{title:"Slim",price:45200,img:"https://picsum.photos/300?24"},
-{title:"Pro",price:74500,img:"https://picsum.photos/300?25"}
+{title:"Slim",price:45200,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
+{title:"Pro",price:74500,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"}
 ]
 }
 
