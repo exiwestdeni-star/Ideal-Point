@@ -15,20 +15,33 @@ display:flex;
 justify-content:space-between;
 padding:20px 30px;
 background:#fff;
+position:sticky;
+top:0;
+z-index:10;
 box-shadow:0 2px 10px rgba(0,0,0,.05)
 }
 
-.logo{font-weight:700}
+.logo{font-weight:700;font-size:20px}
+
+.hero{
+padding:60px 20px;
+text-align:center;
+background:linear-gradient(#fff,#f5f5f7)
+}
+
+.hero h1{font-size:34px;margin:0}
+.hero p{color:#666}
 
 .categories{
 display:flex;
 gap:10px;
-padding:15px;
+padding:20px;
 flex-wrap:wrap;
+justify-content:center
 }
 
 .cat{
-padding:8px 14px;
+padding:10px 16px;
 background:#fff;
 border-radius:20px;
 cursor:pointer;
@@ -39,36 +52,58 @@ border:1px solid #eee
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:20px;
-padding:20px
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:25px;
+padding:30px;
+max-width:1300px;
+margin:auto
 }
 
 .card{
 background:#fff;
-border-radius:15px;
-padding:15px;
-box-shadow:0 5px 20px rgba(0,0,0,.05)
+border-radius:20px;
+padding:20px;
+box-shadow:0 10px 30px rgba(0,0,0,.05);
+transition:.3s
 }
+
+.card:hover{transform:translateY(-6px)}
 
 .card img{
 width:100%;
-height:180px;
+height:200px;
 object-fit:contain
 }
 
 .title{font-weight:600;margin:10px 0}
-.price{font-weight:700}
+.price{font-size:20px;font-weight:700}
 
 .btn{
 margin-top:10px;
 padding:10px;
-background:#000;
-color:#fff;
 border:none;
 border-radius:10px;
-width:100%;
-cursor:pointer
+background:#000;
+color:#fff;
+cursor:pointer;
+width:100%
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.5);
+display:none;
+align-items:center;
+justify-content:center
+}
+
+.modal-box{
+background:#fff;
+padding:25px;
+border-radius:20px;
+width:320px;
+text-align:center
 }
 </style>
 </head>
@@ -80,63 +115,65 @@ cursor:pointer
 <div>+7 969 969 67 67</div>
 </header>
 
+<div class="hero">
+<h1>Apple техника</h1>
+<p>Оригинал • Ниже рынка • Быстро</p>
+</div>
+
 <div class="categories">
 <div class="cat active" onclick="filter('all')">Все</div>
 <div class="cat" onclick="filter('iphone')">iPhone</div>
 <div class="cat" onclick="filter('watch')">Watch</div>
 <div class="cat" onclick="filter('ipad')">iPad</div>
-<div class="cat" onclick="filter('mac')">MacBook</div>
-<div class="cat" onclick="filter('airpods')">AirPods</div>
-<div class="cat" onclick="filter('ps')">PlayStation</div>
-<div class="cat" onclick="filter('access')">Аксессуары</div>
+<div class="cat" onclick="filter('mac')">Mac</div>
+<div class="cat" onclick="filter('ps')">PS</div>
 </div>
 
 <div id="products" class="grid"></div>
 
+<div id="modal" class="modal">
+<div class="modal-box">
+<img id="mImg" style="width:100%;height:160px;object-fit:contain">
+<h3 id="mName"></h3>
+<div id="mPrice"></div>
+<button class="btn" onclick="buy()">Написать в Telegram</button>
+</div>
+</div>
+
 <script>
 
-const products = [
+let current=""
 
-/* iPhone */
-{cat:"iphone",name:"iPhone 17 256GB Black",price:62900,img:"https://images.unsplash.com/photo-1510552776732-03e61cf4b144"},
-{cat:"iphone",name:"iPhone 17 256GB Blue",price:62200,img:"https://images.unsplash.com/photo-1512499617640-c2f999098c01"},
-{cat:"iphone",name:"iPhone 17 Pro 256GB",price:94300,img:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd"},
-{cat:"iphone",name:"iPhone 17 Pro Max 256GB",price:102500,img:"https://images.unsplash.com/photo-1580910051074-3eb694886505"},
+const products=[
 
-/* Watch */
-{cat:"watch",name:"Apple Watch S11",price:25900,img:"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"},
-{cat:"watch",name:"Apple Watch Ultra 3",price:59300,img:"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"},
+// iPhone
+{cat:"iphone",name:"iPhone 17 Pro Max",price:"от 102 500 ₽",img:"https://images.unsplash.com/photo-1580910051074-3eb694886505"},
+{cat:"iphone",name:"iPhone 17 Pro",price:"от 94 300 ₽",img:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd"},
+{cat:"iphone",name:"iPhone 17",price:"от 59 000 ₽",img:"https://images.unsplash.com/photo-1510552776732-03e61cf4b144"},
 
-/* iPad */
-{cat:"ipad",name:"iPad Air M4",price:57000,img:"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"},
-{cat:"ipad",name:"iPad Pro M5",price:96000,img:"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"},
+// Watch
+{cat:"watch",name:"Apple Watch S11",price:"от 25 900 ₽",img:"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"},
 
-/* Mac */
-{cat:"mac",name:"MacBook Air M4",price:91000,img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
+// iPad
+{cat:"ipad",name:"iPad Pro",price:"от 89 000 ₽",img:"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"},
 
-/* AirPods */
-{cat:"airpods",name:"AirPods Pro 2",price:14000,img:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"},
-{cat:"airpods",name:"AirPods 4",price:8800,img:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"},
+// Mac
+{cat:"mac",name:"MacBook Air",price:"от 86 000 ₽",img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
 
-/* PS */
-{cat:"ps",name:"PS5 Pro",price:74500,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
-{cat:"ps",name:"DualSense Controller",price:5500,img:"https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf"},
-
-/* Access */
-{cat:"access",name:"Apple Pencil Pro",price:10500,img:"https://images.unsplash.com/photo-1587829741301-dc798b83add3"},
-{cat:"access",name:"Magic Mouse",price:9000,img:"https://images.unsplash.com/photo-1587829741301-dc798b83add3"}
+// PS
+{cat:"ps",name:"PS5 Pro",price:"74 500 ₽",img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"}
 
 ]
 
 function render(list){
 let html=""
-list.forEach(p=>{
+list.forEach((p,i)=>{
 html+=`
-<div class="card">
+<div class="card" onclick="openModal(${i})">
 <img src="${p.img}">
 <div class="title">${p.name}</div>
-<div class="price">${p.price} ₽</div>
-<button class="btn" onclick="order('${p.name}')">Купить</button>
+<div class="price">${p.price}</div>
+<button class="btn">Подробнее</button>
 </div>`
 })
 document.getElementById("products").innerHTML=html
@@ -150,8 +187,20 @@ if(cat==="all") render(products)
 else render(products.filter(p=>p.cat===cat))
 }
 
-function order(name){
-window.open("https://t.me/iDeal_Point_Level?text=Хочу купить "+name)
+function openModal(i){
+current=products[i].name
+document.getElementById("modal").style.display="flex"
+document.getElementById("mImg").src=products[i].img
+document.getElementById("mName").innerText=products[i].name
+document.getElementById("mPrice").innerText=products[i].price
+}
+
+function buy(){
+window.open("https://t.me/iDeal_Point_Level?text=Хочу "+current)
+}
+
+window.onclick=e=>{
+if(e.target.id==="modal") document.getElementById("modal").style.display="none"
 }
 
 render(products)
