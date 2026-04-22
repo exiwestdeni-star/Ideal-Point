@@ -8,121 +8,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{
-margin:0;
-font-family:'Inter',sans-serif;
-background:#f2f2f5;
-color:#111;
-}
+body{margin:0;font-family:Inter;background:#f5f5f7;color:#111}
+header{display:flex;justify-content:space-between;padding:15px 25px;background:#fff}
+.logo{font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;padding:20px}
+.card{background:#fff;border-radius:15px;padding:15px;box-shadow:0 5px 20px rgba(0,0,0,.05)}
+.card img{width:100%;height:180px;object-fit:contain}
+.price{font-weight:700;margin-top:5px}
+.controls{padding:10px 20px}
+input{padding:10px;width:100%;border-radius:8px;border:1px solid #ddd}
 
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px 40px;
-background:white;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center}
+.modal-box{background:#fff;padding:20px;border-radius:15px;width:320px;text-align:center}
 
-.logo{
-font-size:22px;
-font-weight:700;
-}
+.colors span{display:inline-block;width:20px;height:20px;border-radius:50%;margin:5px;border:1px solid #ccc;cursor:pointer}
+.memory button{margin:5px;padding:5px 10px}
 
-.phone{
-font-weight:600;
-}
+.btn{display:block;margin-top:10px;padding:10px;background:#111;color:#fff;border-radius:8px;text-decoration:none}
 
-.container{
-max-width:1300px;
-margin:auto;
-padding:30px;
-}
-
-.categories{
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-margin-bottom:30px;
-}
-
-.cat{
-padding:10px 18px;
-background:white;
-border-radius:20px;
-cursor:pointer;
-border:1px solid #eee;
-}
-
-.cat.active{
-background:black;
-color:white;
-}
-
-.grid{
-display:grid;
-grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-}
-
-.card{
-background:white;
-border-radius:18px;
-padding:15px;
-transition:.3s;
-box-shadow:0 5px 20px rgba(0,0,0,0.05);
-}
-
-.card:hover{
-transform:translateY(-5px);
-}
-
-.card img{
-width:100%;
-border-radius:12px;
-}
-
-.title{
-font-weight:600;
-margin:10px 0;
-}
-
-.price{
-font-size:20px;
-font-weight:700;
-}
-
-.btn{
-margin-top:10px;
-padding:10px;
-width:100%;
-border:none;
-border-radius:10px;
-background:black;
-color:white;
-cursor:pointer;
-}
-
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-display:none;
-align-items:center;
-justify-content:center;
-}
-
-.modal-content{
-background:white;
-padding:30px;
-border-radius:20px;
-max-width:400px;
-width:90%;
-}
-
+.cart{position:fixed;bottom:20px;right:20px;background:#111;color:#fff;padding:12px;border-radius:50px}
 </style>
 </head>
 
@@ -130,83 +34,143 @@ width:90%;
 
 <header>
 <div class="logo">IDEAL POINT</div>
-<div class="phone">+7 969 969 67 67</div>
+<div>+7 969 969 67 67</div>
 </header>
 
-<div class="container">
-
-<div class="categories">
-<div class="cat active" onclick="filter('all')">Все</div>
-<div class="cat" onclick="filter('iphone')">iPhone</div>
-<div class="cat" onclick="filter('airpods')">AirPods</div>
-<div class="cat" onclick="filter('mac')">MacBook</div>
+<div class="controls">
+<input id="search" placeholder="Поиск...">
 </div>
 
-<div class="grid" id="products"></div>
+<div id="products" class="grid"></div>
 
+<div id="modal" class="modal">
+<div class="modal-box">
+<img id="mImg" style="width:100%;height:150px;object-fit:contain">
+<h3 id="mName"></h3>
+<div id="mPrice"></div>
+
+<div class="colors" id="colors"></div>
+<div class="memory" id="memory"></div>
+
+<a id="buy" class="btn">Купить</a>
+</div>
 </div>
 
-<div class="modal" id="modal">
-<div class="modal-content">
-<h3 id="modalTitle"></h3>
-<p id="modalPrice"></p>
-<button class="btn" onclick="order()">Написать в Telegram</button>
-</div>
-</div>
+<div class="cart" onclick="checkout()">🛒</div>
 
 <script>
 
-let currentProduct = ""
+let cart=[]
+let current=null
+let selectedMemory=""
 
-const products = [
-{cat:"iphone",name:"iPhone 17 Pro",price:"от 94 300 ₽",img:"https://i.ibb.co/2n7Jc4m/iphone17pro.jpg"},
-{cat:"iphone",name:"iPhone 17",price:"от 59 000 ₽",img:"https://i.ibb.co/f4x2TqF/iphone17.jpg"},
-{cat:"iphone",name:"iPhone 17e",price:"от 44 700 ₽",img:"https://i.ibb.co/m4xjzqY/iphone17e.jpg"},
-{cat:"airpods",name:"AirPods Pro 2",price:"14 000 ₽",img:"https://i.ibb.co/zQw0pL0/airpodspro.jpg"},
-{cat:"airpods",name:"AirPods 4",price:"8 800 ₽",img:"https://i.ibb.co/7r6g2Y6/airpods.jpg"},
-{cat:"mac",name:"MacBook Air M3",price:"от 86 000 ₽",img:"https://i.ibb.co/3z8Z3yR/macbook.jpg"}
+const products=[
+
+{
+name:"iPhone 17 Pro",
+price:97800,
+colors:["black","blue","silver"],
+images:[
+"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
+"https://images.unsplash.com/photo-1580910051074-3eb694886505",
+"https://images.unsplash.com/photo-1605236453806-6ff36851218e"
+],
+memory:["256GB","512GB","1TB"]
+},
+
+{
+name:"iPhone 17",
+price:62900,
+colors:["black","blue","white"],
+images:[
+"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
+"https://images.unsplash.com/photo-1512499617640-c2f999098c01",
+"https://images.unsplash.com/photo-1510552776732-03e61cf4b144"
+],
+memory:["256GB","512GB"]
+},
+
+{
+name:"iPhone 17e",
+price:48000,
+colors:["black","white","pink"],
+images:[
+"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9",
+"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
+"https://images.unsplash.com/photo-1512499617640-c2f999098c01"
+],
+memory:["256GB","512GB"]
+},
+
+{
+name:"AirPods Pro 2",
+price:14000,
+colors:["white"],
+images:["https://images.unsplash.com/photo-1588156979435-379b9d802b0e"],
+memory:["—"]
+}
+
 ]
 
-function render(list){
-const container = document.getElementById("products")
-container.innerHTML = ""
+function render(){
+let val=document.getElementById("search").value.toLowerCase()
+let html=""
 
-list.forEach(p=>{
-container.innerHTML += `
-<div class="card">
-<img src="${p.img}">
-<div class="title">${p.name}</div>
-<div class="price">${p.price}</div>
-<button class="btn" onclick="openModal('${p.name}','${p.price}')">Подробнее</button>
-</div>
-`
+products.filter(p=>p.name.toLowerCase().includes(val)).forEach((p,i)=>{
+html+=`
+<div class="card" onclick="openModal(${i})">
+<img src="${p.images[0]}">
+<div>${p.name}</div>
+<div class="price">${p.price-3000} ₽</div>
+</div>`
 })
+
+document.getElementById("products").innerHTML=html
 }
 
-function filter(cat){
-document.querySelectorAll('.cat').forEach(c=>c.classList.remove('active'))
-event.target.classList.add('active')
+function openModal(i){
+current=products[i]
+selectedMemory=""
 
-if(cat==="all") render(products)
-else render(products.filter(p=>p.cat===cat))
-}
-
-function openModal(name,price){
-currentProduct = name
 document.getElementById("modal").style.display="flex"
-document.getElementById("modalTitle").innerText=name
-document.getElementById("modalPrice").innerText=price
+document.getElementById("mImg").src=current.images[0]
+document.getElementById("mName").innerText=current.name
+document.getElementById("mPrice").innerText=(current.price-3000)+" ₽"
+
+let c=""
+current.colors.forEach((_,i)=>c+=`<span onclick="changeColor(${i})"></span>`)
+document.getElementById("colors").innerHTML=c
+
+let m=""
+current.memory.forEach(x=>m+=`<button onclick="selectMemory('${x}')">${x}</button>`)
+document.getElementById("memory").innerHTML=m
+
+document.getElementById("buy").onclick=add
 }
 
-function order(){
-window.open(`https://t.me/твойднлогин?text=Хочу купить ${currentProduct}`)
+function changeColor(i){
+document.getElementById("mImg").src=current.images[i]
 }
 
-window.onclick = function(e){
-if(e.target.id==="modal") document.getElementById("modal").style.display="none"
+function selectMemory(m){selectedMemory=m}
+
+function add(){
+cart.push(current.name+" "+selectedMemory)
+alert("Добавлено")
 }
 
-render(products)
+function checkout(){
+let text="Хочу:\n"+cart.join("\n")
+window.open("https://t.me/iDeal_Point_Level?text="+encodeURIComponent(text))
+}
+
+document.getElementById("modal").onclick=e=>{
+if(e.target.id==="modal") e.currentTarget.style.display="none"
+}
+
+document.getElementById("search").oninput=render
+
+render()
 
 </script>
 
