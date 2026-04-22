@@ -2,74 +2,18 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ideal Point</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{margin:0;font-family:Inter;background:#f5f5f7}
-
-/* HEADER */
-header{
-display:flex;
-justify-content:space-between;
-padding:20px;
-background:#fff;
-box-shadow:0 2px 10px rgba(0,0,0,.05)
-}
-
-.search{
-padding:10px;
-border-radius:10px;
-border:1px solid #ddd
-}
-
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-padding:20px
-}
-
-.card{
-background:#fff;
-padding:15px;
-border-radius:15px;
-box-shadow:0 10px 30px rgba(0,0,0,.05)
-}
-
-.card img{
-width:100%;
-height:200px;
-object-fit:contain
-}
-
-.price{font-weight:700;margin-top:5px}
-
-/* OPTIONS */
-.colors span{
-display:inline-block;
-width:18px;height:18px;
-border-radius:50%;
-margin:4px;
-cursor:pointer;
-border:1px solid #ccc
-}
-
-.memory button{
-margin:3px;
-padding:5px 8px;
-border-radius:6px;
-border:1px solid #ccc;
-cursor:pointer
-}
-
-.activeOpt{
-background:#000;
-color:#fff
-}
+header{display:flex;justify-content:space-between;padding:20px;background:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;padding:20px}
+.card{background:#fff;border-radius:16px;padding:15px;box-shadow:0 10px 30px rgba(0,0,0,.05)}
+img{width:100%;height:220px;object-fit:contain}
+.price{font-weight:700;margin-top:10px}
+select{width:100%;padding:8px;margin-top:8px}
 </style>
 </head>
 
@@ -77,218 +21,117 @@ color:#fff
 
 <header>
 <b>IDEAL POINT</b>
-<input class="search" placeholder="Поиск..." oninput="search(this.value)">
 <div>+7 969 969 67 67</div>
 </header>
 
-<div id="products" class="grid"></div>
+<div id="app" class="grid"></div>
 
 <script>
-
-let searchText=""
 
 /* ================= ПОЛНЫЙ КАТАЛОГ ================= */
 
 const products = [
 
+/* ===== iPhone 17 ===== */
 {
 name:"iPhone 17",
-colors:{
-black:"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
-blue:"https://images.unsplash.com/photo-1512499617640-c2f999098c01",
-white:"https://images.unsplash.com/photo-1510557880182-3f8d1eab2c1e"
-},
-memory:{
-"256GB":59000,
-"512GB":80200
-}
+variants:[
+{title:"Black 256GB",price:59900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"},
+{title:"Blue 256GB",price:59200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"},
+{title:"White 256GB",price:59900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select"},
+{title:"Sage 256GB",price:59600,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-green-select"},
+
+{title:"Black 512GB",price:77700,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"},
+{title:"Blue 512GB",price:77200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"}
+]
 },
 
+/* ===== iPhone 17e ===== */
 {
 name:"iPhone 17e",
-colors:{
-black:"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
-pink:"https://images.unsplash.com/photo-1510557880182-3f8d1eab2c1e",
-white:"https://images.unsplash.com/photo-1512499617640-c2f999098c01"
-},
-memory:{
-"256GB":44700,
-"512GB":64000
-}
+variants:[
+{title:"Black 256GB",price:45600,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"},
+{title:"Pink 256GB",price:45300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select"},
+{title:"White 256GB",price:45100,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-green-select"},
+
+{title:"Black 512GB",price:67500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"},
+{title:"Pink 512GB",price:67000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select"},
+{title:"White 512GB",price:67500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-green-select"}
+]
 },
 
+/* ===== iPhone 17 Air ===== */
 {
 name:"iPhone 17 Air",
-colors:{
-black:"https://images.unsplash.com/photo-1580910051074-3eb694886505",
-gold:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab",
-blue:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
-white:"https://images.unsplash.com/photo-1598327105666-5b89351aff97"
-},
-memory:{
-"256GB":67000,
-"512GB":79100,
-"1TB":89200
-}
+variants:[
+{title:"Black 256GB",price:67800,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-black-select"},
+{title:"Gold 256GB",price:66300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select"},
+{title:"Blue 256GB",price:64000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select"},
+{title:"White 256GB",price:68600,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-white-select"},
+
+{title:"Black 512GB",price:77900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-black-select"},
+{title:"Blue 512GB",price:76100,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select"},
+{title:"Gold 512GB",price:80900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select"},
+{title:"White 512GB",price:78700,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-white-select"}
+]
 },
 
-{
-name:"iPhone 17 Pro",
-colors:{
-blue:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
-white:"https://images.unsplash.com/photo-1598327105666-5b89351aff97"
-},
-memory:{
-"256GB":94300,
-"512GB":105200,
-"1TB":120900
-}
-},
-
-{
-name:"iPhone 17 Pro Max",
-colors:{
-blue:"https://images.unsplash.com/photo-1580910051074-3eb694886505",
-white:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab"
-},
-memory:{
-"256GB":102500,
-"512GB":114500,
-"1TB":124900,
-"2TB":141300
-}
-},
-
-{
-name:"Apple Watch",
-colors:{
-black:"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"
-},
-memory:{
-"SE":14300,
-"S11":25900,
-"Ultra":57000
-}
-},
-
-{
-name:"iPad",
-colors:{
-silver:"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"
-},
-memory:{
-"iPad 11":28500,
-"Air":47000,
-"Pro":96000
-}
-},
-
-{
-name:"MacBook",
-colors:{
-silver:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
-},
-memory:{
-"Air":69000,
-"Air M4":91000,
-"Pro":122500
-}
-},
-
-{
-name:"PlayStation 5",
-colors:{
-white:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"
-},
-memory:{
-"Slim":45200,
-"Pro":74500
-}
-},
-
+/* ===== AirPods ===== */
 {
 name:"AirPods",
-colors:{
-white:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"
-},
-memory:{
-"4":8800,
-"Pro 2":14000,
-"Max":40000
-}
+variants:[
+{title:"AirPods 4",price:8800,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4"},
+{title:"AirPods Pro 2",price:14000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"},
+{title:"AirPods Pro 3",price:17500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"},
+{title:"AirPods Max",price:40000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max"}
+]
 },
 
+/* ===== PS5 ===== */
 {
-name:"Magic Mouse",
-colors:{
-black:"https://images.unsplash.com/photo-1587829741301-dc798b83add3"
-},
-memory:{
-"USB-C":9000
-}
+name:"PlayStation 5",
+variants:[
+{title:"Slim Disk",price:45200,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
+{title:"Pro Digital",price:74500,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"}
+]
 }
 
 ]
 
-/* ================= ЛОГИКА ================= */
+/* ================= РЕНДЕР ================= */
 
 function render(){
 
-let list=products.filter(p=>{
-return p.name.toLowerCase().includes(searchText.toLowerCase())
-})
-
 let html=""
 
-list.forEach((p,i)=>{
-
-let firstColor = Object.keys(p.colors)[0]
-let firstMemory = Object.keys(p.memory)[0]
+products.forEach((p,i)=>{
 
 html+=`
 <div class="card">
 
-<img id="img${i}" src="${p.colors[firstColor]}">
+<img id="img${i}" src="${p.variants[0].img}">
 
-<div>${p.name}</div>
+<h3>${p.name}</h3>
 
-<div class="colors">
-${Object.keys(p.colors).map(c=>`
-<span style="background:${c}" onclick="changeColor(${i},'${c}')"></span>
+<select onchange="change(${i},this)">
+${p.variants.map(v=>`
+<option value='${JSON.stringify(v)}'>${v.title}</option>
 `).join("")}
-</div>
+</select>
 
-<div class="memory">
-${Object.keys(p.memory).map(m=>`
-<button onclick="changeMemory(${i},'${m}',this)">${m}</button>
-`).join("")}
-</div>
-
-<div id="price${i}" class="price">${p.memory[firstMemory]} ₽</div>
+<div id="price${i}" class="price">${p.variants[0].price} ₽</div>
 
 </div>
 `
 })
 
-document.getElementById("products").innerHTML=html
+document.getElementById("app").innerHTML=html
 }
 
-function changeColor(i,color){
-document.getElementById("img"+i).src=products[i].colors[color]
-}
-
-function changeMemory(i,m,el){
-document.getElementById("price"+i).innerText=products[i].memory[m]+" ₽"
-
-document.querySelectorAll(`#products .card:nth-child(${i+1}) .memory button`)
-.forEach(b=>b.classList.remove("activeOpt"))
-
-el.classList.add("activeOpt")
-}
-
-function search(val){
-searchText=val
-render()
+function change(i,el){
+let v=JSON.parse(el.value)
+document.getElementById("img"+i).src=v.img
+document.getElementById("price"+i).innerText=v.price+" ₽"
 }
 
 render()
