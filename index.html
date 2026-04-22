@@ -6,16 +6,32 @@
 
 <title>Ideal Point</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
 
 <style>
 html {scroll-behavior:smooth;}
+body {margin:0;font-family:'Inter',sans-serif;background:#000;color:#fff;}
 
-body {
-margin:0;
-font-family:'Inter',sans-serif;
-background:#000;
+/* HEADER */
+.header {
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:15px 30px;
+background:rgba(0,0,0,0.8);
+backdrop-filter:blur(10px);
+z-index:1000;
+}
+
+.logo {color:#FFD700;font-weight:800;}
+
+.nav a {
+margin-left:20px;
 color:#fff;
+text-decoration:none;
+font-size:14px;
 }
 
 /* HERO */
@@ -28,47 +44,8 @@ align-items:center;
 text-align:center;
 }
 
-.hero img {
-width:180px;
-margin-bottom:20px;
-}
-
-.hero h1 {
-font-size:48px;
-font-weight:800;
-}
-
-.hero p {
-color:#aaa;
-margin-top:10px;
-}
-
-/* SECTION */
-.section {
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:20px;
-}
-
-.section img {
-width:300px;
-margin:20px 0;
-}
-
-.title {
-font-size:40px;
-font-weight:700;
-}
-
-.price {
-color:#FFD700;
-font-size:26px;
-margin-top:10px;
-}
+.hero h1 {font-size:60px;}
+.hero p {color:#aaa;}
 
 .btn {
 margin-top:20px;
@@ -80,16 +57,50 @@ text-decoration:none;
 font-weight:600;
 }
 
-/* FADE EFFECT */
-.fade {
-opacity:0;
-transform:translateY(40px);
-transition:1s;
+/* SECTIONS */
+.section {
+padding:120px 20px;
+text-align:center;
 }
 
-.fade.show {
-opacity:1;
-transform:translateY(0);
+.title {font-size:40px;margin-bottom:40px;}
+
+/* PRODUCTS GRID */
+.grid {
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+gap:25px;
+}
+
+.card {
+background:#111;
+padding:15px;
+border-radius:15px;
+transition:0.3s;
+}
+
+.card:hover {
+transform:translateY(-5px);
+box-shadow:0 0 30px rgba(255,215,0,0.2);
+}
+
+.card img {
+width:100%;
+height:180px;
+object-fit:contain;
+}
+
+.price {color:#FFD700;font-size:20px;}
+.old {text-decoration:line-through;color:#666;}
+
+.search {
+margin-bottom:30px;
+padding:10px;
+border-radius:10px;
+border:none;
+width:250px;
+background:#111;
+color:#fff;
 }
 
 </style>
@@ -97,51 +108,102 @@ transform:translateY(0);
 
 <body>
 
-<!-- 🔥 HERO -->
-<section class="hero fade">
-<img src="https://i.imgur.com/yourlogo.png">
+<!-- HEADER -->
+<div class="header">
+<div class="logo">IDEAL POINT</div>
+<div class="nav">
+<a href="#iphone">iPhone</a>
+<a href="#mac">Mac</a>
+<a href="#airpods">AirPods</a>
+<a href="#ps">PS</a>
+</div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
 <h1>IDEAL POINT</h1>
-<p>Премиальная техника по лучшим ценам</p>
+<p>Премиальная техника дешевле рынка</p>
+<a class="btn" href="#iphone">Смотреть каталог</a>
 </section>
 
-<!-- 📱 IPHONE -->
-<section class="section fade">
-<div class="title">iPhone 17 Pro Max</div>
-<img src="https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd">
-<div class="price">156 900 ₽</div>
-<a class="btn" href="https://t.me/iDeal_Point_Level">Купить</a>
+<!-- IPHONE -->
+<section id="iphone" class="section">
+<div class="title">iPhone</div>
+<input class="search" placeholder="Поиск..." oninput="search(this.value,'iphone')">
+<div id="iphone-list" class="grid"></div>
 </section>
 
-<!-- 💻 MAC -->
-<section class="section fade">
-<div class="title">MacBook Air M3</div>
-<img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
-<div class="price">116 900 ₽</div>
-<a class="btn" href="https://t.me/iDeal_Point_Level">Купить</a>
+<!-- MAC -->
+<section id="mac" class="section">
+<div class="title">Mac</div>
+<div id="mac-list" class="grid"></div>
 </section>
 
-<!-- 🎧 AIRPODS -->
-<section class="section fade">
-<div class="title">AirPods Pro 2</div>
-<img src="https://images.unsplash.com/photo-1588156979435-379b9d802b0e">
-<div class="price">17 900 ₽</div>
-<a class="btn" href="https://t.me/iDeal_Point_Level">Купить</a>
+<!-- AIRPODS -->
+<section id="airpods" class="section">
+<div class="title">AirPods</div>
+<div id="airpods-list" class="grid"></div>
+</section>
+
+<!-- PS -->
+<section id="ps" class="section">
+<div class="title">PlayStation</div>
+<div id="ps-list" class="grid"></div>
 </section>
 
 <script>
 
-// 🔥 анимация при скролле
-const elements = document.querySelectorAll(".fade");
+let products = [
 
-const observer = new IntersectionObserver(entries=>{
-entries.forEach(entry=>{
-if(entry.isIntersecting){
-entry.target.classList.add("show");
+{ name:"iPhone 16 Pro", price:129900, img:"https://images.unsplash.com/photo-1695048133142-1a20484c3d35", cat:"iphone"},
+{ name:"iPhone 17 Pro Max", price:159900, img:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd", cat:"iphone"},
+
+{ name:"MacBook Air M3", price:119900, img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8", cat:"mac"},
+{ name:"MacBook Pro M3", price:159900, img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8", cat:"mac"},
+
+{ name:"AirPods Pro 2", price:20900, img:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e", cat:"airpods"},
+
+{ name:"PlayStation 5", price:64900, img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db", cat:"ps"}
+
+];
+
+function price(p){ return p - 3000; }
+
+function render(){
+document.getElementById("iphone-list").innerHTML = draw("iphone");
+document.getElementById("mac-list").innerHTML = draw("mac");
+document.getElementById("airpods-list").innerHTML = draw("airpods");
+document.getElementById("ps-list").innerHTML = draw("ps");
 }
-});
-});
 
-elements.forEach(el=>observer.observe(el));
+function draw(cat){
+return products
+.filter(p=>p.cat===cat)
+.map(p=>`
+<div class="card">
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<div class="old">${p.price} ₽</div>
+<div class="price">${price(p.price)} ₽</div>
+<a class="btn" href="https://t.me/iDeal_Point_Level?text=Хочу ${p.name}">Купить</a>
+</div>
+`).join("");
+}
+
+function search(val,cat){
+const filtered = products.filter(p=>p.cat===cat && p.name.toLowerCase().includes(val.toLowerCase()));
+document.getElementById(cat+"-list").innerHTML =
+filtered.map(p=>`
+<div class="card">
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<div class="old">${p.price} ₽</div>
+<div class="price">${price(p.price)} ₽</div>
+</div>
+`).join("");
+}
+
+render();
 
 </script>
 
