@@ -3,14 +3,11 @@ const products = [
 /* ================= iPhone 17 ================= */
 
 {
-cat:"iphone",
 name:"iPhone 17",
 colors:{
-black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select",
-blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select",
-white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select",
-sage:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select",
-lavander:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select"
+black:"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
+blue:"https://images.unsplash.com/photo-1512499617640-c2f999098c01",
+white:"https://images.unsplash.com/photo-1510557880182-3f8d1eab2c1e"
 },
 memory:{
 "256GB":59000,
@@ -18,15 +15,12 @@ memory:{
 }
 },
 
-/* ================= iPhone 17e ================= */
-
 {
-cat:"iphone",
 name:"iPhone 17e",
 colors:{
-black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select",
-pink:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select",
-white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"
+black:"https://images.unsplash.com/photo-1510552776732-03e61cf4b144",
+pink:"https://images.unsplash.com/photo-1510557880182-3f8d1eab2c1e",
+white:"https://images.unsplash.com/photo-1512499617640-c2f999098c01"
 },
 memory:{
 "256GB":44700,
@@ -34,16 +28,13 @@ memory:{
 }
 },
 
-/* ================= iPhone 17 Air ================= */
-
 {
-cat:"iphone",
 name:"iPhone 17 Air",
 colors:{
-black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-blue-select",
-gold:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-blue-select",
-blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-blue-select",
-white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-14-blue-select"
+black:"https://images.unsplash.com/photo-1580910051074-3eb694886505",
+gold:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab",
+blue:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
+white:"https://images.unsplash.com/photo-1598327105666-5b89351aff97"
 },
 memory:{
 "256GB":67000,
@@ -52,15 +43,11 @@ memory:{
 }
 },
 
-/* ================= iPhone 17 Pro ================= */
-
 {
-cat:"iphone",
 name:"iPhone 17 Pro",
 colors:{
-blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select",
-white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select",
-orange:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select"
+blue:"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
+white:"https://images.unsplash.com/photo-1598327105666-5b89351aff97"
 },
 memory:{
 "256GB":94300,
@@ -69,15 +56,11 @@ memory:{
 }
 },
 
-/* ================= iPhone 17 Pro Max ================= */
-
 {
-cat:"iphone",
 name:"iPhone 17 Pro Max",
 colors:{
-blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select",
-white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select",
-orange:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select"
+blue:"https://images.unsplash.com/photo-1580910051074-3eb694886505",
+white:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab"
 },
 memory:{
 "256GB":102500,
@@ -90,151 +73,54 @@ memory:{
 /* ================= WATCH ================= */
 
 {
-cat:"watch",
-name:"Apple Watch SE",
+name:"Apple Watch",
 colors:{
-black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-se-midnight-select"
+black:"https://images.unsplash.com/photo-1511732351155-1865efcb7b7c"
 },
 memory:{
-"44mm":14300
-}
-},
-
-{
-cat:"watch",
-name:"Apple Watch S11",
-colors:{
-black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s9-midnight-select"
-},
-memory:{
-"42mm":25900,
-"46mm":28100
-}
-},
-
-{
-cat:"watch",
-name:"Apple Watch Ultra 3",
-colors:{
-black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra-2-select"
-},
-memory:{
-"Standard":57000
-}
-},
-
-/* ================= AIRPODS ================= */
-
-{
-cat:"access",
-name:"AirPods 4",
-colors:{
-white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-3rd-gen-select"
-},
-memory:{
-"—":8800
-}
-},
-
-{
-cat:"access",
-name:"AirPods Pro 2",
-colors:{
-white:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-pro-2nd-gen-select"
-},
-memory:{
-"—":14000
-}
-},
-
-{
-cat:"access",
-name:"AirPods Max",
-colors:{
-orange:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-select"
-},
-memory:{
-"—":40000
+"SE":14300,
+"S11":25900,
+"Ultra":57000
 }
 },
 
 /* ================= IPAD ================= */
 
 {
-cat:"ipad",
-name:"iPad 11",
+name:"iPad",
 colors:{
-blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-10th-gen-blue-select"
+silver:"https://images.unsplash.com/photo-1587033411391-5d9e51cce126"
 },
 memory:{
-"128GB":28500,
-"256GB":37700,
-"512GB":50100
-}
-},
-
-{
-cat:"ipad",
-name:"iPad Air",
-colors:{
-blue:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-select"
-},
-memory:{
-"128GB":47000,
-"256GB":57000
-}
-},
-
-{
-cat:"ipad",
-name:"iPad Pro",
-colors:{
-black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-13-select"
-},
-memory:{
-"256GB":96000,
-"512GB":102000
+"iPad 11":28500,
+"Air":47000,
+"Pro":96000
 }
 },
 
 /* ================= MAC ================= */
 
 {
-cat:"mac",
-name:"MacBook Air",
+name:"MacBook",
 colors:{
-midnight:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-13-midnight-select"
+silver:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
 },
 memory:{
-"256GB":69000,
-"512GB":91000,
-"1TB":104000
-}
-},
-
-{
-cat:"mac",
-name:"MacBook Pro",
-colors:{
-black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-14-spaceblack-select"
-},
-memory:{
-"512GB":122500,
-"1TB":136000,
-"2TB":243000
+"Air":69000,
+"Air M4":91000,
+"Pro":122500
 }
 },
 
 /* ================= PS ================= */
 
 {
-cat:"ps",
 name:"PlayStation 5",
 colors:{
 white:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"
 },
 memory:{
-"Standard":45200,
+"Slim":45200,
 "Pro":74500
 }
 },
@@ -242,13 +128,24 @@ memory:{
 /* ================= ACCESS ================= */
 
 {
-cat:"access",
-name:"Magic Mouse",
+name:"AirPods",
 colors:{
-black:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/magic-mouse-2024-black-select"
+white:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"
 },
 memory:{
-"—":9000
+"4":8800,
+"Pro 2":14000,
+"Max":40000
+}
+},
+
+{
+name:"Magic Mouse",
+colors:{
+black:"https://images.unsplash.com/photo-1587829741301-dc798b83add3"
+},
+memory:{
+"USB-C":9000
 }
 }
 
