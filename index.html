@@ -6,75 +6,126 @@
 
 <style>
 body {
-    background:black;
-    color:white;
-    font-family:sans-serif;
+  background:black;
+  color:white;
+  font-family:sans-serif;
 }
 
 .container {
-    max-width:1000px;
-    margin:auto;
-    padding:20px;
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
 }
 
 h1 {
-    color:yellow;
+  color:yellow;
+}
+
+.filters {
+  margin:20px 0;
+}
+
+.filters button {
+  margin:5px;
+  padding:8px 15px;
+  background:#111;
+  color:yellow;
+  border:1px solid yellow;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:20px;
 }
 
 .card {
-    background:#111;
-    padding:15px;
-    margin-bottom:15px;
-    border-radius:10px;
+  background:#111;
+  padding:15px;
+  border-radius:10px;
 }
 
 .price {
-    color:yellow;
-    font-size:20px;
+  color:yellow;
+  font-size:18px;
 }
 
 .old {
-    text-decoration:line-through;
-    color:gray;
+  text-decoration:line-through;
+  color:gray;
 }
 
 .btn {
-    display:inline-block;
-    margin-top:10px;
-    padding:10px;
-    background:yellow;
-    color:black;
-    text-decoration:none;
-    border-radius:5px;
+  display:block;
+  margin-top:10px;
+  padding:10px;
+  background:yellow;
+  color:black;
+  text-align:center;
+  text-decoration:none;
+  border-radius:5px;
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
+
 <h1>Ideal Point</h1>
+
+<div class="filters">
+  <button onclick="filter('all')">Все</button>
+  <button onclick="filter('iphone')">iPhone</button>
+  <button onclick="filter('airpods')">AirPods</button>
+  <button onclick="filter('ipad')">iPad</button>
+  <button onclick="filter('mac')">MacBook</button>
+  <button onclick="filter('accessories')">Аксессуары</button>
+  <button onclick="filter('ps')">PlayStation</button>
+</div>
+
+<div class="grid" id="products"></div>
+
 </div>
 
 <script>
+let allProducts = [];
+
 fetch("products.json")
 .then(res => res.json())
 .then(data => {
-
-    const container = document.querySelector(".container");
-    container.innerHTML = "<h1>Ideal Point</h1>";
-
-    data.forEach(p => {
-        container.innerHTML += `
-        <div class="card">
-            <h3>${p.name}</h3>
-            <div class="old">${p.oldPrice} ₽</div>
-            <div class="price">${p.price} ₽</div>
-            <a class="btn" href="https://t.me/iDeal_Point_Level">Написать в Telegram</a>
-        </div>`;
-    });
-
+  allProducts = data;
+  render(data);
 });
+
+function render(data){
+  const container = document.getElementById("products");
+  container.innerHTML = "";
+
+  data.forEach(p=>{
+    container.innerHTML += `
+      <div class="card">
+        <h3>${p.name}</h3>
+        <div class="old">${p.oldPrice} ₽</div>
+        <div class="price">${p.price} ₽</div>
+        <a class="btn" href="https://t.me/iDeal_Point_Level">Написать</a>
+      </div>
+    `;
+  });
+}
+
+function filter(category){
+  if(category === "all"){
+    render(allProducts);
+    return;
+  }
+
+  const filtered = allProducts.filter(p => p.category === category);
+  render(filtered);
+}
 </script>
 
 </body>
