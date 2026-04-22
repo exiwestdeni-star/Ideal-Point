@@ -2,17 +2,100 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ideal Point</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body{margin:0;font-family:sans-serif;background:#f5f5f7}
-header{padding:20px;background:#fff;display:flex;justify-content:space-between}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;padding:15px}
-.card{background:#fff;padding:15px;border-radius:12px;box-shadow:0 10px 25px rgba(0,0,0,0.05)}
-img{width:100%;height:200px;object-fit:contain}
-.price{font-weight:bold;margin-top:10px}
-select{width:100%;padding:10px;margin-top:8px;border-radius:8px;border:1px solid #ddd}
-button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border:none;border-radius:8px}
+body{margin:0;font-family:Inter;background:#f5f5f7;color:#111}
+
+/* HEADER */
+header{
+display:flex;
+justify-content:space-between;
+padding:20px;
+background:#fff;
+position:sticky;
+top:0;
+z-index:10;
+border-bottom:1px solid #eee;
+}
+
+.search{
+padding:10px;
+border-radius:10px;
+border:1px solid #ddd;
+width:200px;
+}
+
+/* FILTER */
+.filters{
+display:flex;
+gap:10px;
+padding:10px;
+overflow:auto;
+}
+
+.filter{
+padding:8px 14px;
+border-radius:20px;
+border:1px solid #ddd;
+cursor:pointer;
+white-space:nowrap;
+}
+
+.active{background:#000;color:#fff}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:20px;
+padding:20px;
+}
+
+/* CARD */
+.card{
+background:#fff;
+border-radius:16px;
+padding:15px;
+box-shadow:0 10px 30px rgba(0,0,0,.05);
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+img{
+width:100%;
+height:220px;
+object-fit:contain;
+}
+
+.price{
+font-weight:700;
+margin-top:10px;
+}
+
+select{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+button{
+margin-top:10px;
+padding:10px;
+border:none;
+background:#000;
+color:#fff;
+border-radius:10px;
+cursor:pointer;
+}
 </style>
 </head>
 
@@ -20,152 +103,80 @@ button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border
 
 <header>
 <b>IDEAL POINT</b>
-<div>+7 969 969 67 67</div>
+<input class="search" placeholder="Поиск..." oninput="search(this.value)">
 </header>
+
+<div class="filters">
+<div class="filter active" onclick="setFilter('all',this)">Все</div>
+<div class="filter" onclick="setFilter('iphone',this)">iPhone</div>
+<div class="filter" onclick="setFilter('watch',this)">Watch</div>
+<div class="filter" onclick="setFilter('ipad',this)">iPad</div>
+<div class="filter" onclick="setFilter('mac',this)">Mac</div>
+<div class="filter" onclick="setFilter('ps',this)">PS</div>
+</div>
 
 <div id="app" class="grid"></div>
 
 <script>
 
-var products = [
+var currentFilter="all"
+var searchText=""
 
-/* ================= iPhone 17 ================= */
+/* КАТАЛОГ */
 
-{
-name:"iPhone 17",
-variants:[
+var products=[
+
+{cat:"iphone",name:"iPhone 17",variants:[
 {title:"256GB Black",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"},
-{title:"256GB Blue",price:62200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"},
-{title:"256GB White",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select"},
-{title:"256GB Sage",price:62600,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-green-select"},
+{title:"256GB Blue",price:62200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"}
+]},
 
-{title:"512GB Black",price:80700,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"},
-{title:"512GB Blue",price:80200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"},
-{title:"512GB White",price:83000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select"}
-]
-},
+{cat:"iphone",name:"iPhone 17 Pro Max",variants:[
+{title:"256GB Blue",price:102500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select"},
+{title:"512GB White",price:114500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select"}
+]},
 
-/* ================= iPhone 17 Pro ================= */
+{cat:"watch",name:"Apple Watch",variants:[
+{title:"S11",price:25900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s10-black"},
+{title:"Ultra",price:59300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra"}
+]},
 
-{
-name:"iPhone 17 Pro",
-variants:[
-{title:"256GB Blue",price:94300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select"},
-{title:"256GB White",price:94700,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select"},
-{title:"512GB Blue",price:108800,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select"},
-{title:"512GB White",price:113000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select"},
-{title:"1TB Blue",price:120900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select"},
-{title:"1TB White",price:122500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select"}
-]
-},
+{cat:"ipad",name:"iPad Pro",variants:[
+{title:"256GB",price:96000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-spaceblack"}
+]},
 
-/* ================= iPhone 17 Pro Max ================= */
+{cat:"mac",name:"MacBook Pro",variants:[
+{title:"M5",price:122500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-spaceblack"}
+]},
 
-{
-name:"iPhone 17 Pro Max",
-variants:[
-{title:"256GB Blue",price:103000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select"},
-{title:"256GB White",price:104000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select"},
-
-{title:"512GB Blue",price:119000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select"},
-{title:"512GB White",price:127000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select"},
-
-{title:"1TB Blue",price:129500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select"},
-{title:"1TB White",price:134000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select"}
-]
-},
-
-/* ================= Watch ================= */
-
-{
-name:"Apple Watch",
-variants:[
-{title:"SE2",price:14400,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-se"},
-{title:"SE3",price:19000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-se"},
-{title:"S10",price:23300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s10"},
-{title:"S11",price:25900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s10"},
-{title:"Ultra 2",price:49600,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra"},
-{title:"Ultra 3",price:59300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra"}
-]
-},
-
-/* ================= iPad ================= */
-
-{
-name:"iPad",
-variants:[
-{title:"iPad 11",price:28500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-10th-blue"},
-{title:"iPad 9",price:19700,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-9"},
-{title:"iPad Air M4",price:47000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-blue"},
-{title:"iPad Pro M5",price:96000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-spaceblack"}
-]
-},
-
-/* ================= Mac ================= */
-
-{
-name:"MacBook",
-variants:[
-{title:"Air M2",price:69000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight"},
-{title:"Air M3",price:86000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight"},
-{title:"Air M4",price:91000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-starlight"},
-{title:"Air M5",price:93500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-silver"},
-{title:"Pro M5",price:122500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-spaceblack"}
-]
-},
-
-/* ================= AirPods ================= */
-
-{
-name:"AirPods",
-variants:[
-{title:"AirPods 4",price:8800,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4"},
-{title:"AirPods Pro 2",price:14000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"},
-{title:"AirPods Pro 3",price:17500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"},
-{title:"AirPods Max",price:40000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max"}
-]
-},
-
-/* ================= Accessories ================= */
-
-{
-name:"Аксессуары",
-variants:[
-{title:"Magic Mouse Black",price:9000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/magic-mouse-black"},
-{title:"Magic Mouse Silver",price:8000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/magic-mouse"},
-{title:"Apple Pencil 2",price:7900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-pencil-2"},
-{title:"Apple Pencil USB-C",price:8500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-pencil-usbc"},
-{title:"Apple Pencil Pro",price:10500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-pencil-pro"}
-]
-},
-
-/* ================= PS ================= */
-
-{
-name:"PlayStation",
-variants:[
-{title:"PS5 Slim",price:45200,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
-{title:"PS5 Pro",price:74500,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
-{title:"DualSense White",price:5500,img:"https://images.unsplash.com/photo-1607853202273-797f1c22a38e"},
-{title:"DualSense Black",price:5500,img:"https://images.unsplash.com/photo-1607853202273-797f1c22a38e"}
-]
-}
+{cat:"ps",name:"PS5",variants:[
+{title:"Slim",price:45200,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
+{title:"Pro",price:74500,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"}
+]}
 
 ]
 
 function render(){
+
 var html=""
+
 for(var i=0;i<products.length;i++){
+
 var p=products[i]
+
+if(currentFilter!="all" && p.cat!=currentFilter) continue
+if(searchText && !p.name.toLowerCase().includes(searchText)) continue
 
 html+="<div class='card'>"
 html+="<img id='img"+i+"' src='"+p.variants[0].img+"'>"
 html+="<h3>"+p.name+"</h3>"
 
 html+="<select onchange='change("+i+",this)'>"
+
 for(var j=0;j<p.variants.length;j++){
 html+="<option value='"+j+"'>"+p.variants[j].title+"</option>"
 }
+
 html+="</select>"
 
 html+="<div id='price"+i+"' class='price'>"+p.variants[0].price+" ₽</div>"
@@ -184,6 +195,18 @@ document.getElementById("price"+i).innerText=v.price+" ₽"
 
 function buy(name){
 window.open("https://t.me/iDeal_Point_Level?text=Хочу "+name)
+}
+
+function setFilter(cat,el){
+currentFilter=cat
+document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"))
+el.classList.add("active")
+render()
+}
+
+function search(val){
+searchText=val.toLowerCase()
+render()
 }
 
 render()
