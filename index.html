@@ -13,14 +13,12 @@ body {
   color:#fff;
 }
 
-/* контейнер */
 .container {
   max-width:1200px;
   margin:auto;
   padding:20px;
 }
 
-/* верх */
 .top {
   display:flex;
   justify-content:space-between;
@@ -33,7 +31,6 @@ body {
   color:#FFD700;
 }
 
-/* кнопка */
 .contact a {
   padding:10px 15px;
   background:#FFD700;
@@ -42,7 +39,6 @@ body {
   text-decoration:none;
 }
 
-/* баннер */
 .banner {
   margin:20px 0;
   padding:30px;
@@ -54,7 +50,6 @@ body {
   color:#FFD700;
 }
 
-/* фильтры */
 .filters {
   margin:20px 0;
 }
@@ -75,14 +70,12 @@ body {
   color:#000;
 }
 
-/* сетка */
 .grid {
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
   gap:20px;
 }
 
-/* карточка */
 .card {
   background:#111;
   padding:15px;
@@ -94,13 +87,11 @@ body {
   transform:translateY(-5px);
 }
 
-/* картинка */
 .card img {
   width:100%;
   border-radius:10px;
 }
 
-/* цена */
 .price {
   color:#FFD700;
   font-size:18px;
@@ -113,7 +104,6 @@ body {
   font-size:14px;
 }
 
-/* кнопка */
 .btn {
   display:block;
   margin-top:10px;
@@ -175,7 +165,7 @@ function render(data){
   data.forEach(p=>{
     container.innerHTML += `
       <div class="card">
-        <img src="https://via.placeholder.com/300x200">
+        <img src="https://source.unsplash.com/400x300/?${p.name}">
         <h3>${p.name}</h3>
         <div class="old">${p.oldPrice} ₽</div>
         <div class="price">${p.price} ₽</div>
