@@ -10,11 +10,82 @@
 
 <style>
 body {margin:0;font-family:Inter;background:#f5f6fa;}
-.header {display:flex;justify-content:space-between;padding:15px;background:#fff;}
-.grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;padding:20px;}
-.card {background:#fff;padding:15px;border-radius:12px;}
-.card img {width:100%;height:160px;object-fit:contain;}
-.price {font-weight:600;}
+
+.header {
+display:flex;
+justify-content:space-between;
+padding:15px 20px;
+background:#fff;
+position:sticky;
+top:0;
+}
+
+.banner {
+padding:60px;
+text-align:center;
+background:#000;
+color:#fff;
+}
+
+.grid {
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card {
+background:#fff;
+padding:15px;
+border-radius:12px;
+cursor:pointer;
+}
+
+.card img {
+width:100%;
+height:180px;
+object-fit:contain;
+}
+
+.modal {
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.modal-content {
+background:#fff;
+padding:20px;
+border-radius:12px;
+width:300px;
+text-align:center;
+}
+
+.colors span {
+display:inline-block;
+width:20px;
+height:20px;
+border-radius:50%;
+margin:5px;
+cursor:pointer;
+border:1px solid #ccc;
+}
+
+.btn {
+display:block;
+margin-top:15px;
+padding:10px;
+background:#111;
+color:#fff;
+border-radius:8px;
+text-decoration:none;
+}
 </style>
 </head>
 
@@ -25,85 +96,94 @@ body {margin:0;font-family:Inter;background:#f5f6fa;}
 <div>📞 +7 969 969 67 67</div>
 </div>
 
+<div class="banner">
+<h1>Техника Apple премиум уровня</h1>
+<p>Лучшие цены на рынке</p>
+</div>
+
 <div id="products" class="grid"></div>
+
+<div id="modal" class="modal">
+<div class="modal-content">
+<img id="modalImg" style="width:100%;height:150px;object-fit:contain;">
+<h3 id="modalName"></h3>
+<div id="modalPrice"></div>
+
+<div class="colors">
+<span style="background:black" onclick="changeColor(0)"></span>
+<span style="background:blue" onclick="changeColor(1)"></span>
+<span style="background:silver" onclick="changeColor(2)"></span>
+</div>
+
+<a id="buyBtn" class="btn">Купить</a>
+</div>
+</div>
 
 <script>
 
 let products = [
 
-/* 📱 iPhone */
-{
-name:"iPhone 17",
-price:59900,
-img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15"
-},
-
-{
-name:"iPhone 17 Air",
-price:64000,
-img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-plus"
-},
-
 {
 name:"iPhone 17 Pro",
 price:97800,
-img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro"
+images:[
+"https://images.unsplash.com/photo-1695048133142-1a20484c3d35",
+"https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
+"https://images.unsplash.com/photo-1580910051074-3eb694886505"
+]
 },
 
 {
 name:"iPhone 17 Pro Max",
 price:126600,
-img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max"
+images:[
+"https://images.unsplash.com/photo-1580910051074-3eb694886505",
+"https://images.unsplash.com/photo-1605236453806-6ff36851218e",
+"https://images.unsplash.com/photo-1598327105666-5b89351aff97"
+]
 },
 
-/* 💻 Mac */
 {
-name:"MacBook",
+name:"MacBook Air",
 price:88000,
-img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air"
-},
-
-/* 📱 iPad */
-{
-name:"iPad",
-price:54000,
-img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air"
-},
-
-/* ⌚ Watch */
-{
-name:"Apple Watch",
-price:25000,
-img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/apple-watch-series-9"
-},
-
-/* 🎧 */
-{
-name:"AirPods",
-price:11000,
-img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-pro"
-},
-
-/* 🎮 */
-{
-name:"PlayStation 5",
-price:71500,
-img:"https://upload.wikimedia.org/wikipedia/commons/0/0d/PlayStation_5.jpg"
+images:[
+"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
+]
 }
 
 ];
 
+let currentProduct = null;
+
 function render(){
 let html="";
-products.forEach(p=>{
+products.forEach((p,i)=>{
 html+=`
-<div class="card">
-<img src="${p.img}">
+<div class="card" onclick="openModal(${i})">
+<img src="${p.images[0]}">
 <h3>${p.name}</h3>
-<div class="price">${p.price} ₽</div>
+<div>${p.price} ₽</div>
 </div>`;
 });
 document.getElementById("products").innerHTML=html;
+}
+
+function openModal(i){
+currentProduct = products[i];
+document.getElementById("modal").style.display="flex";
+document.getElementById("modalImg").src=currentProduct.images[0];
+document.getElementById("modalName").innerText=currentProduct.name;
+document.getElementById("modalPrice").innerText=currentProduct.price+" ₽";
+document.getElementById("buyBtn").href=
+"https://t.me/iDeal_Point_Level?text=Хочу "+currentProduct.name;
+}
+
+function changeColor(i){
+document.getElementById("modalImg").src=currentProduct.images[i];
+}
+
+document.getElementById("modal").onclick=function(e){
+if(e.target.id==="modal") this.style.display="none";
 }
 
 render();
