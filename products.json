@@ -27,6 +27,14 @@ memory:{
 "512GB":64000
 }
 },
+  {
+name:"iPhone 17 Pro Max",
+cat:"iphone",
+variants:[
+{title:"256GB Blue",price:103000,img:"..."},
+{title:"512GB White",price:127000,img:"..."}
+]
+}
 
 {
 name:"iPhone 17 Air",
