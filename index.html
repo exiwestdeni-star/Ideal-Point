@@ -5,9 +5,21 @@
 <title>Ideal Point</title>
 
 <style>
-body { background:black; color:white; font-family:sans-serif; }
-.container { max-width:1000px; margin:auto; padding:20px; }
-h1 { color:yellow; }
+body {
+    background:black;
+    color:white;
+    font-family:sans-serif;
+}
+
+.container {
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+}
+
+h1 {
+    color:yellow;
+}
 
 .card {
     background:#111;
@@ -16,8 +28,15 @@ h1 { color:yellow; }
     border-radius:10px;
 }
 
-.price { color:yellow; font-size:20px; }
-.old { text-decoration:line-through; color:gray; }
+.price {
+    color:yellow;
+    font-size:20px;
+}
+
+.old {
+    text-decoration:line-through;
+    color:gray;
+}
 
 .btn {
     display:inline-block;
@@ -26,6 +45,7 @@ h1 { color:yellow; }
     background:yellow;
     color:black;
     text-decoration:none;
+    border-radius:5px;
 }
 </style>
 </head>
@@ -34,29 +54,28 @@ h1 { color:yellow; }
 
 <div class="container">
 <h1>Ideal Point</h1>
-
-<div class="card">
-<h3>iPhone 15 128GB</h3>
-<div class="old">53 200 ₽</div>
-<div class="price">50 200 ₽</div>
-<a class="btn" href="https://t.me/iDeal_Point_Level">Написать в Telegram</a>
 </div>
 
-<div class="card">
-<h3>iPhone 15 Pro 256GB</h3>
-<div class="old">78 200 ₽</div>
-<div class="price">75 200 ₽</div>
-<a class="btn" href="https://t.me/iDeal_Point_Level">Написать в Telegram</a>
-</div>
+<script>
+fetch("products.json")
+.then(res => res.json())
+.then(data => {
 
-<div class="card">
-<h3>PlayStation 5</h3>
-<div class="old">62 000 ₽</div>
-<div class="price">59 000 ₽</div>
-<a class="btn" href="https://t.me/iDeal_Point_Level">Написать в Telegram</a>
-</div>
+    const container = document.querySelector(".container");
+    container.innerHTML = "<h1>Ideal Point</h1>";
 
-</div>
+    data.forEach(p => {
+        container.innerHTML += `
+        <div class="card">
+            <h3>${p.name}</h3>
+            <div class="old">${p.oldPrice} ₽</div>
+            <div class="price">${p.price} ₽</div>
+            <a class="btn" href="https://t.me/iDeal_Point_Level">Написать в Telegram</a>
+        </div>`;
+    });
+
+});
+</script>
 
 </body>
 </html>
