@@ -2,12 +2,13 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ideal Point</title>
 
 <style>
 body {
     margin:0;
-    font-family:Arial;
+    font-family:-apple-system, Arial;
     background:#000;
     color:#fff;
 }
@@ -72,7 +73,7 @@ input, select {
 
 .old {
     text-decoration:line-through;
-    color:#888;
+    color:#777;
 }
 
 .stock {
@@ -81,7 +82,7 @@ input, select {
 }
 
 .btn {
-    display:inline-block;
+    display:block;
     margin-top:10px;
     padding:10px;
     background:#FFD700;
@@ -142,12 +143,18 @@ function render(products){
     });
 }
 
-fetch("https://ideal-point.onrender.com/products")
-.then(res => res.json())
-.then(data => {
-    allProducts = data;
-    render(data);
-});
+async function loadProducts(){
+    try{
+        const res = await fetch("https://ideal-point.onrender.com/products");
+        const data = await res.json();
+        allProducts = data;
+        render(data);
+    }catch{
+        document.getElementById("products").innerHTML = "<p>Ошибка загрузки</p>";
+    }
+}
+
+loadProducts();
 
 document.getElementById("search").addEventListener("input", e=>{
     const value = e.target.value.toLowerCase();
