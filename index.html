@@ -5,25 +5,98 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ideal Point</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body{margin:0;font-family:sans-serif;background:#f5f5f7}
-header{display:flex;justify-content:space-between;padding:20px;background:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;padding:15px}
+body{
+margin:0;
+font-family:Inter;
+background:#fff;
+color:#111;
+}
 
-.card{background:#fff;padding:15px;border-radius:12px}
-img{width:100%;height:180px;object-fit:contain}
+/* HEADER */
+header{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:15px 30px;
+background:rgba(255,255,255,0.8);
+backdrop-filter:blur(10px);
+border-bottom:1px solid #eee;
+z-index:100;
+}
 
-.price{font-weight:bold;margin-top:10px}
+.logo{font-weight:700}
 
+/* HERO */
+.hero{
+height:80vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+background:#f5f5f7;
+margin-top:60px;
+}
+
+.hero h1{
+font-size:48px;
+margin:0;
+}
+
+.hero p{
+color:#666;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+gap:30px;
+padding:40px;
+max-width:1400px;
+margin:auto;
+}
+
+/* CARD */
+.card{
+border-radius:20px;
+padding:20px;
+background:#fafafa;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.03);
+background:#fff;
+box-shadow:0 20px 40px rgba(0,0,0,0.1);
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:contain;
+}
+
+.card h3{
+margin:10px 0;
+}
+
+/* BUTTON */
 button{
 margin-top:10px;
-padding:10px;
+padding:12px;
 width:100%;
+border-radius:12px;
+border:none;
 background:#000;
 color:#fff;
-border:none;
-border-radius:8px;
-cursor:pointer
+cursor:pointer;
+font-weight:600;
 }
 
 /* CART */
@@ -31,17 +104,12 @@ cursor:pointer
 position:fixed;
 right:0;
 top:0;
-width:300px;
+width:320px;
 height:100%;
 background:#fff;
-box-shadow:-5px 0 20px rgba(0,0,0,0.1);
-padding:15px;
+box-shadow:-10px 0 30px rgba(0,0,0,0.1);
+padding:20px;
 overflow:auto;
-}
-
-.cart-item{
-border-bottom:1px solid #eee;
-padding:10px 0;
 }
 </style>
 </head>
@@ -49,9 +117,14 @@ padding:10px 0;
 <body>
 
 <header>
-<b>IDEAL POINT</b>
-<div onclick="toggleCart()" style="cursor:pointer">🛒 Корзина</div>
+<div class="logo">IDEAL POINT</div>
+<div onclick="toggleCart()" style="cursor:pointer">🛒</div>
 </header>
+
+<div class="hero">
+<h1>Техника Apple</h1>
+<p>Премиум устройства по лучшим ценам</p>
+</div>
 
 <div id="app" class="grid"></div>
 
@@ -65,17 +138,26 @@ var products=[
 
 {
 name:"iPhone 17",
-variants:[
-{title:"256GB Black",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"},
-{title:"256GB Blue",price:62200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"}
-]
+price:62900,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"
 },
 
 {
-name:"AirPods Pro 2",
-variants:[
-{title:"White",price:14000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"}
-]
+name:"iPhone 17 Pro",
+price:94300,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select"
+},
+
+{
+name:"MacBook Air",
+price:91000,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight"
+},
+
+{
+name:"AirPods Pro",
+price:14000,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"
 }
 
 ]
@@ -84,17 +166,17 @@ function render(){
 
 let html=""
 
-products.forEach((p,i)=>{
+products.forEach(p=>{
 
 html+=`
 <div class="card">
 
-<img src="${p.variants[0].img}">
-
+<img src="${p.img}">
 <h3>${p.name}</h3>
+<div>${p.price} ₽</div>
 
-<button onclick="addToCart('${p.name}',${p.variants[0].price})">
-Добавить в корзину
+<button onclick="addToCart('${p.name}',${p.price}')">
+Купить
 </button>
 
 </div>
@@ -111,16 +193,22 @@ renderCart()
 
 function renderCart(){
 
-let html="<h3>Корзина</h3>"
+let html="<h2>Корзина</h2>"
 let total=0
 
-cart.forEach(item=>{
-total+=item.price
-html+=`<div class="cart-item">${item.name} — ${item.price} ₽</div>`
+cart.forEach(i=>{
+total+=i.price
+html+=`<div>${i.name} — ${i.price} ₽</div>`
 })
 
 html+=`<h3>Итого: ${total} ₽</h3>`
-html+=`<button onclick="checkout()">Оформить заказ</button>`
+
+html+=`
+<input id="name" placeholder="Ваше имя">
+<input id="phone" placeholder="Ваш номер">
+
+<button onclick="checkout()">Оформить</button>
+`
 
 document.getElementById("cart").innerHTML=html
 }
@@ -132,11 +220,22 @@ c.style.display = c.style.display=="none" ? "block" : "none"
 
 function checkout(){
 
+let name=document.getElementById("name").value
+let phone=document.getElementById("phone").value
+
+if(!name || !phone){
+alert("Заполните данные")
+return
+}
+
 let text="Заказ:%0A"
 
 cart.forEach(i=>{
 text+=i.name+" — "+i.price+"₽%0A"
 })
+
+text+="%0AИмя: "+name
+text+="%0AТелефон: "+phone
 
 window.open("https://t.me/iDeal_Point_Level?text="+text)
 }
