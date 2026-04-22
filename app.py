@@ -1,4 +1,5 @@
 from flask import Flask, jsonify
+import os
 
 app = Flask(__name__)
 
@@ -16,3 +17,7 @@ def products():
         {"name": "MacBook Air M3", "price": 119900},
         {"name": "PlayStation 5", "price": 64900}
     ])
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
