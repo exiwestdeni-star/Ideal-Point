@@ -21,10 +21,23 @@ top:0;
 }
 
 .banner {
-padding:60px;
+padding:50px;
 text-align:center;
 background:#000;
 color:#fff;
+}
+
+.controls {
+display:flex;
+gap:10px;
+padding:15px;
+flex-wrap:wrap;
+}
+
+input,select {
+padding:10px;
+border-radius:8px;
+border:1px solid #ddd;
 }
 
 .grid {
@@ -63,18 +76,26 @@ align-items:center;
 background:#fff;
 padding:20px;
 border-radius:12px;
-width:300px;
+width:320px;
 text-align:center;
 }
 
 .colors span {
 display:inline-block;
-width:20px;
-height:20px;
+width:22px;
+height:22px;
 border-radius:50%;
 margin:5px;
 cursor:pointer;
 border:1px solid #ccc;
+}
+
+.memory button {
+margin:5px;
+padding:6px 10px;
+border-radius:6px;
+border:1px solid #ccc;
+cursor:pointer;
 }
 
 .btn {
@@ -85,6 +106,17 @@ background:#111;
 color:#fff;
 border-radius:8px;
 text-decoration:none;
+}
+
+.cart {
+position:fixed;
+bottom:20px;
+right:20px;
+background:#111;
+color:#fff;
+padding:12px 18px;
+border-radius:50px;
+cursor:pointer;
 }
 </style>
 </head>
@@ -97,8 +129,12 @@ text-decoration:none;
 </div>
 
 <div class="banner">
-<h1>Техника Apple премиум уровня</h1>
-<p>Лучшие цены на рынке</p>
+<h1>Премиальная техника Apple</h1>
+<p>Цены ниже рынка</p>
+</div>
+
+<div class="controls">
+<input id="search" placeholder="Поиск...">
 </div>
 
 <div id="products" class="grid"></div>
@@ -109,55 +145,62 @@ text-decoration:none;
 <h3 id="modalName"></h3>
 <div id="modalPrice"></div>
 
-<div class="colors">
-<span style="background:black" onclick="changeColor(0)"></span>
-<span style="background:blue" onclick="changeColor(1)"></span>
-<span style="background:silver" onclick="changeColor(2)"></span>
-</div>
+<div class="colors" id="colors"></div>
+<div class="memory" id="memory"></div>
 
 <a id="buyBtn" class="btn">Купить</a>
 </div>
 </div>
 
+<div class="cart" onclick="checkout()">🛒</div>
+
 <script>
 
-let products = [
+let cart=[];
+
+let products=[
 
 {
 name:"iPhone 17 Pro",
 price:97800,
+colors:["black","blue","silver"],
 images:[
 "https://images.unsplash.com/photo-1695048133142-1a20484c3d35",
 "https://images.unsplash.com/photo-1603899122634-f086ca5f5ddd",
 "https://images.unsplash.com/photo-1580910051074-3eb694886505"
-]
+],
+memory:["256GB","512GB","1TB"]
 },
 
 {
 name:"iPhone 17 Pro Max",
 price:126600,
+colors:["black","blue","silver"],
 images:[
 "https://images.unsplash.com/photo-1580910051074-3eb694886505",
 "https://images.unsplash.com/photo-1605236453806-6ff36851218e",
 "https://images.unsplash.com/photo-1598327105666-5b89351aff97"
-]
+],
+memory:["256GB","512GB","1TB"]
 },
 
 {
 name:"MacBook Air",
 price:88000,
-images:[
-"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"
-]
+colors:["silver"],
+images:["https://images.unsplash.com/photo-1517336714731-489689fd1ca8"],
+memory:["512GB"]
 }
 
 ];
 
-let currentProduct = null;
+let current=null;
 
 function render(){
+let val=document.getElementById("search").value.toLowerCase();
+
 let html="";
-products.forEach((p,i)=>{
+products.filter(p=>p.name.toLowerCase().includes(val)).forEach((p,i)=>{
 html+=`
 <div class="card" onclick="openModal(${i})">
 <img src="${p.images[0]}">
@@ -165,21 +208,50 @@ html+=`
 <div>${p.price} ₽</div>
 </div>`;
 });
+
 document.getElementById("products").innerHTML=html;
 }
 
 function openModal(i){
-currentProduct = products[i];
+current=products[i];
 document.getElementById("modal").style.display="flex";
-document.getElementById("modalImg").src=currentProduct.images[0];
-document.getElementById("modalName").innerText=currentProduct.name;
-document.getElementById("modalPrice").innerText=currentProduct.price+" ₽";
-document.getElementById("buyBtn").href=
-"https://t.me/iDeal_Point_Level?text=Хочу "+currentProduct.name;
+document.getElementById("modalImg").src=current.images[0];
+document.getElementById("modalName").innerText=current.name;
+document.getElementById("modalPrice").innerText=current.price+" ₽";
+
+let colorsHTML="";
+current.colors.forEach((c,index)=>{
+colorsHTML+=`<span style="background:${c}" onclick="changeColor(${index})"></span>`;
+});
+document.getElementById("colors").innerHTML=colorsHTML;
+
+let memoryHTML="";
+current.memory.forEach(m=>{
+memoryHTML+=`<button onclick="selectMemory('${m}')">${m}</button>`;
+});
+document.getElementById("memory").innerHTML=memoryHTML;
+
+document.getElementById("buyBtn").onclick=()=>addToCart();
 }
 
 function changeColor(i){
-document.getElementById("modalImg").src=currentProduct.images[i];
+document.getElementById("modalImg").src=current.images[i];
+}
+
+let selectedMemory="";
+
+function selectMemory(m){
+selectedMemory=m;
+}
+
+function addToCart(){
+cart.push(current.name+" "+selectedMemory);
+alert("Добавлено");
+}
+
+function checkout(){
+let text="Хочу заказать:\n"+cart.join("\n");
+window.open("https://t.me/iDeal_Point_Level?text="+encodeURIComponent(text));
 }
 
 document.getElementById("modal").onclick=function(e){
@@ -187,6 +259,8 @@ if(e.target.id==="modal") this.style.display="none";
 }
 
 render();
+
+document.getElementById("search").oninput=render;
 
 </script>
 
