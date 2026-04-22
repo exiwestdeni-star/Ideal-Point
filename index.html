@@ -54,6 +54,7 @@ input, select {
 
 .card img {
     width:100%;
+    border-radius:10px;
 }
 
 .price {
@@ -100,6 +101,15 @@ input, select {
 <script>
 let allProducts = [];
 
+function getImage(name){
+    if(name.includes("iPhone")) return "https://source.unsplash.com/400x300/?iphone";
+    if(name.includes("Mac")) return "https://source.unsplash.com/400x300/?macbook";
+    if(name.includes("iPad")) return "https://source.unsplash.com/400x300/?ipad";
+    if(name.includes("AirPods")) return "https://source.unsplash.com/400x300/?airpods";
+    if(name.includes("PlayStation")) return "https://source.unsplash.com/400x300/?playstation";
+    return "https://source.unsplash.com/400x300/?technology";
+}
+
 function render(products){
     const container = document.getElementById("products");
     container.innerHTML = "";
@@ -107,7 +117,7 @@ function render(products){
     products.forEach(item => {
         container.innerHTML += `
             <div class="card">
-                <img src="${item.image}">
+                <img src="${getImage(item.name)}">
                 <h3>${item.name}</h3>
                 <div class="old">${item.price + 3000} ₽</div>
                 <div class="price">${item.price} ₽</div>
