@@ -5,62 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ideal Point</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
 <style>
-body{margin:0;font-family:Inter;background:#f5f5f7}
-
-/* HEADER */
-header{
-display:flex;
-justify-content:space-between;
-padding:20px;
-background:#fff;
-border-bottom:1px solid #eee;
-}
-
-/* GRID */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-gap:20px;
-padding:20px;
-}
-
-/* CARD */
-.card{
-background:#fff;
-border-radius:15px;
-padding:15px;
-box-shadow:0 10px 30px rgba(0,0,0,.05);
-}
-
-img{
-width:100%;
-height:200px;
-object-fit:contain;
-}
-
-.price{font-weight:700;margin-top:10px}
-
-select{
-width:100%;
-padding:10px;
-margin-top:10px;
-}
-
-/* BUTTON */
-.buy{
-margin-top:10px;
-padding:10px;
-border:none;
-border-radius:10px;
-background:#000;
-color:#fff;
-cursor:pointer;
-}
+body{margin:0;font-family:sans-serif;background:#f5f5f7}
+header{padding:20px;background:#fff;display:flex;justify-content:space-between}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;padding:15px}
+.card{background:#fff;padding:15px;border-radius:10px}
+img{width:100%;height:180px;object-fit:contain}
+.price{font-weight:bold;margin-top:10px}
+button{margin-top:10px;padding:8px;width:100%}
 </style>
-
 </head>
 
 <body>
@@ -74,28 +27,30 @@ cursor:pointer;
 
 <script>
 
-const products = [
+/* ПРОСТОЙ КАТАЛОГ БЕЗ ОШИБОК */
+
+var products = [
 
 {
 name:"iPhone 17",
 variants:[
-{title:"256GB Black",price:59000,img:"https://images.unsplash.com/photo-1510552776732-03e61cf4b144"},
-{title:"512GB Blue",price:80200,img:"https://images.unsplash.com/photo-1512499617640-c2f999098c01"}
+{title:"256GB Black",price:59000,img:"https://picsum.photos/300?1"},
+{title:"512GB Blue",price:80200,img:"https://picsum.photos/300?2"}
 ]
 },
 
 {
-name:"iPhone 17 Pro Max",
+name:"iPhone 17 Pro",
 variants:[
-{title:"256GB Blue",price:102500,img:"https://images.unsplash.com/photo-1580910051074-3eb694886505"},
-{title:"512GB White",price:114500,img:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab"}
+{title:"256GB Blue",price:94300,img:"https://picsum.photos/300?3"},
+{title:"512GB White",price:105200,img:"https://picsum.photos/300?4"}
 ]
 },
 
 {
 name:"AirPods Pro 2",
 variants:[
-{title:"White",price:14000,img:"https://images.unsplash.com/photo-1588156979435-379b9d802b0e"}
+{title:"White",price:14000,img:"https://picsum.photos/300?5"}
 ]
 }
 
@@ -103,38 +58,39 @@ variants:[
 
 function render(){
 
-let html=""
+var html=""
 
-products.forEach((p,i)=>{
+for(var i=0;i<products.length;i++){
 
-html+=`
-<div class="card">
+var p = products[i]
 
-<img id="img${i}" src="${p.variants[0].img}">
+html += "<div class='card'>"
 
-<h3>${p.name}</h3>
+html += "<img id='img"+i+"' src='"+p.variants[0].img+"'>"
+html += "<h3>"+p.name+"</h3>"
 
-<select onchange="change(${i},this)">
-${p.variants.map(v=>`
-<option value='${JSON.stringify(v)}'>${v.title}</option>
-`).join("")}
-</select>
+html += "<select onchange='change("+i+",this)'>"
 
-<div id="price${i}" class="price">${p.variants[0].price} ₽</div>
+for(var j=0;j<p.variants.length;j++){
+html += "<option value='"+j+"'>"+p.variants[j].title+"</option>"
+}
 
-<button class="buy" onclick="buy('${p.name}')">Купить</button>
+html += "</select>"
 
-</div>
-`
-})
+html += "<div id='price"+i+"' class='price'>"+p.variants[0].price+" ₽</div>"
 
-document.getElementById("app").innerHTML=html
+html += "<button onclick='buy(\""+p.name+"\")'>Купить</button>"
+
+html += "</div>"
+}
+
+document.getElementById("app").innerHTML = html
 }
 
 function change(i,el){
-let v=JSON.parse(el.value)
-document.getElementById("img"+i).src=v.img
-document.getElementById("price"+i).innerText=v.price+" ₽"
+var v = products[i].variants[el.value]
+document.getElementById("img"+i).src = v.img
+document.getElementById("price"+i).innerText = v.price + " ₽"
 }
 
 function buy(name){
