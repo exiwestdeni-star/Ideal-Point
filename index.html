@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head> 
+<head>
 <meta charset="UTF-8">
 <title>Ideal Point</title>
 
 <style>
 body {
     margin:0;
-    font-family: Arial;
+    font-family:Arial;
     background:#000;
     color:#fff;
 }
@@ -18,6 +18,19 @@ header {
     text-align:center;
     font-size:28px;
     color:#FFD700;
+}
+
+.controls {
+    display:flex;
+    gap:10px;
+    padding:15px;
+    flex-wrap:wrap;
+}
+
+input, select {
+    padding:10px;
+    border-radius:8px;
+    border:none;
 }
 
 .products {
@@ -48,10 +61,15 @@ header {
     font-size:20px;
 }
 
+.old {
+    text-decoration:line-through;
+    color:#888;
+}
+
 .btn {
     display:inline-block;
     margin-top:10px;
-    padding:10px 15px;
+    padding:10px;
     background:#FFD700;
     color:#000;
     border-radius:8px;
@@ -64,24 +82,63 @@ header {
 
 <header>IDEAL POINT</header>
 
+<div class="controls">
+    <input type="text" id="search" placeholder="Поиск...">
+    
+    <select id="category">
+        <option value="all">Все категории</option>
+        <option value="iphone">iPhone</option>
+        <option value="mac">Mac</option>
+        <option value="ipad">iPad</option>
+        <option value="airpods">AirPods</option>
+        <option value="ps">PlayStation</option>
+    </select>
+</div>
+
 <div class="products" id="products"></div>
 
 <script>
-fetch("https://ideal-point.onrender.com/products")
-.then(res => res.json())
-.then(data => {
-    const container = document.getElementById("products");
+let allProducts = [];
 
-    data.forEach(item => {
+function render(products){
+    const container = document.getElementById("products");
+    container.innerHTML = "";
+
+    products.forEach(item => {
         container.innerHTML += `
             <div class="card">
-                <img src="https://via.placeholder.com/200">
+                <img src="${item.image}">
                 <h3>${item.name}</h3>
+                <div class="old">${item.price + 3000} ₽</div>
                 <div class="price">${item.price} ₽</div>
                 <a class="btn" href="https://t.me/iDeal_Point_Level">Купить</a>
             </div>
         `;
     });
+}
+
+fetch("https://ideal-point.onrender.com/products")
+.then(res => res.json())
+.then(data => {
+    allProducts = data;
+    render(data);
+});
+
+document.getElementById("search").addEventListener("input", e=>{
+    const value = e.target.value.toLowerCase();
+    const filtered = allProducts.filter(p => p.name.toLowerCase().includes(value));
+    render(filtered);
+});
+
+document.getElementById("category").addEventListener("change", e=>{
+    const value = e.target.value;
+
+    if(value === "all"){
+        render(allProducts);
+    } else {
+        const filtered = allProducts.filter(p => p.category === value);
+        render(filtered);
+    }
 });
 </script>
 
