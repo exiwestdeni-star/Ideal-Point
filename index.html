@@ -8,7 +8,7 @@
 <style>
 body {
   margin:0;
-  font-family:-apple-system, sans-serif;
+  font-family:-apple-system,sans-serif;
   background:#0a0a0a;
   color:#fff;
 }
@@ -42,7 +42,7 @@ body {
 .banner {
   margin:20px 0;
   padding:30px;
-  background:linear-gradient(135deg,#111,#1a1a1a);
+  background:#111;
   border-radius:16px;
 }
 
@@ -74,23 +74,6 @@ body {
   background:#111;
   padding:15px;
   border-radius:16px;
-  position:relative;
-  transition:0.3s;
-}
-
-.card:hover {
-  transform:translateY(-5px);
-}
-
-.badge {
-  position:absolute;
-  top:10px;
-  left:10px;
-  background:#FFD700;
-  color:#000;
-  padding:5px 10px;
-  border-radius:6px;
-  font-size:12px;
 }
 
 .card img {
@@ -106,13 +89,11 @@ body {
 .old {
   text-decoration:line-through;
   color:#777;
-  font-size:14px;
 }
 
 .stock {
   color:#00ff88;
   font-size:13px;
-  margin-top:5px;
 }
 
 .btn {
@@ -133,7 +114,10 @@ body {
 <div class="container">
 
 <div class="top">
-  <div class="logo">Ideal Point</div>
+  <div>
+    <div class="logo">Ideal Point</div>
+    <p style="color:#aaa;font-size:14px;">⭐ Гарантия • Проверенная техника • Быстрая доставка</p>
+  </div>
   <div class="contact">
     <a href="https://t.me/iDeal_Point_Level">Telegram</a>
   </div>
@@ -141,7 +125,8 @@ body {
 
 <div class="banner">
   <h2>🔥 iPhone 16 / 17 в наличии</h2>
-  <p>Цены ниже рынка • Быстрая доставка • Гарантия</p>
+  <p>Цены ниже рынка • Пиши прямо сейчас</p>
+  <a class="btn" href="https://t.me/iDeal_Point_Level">Написать</a>
 </div>
 
 <div class="filters">
@@ -172,10 +157,9 @@ function render(data){
   const container = document.getElementById("products");
   container.innerHTML = "";
 
-  data.forEach((p, index)=>{
+  data.forEach((p,i)=>{
     container.innerHTML += `
       <div class="card">
-        ${index < 3 ? '<div class="badge">ХИТ</div>' : ''}
         <img src="https://source.unsplash.com/400x300/?${p.name}">
         <h3>${p.name}</h3>
         <div class="old">${p.oldPrice} ₽</div>
@@ -187,14 +171,9 @@ function render(data){
   });
 }
 
-function filter(category){
-  if(category === "all"){
-    render(allProducts);
-    return;
-  }
-
-  const filtered = allProducts.filter(p => p.category === category);
-  render(filtered);
+function filter(cat){
+  if(cat === "all") return render(allProducts);
+  render(allProducts.filter(p => p.category === cat));
 }
 </script>
 
