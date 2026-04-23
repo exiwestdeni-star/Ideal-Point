@@ -1,135 +1,339 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Ideal Point</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body{margin:0;font-family:sans-serif;background:#f5f5f7}
-header{display:flex;justify-content:space-between;padding:15px;background:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:15px;padding:15px}
-.card{background:#fff;padding:15px;border-radius:14px}
-img{width:100%;height:200px;object-fit:contain}
-.price{font-weight:bold;margin-top:10px}
-select{width:100%;padding:8px;margin-top:8px}
-button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border:none;border-radius:8px}
+:root{
+  --bg:#f5f5f7; --card:#fff; --text:#111; --muted:#666; --border:#e8e8ed;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;background:var(--bg);color:var(--text)}
+
+header{
+  position:sticky; top:0; z-index:20;
+  display:flex; align-items:center; gap:10px; justify-content:space-between;
+  padding:14px 16px; background:rgba(255,255,255,.9); backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);
+}
+.brand{font-weight:700; letter-spacing:.2px}
+.controls{display:flex; gap:8px; align-items:center}
+input.search{
+  width:200px; padding:9px 10px; border-radius:10px; border:1px solid var(--border);
+}
+button.icon{border:1px solid var(--border); background:#fff; border-radius:10px; padding:9px 10px; cursor:pointer}
+
+.filters{
+  display:flex; gap:8px; padding:10px 12px; overflow:auto; background:#fff; border-bottom:1px solid var(--border)
+}
+.filter{padding:7px 12px; border:1px solid var(--border); border-radius:999px; cursor:pointer; white-space:nowrap}
+.filter.active{background:#000;color:#fff;border-color:#000}
+
+.grid{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px; padding:16px; max-width:1400px; margin:auto;
+}
+.card{
+  background:var(--card); border-radius:16px; padding:14px;
+  border:1px solid var(--border);
+  transition:.25s transform, .25s box-shadow;
+}
+.card:hover{transform:translateY(-4px); box-shadow:0 12px 30px rgba(0,0,0,.08)}
+.card img{width:100%; height:200px; object-fit:contain}
+.title{font-weight:600; margin:8px 0 4px}
+.muted{color:var(--muted); font-size:13px}
+.price{font-weight:700; margin-top:6px}
+.row{display:flex; gap:8px; margin-top:8px}
+select{width:100%; padding:9px; border-radius:10px; border:1px solid var(--border)}
+button.primary{
+  width:100%; padding:10px; border-radius:12px; border:none; background:#000; color:#fff; cursor:pointer; font-weight:600
+}
+button.ghost{
+  width:100%; padding:10px; border-radius:12px; border:1px solid var(--border); background:#fff; cursor:pointer
+}
+
+/* Drawer (cart) */
+.drawer{
+  position:fixed; right:0; top:0; height:100%; width:340px; background:#fff;
+  border-left:1px solid var(--border); box-shadow:-10px 0 30px rgba(0,0,0,.08);
+  transform:translateX(100%); transition:.3s; z-index:30; display:flex; flex-direction:column
+}
+.drawer.open{transform:translateX(0)}
+.drawer header{position:static; backdrop-filter:none; background:#fff}
+.drawer .content{padding:12px; overflow:auto; flex:1}
+.item{display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--border)}
+.item img{width:56px; height:56px; object-fit:contain}
+.item .name{font-size:14px}
+.item .remove{margin-left:auto; cursor:pointer; color:#c00}
+.total{font-weight:700; margin-top:10px}
+.field{margin-top:8px}
+.field input{width:100%; padding:10px; border:1px solid var(--border); border-radius:10px}
+
+/* Modal (product page) */
+.modal{
+  position:fixed; inset:0; background:rgba(0,0,0,.4); display:none; align-items:center; justify-content:center; z-index:40
+}
+.modal.open{display:flex}
+.modal .box{
+  width:min(900px,96vw); background:#fff; border-radius:16px; padding:16px; display:grid; grid-template-columns:1fr 1fr; gap:16px
+}
+.modal img{width:100%; height:320px; object-fit:contain}
+.modal h3{margin:0}
+@media (max-width:700px){
+  .modal .box{grid-template-columns:1fr}
+  input.search{width:140px}
+}
 </style>
 </head>
 
 <body>
 
 <header>
-<b>IDEAL POINT</b>
+  <div class="brand">IDEAL POINT</div>
+  <div class="controls">
+    <input class="search" placeholder="Поиск..." oninput="onSearch(this.value)">
+    <button class="icon" onclick="toggleCart()">🛒</button>
+  </div>
 </header>
+
+<div class="filters">
+  <div class="filter active" onclick="setFilter('all',this)">Все</div>
+  <div class="filter" onclick="setFilter('iphone',this)">iPhone</div>
+  <div class="filter" onclick="setFilter('mac',this)">Mac</div>
+  <div class="filter" onclick="setFilter('ipad',this)">iPad</div>
+  <div class="filter" onclick="setFilter('watch',this)">Watch</div>
+  <div class="filter" onclick="setFilter('audio',this)">Audio</div>
+  <div class="filter" onclick="setFilter('gaming',this)">Gaming</div>
+</div>
 
 <div id="app" class="grid"></div>
 
-<script>
-
-var products = [
-
-/* iPhone */
-{
-name:"iPhone 17",
-variants:[
-{title:"Black",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select-202309"},
-{title:"Blue",price:62200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select-202309"},
-{title:"Pink",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select-202309"}
-]
-},
-
-{
-name:"iPhone 17 Pro",
-variants:[
-{title:"Blue Titanium",price:94300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-titanium-select-202309"},
-{title:"Natural Titanium",price:94700,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-titanium-select-202309"}
-]
-},
-
-{
-name:"iPhone 17 Pro Max",
-variants:[
-{title:"Blue Titanium",price:103000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-titanium-select-202309"},
-{title:"Natural Titanium",price:127000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-titanium-select-202309"}
-]
-},
-
-/* AirPods */
-{
-name:"AirPods",
-variants:[
-{title:"AirPods 4",price:8800,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4-2024"},
-{title:"AirPods Pro 2",price:14000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"},
-{title:"AirPods Max",price:40000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-select-202409"}
-]
-},
-
-/* Mac */
-{
-name:"MacBook",
-variants:[
-{title:"Air Midnight",price:91000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-202306"},
-{title:"Pro Space Black",price:122500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-spaceblack-202310"}
-]
-},
-
-/* iPad */
-{
-name:"iPad",
-variants:[
-{title:"iPad Air Blue",price:47000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-blue-202405"},
-{title:"iPad Pro Space Black",price:96000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-spaceblack-202405"}
-]
-},
-
-/* Watch */
-{
-name:"Apple Watch",
-variants:[
-{title:"Series Black",price:25900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s10-black-202409"},
-{title:"Ultra",price:59300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra-202309"}
-]
-}
-
-]
-
-function render(){
-
-let html=""
-
-products.forEach((p,i)=>{
-
-html+=`
-<div class="card">
-
-<img id="img${i}" src="${p.variants[0].img}">
-
-<h3>${p.name}</h3>
-
-<select onchange="change(${i},this)">
-${p.variants.map((v,index)=>`<option value="${index}">${v.title}</option>`).join("")}
-</select>
-
-<div id="price${i}" class="price">${p.variants[0].price} ₽</div>
-
-<button>Купить</button>
-
+<!-- CART -->
+<div id="cart" class="drawer">
+  <header>
+    <b>Корзина</b>
+  </header>
+  <div class="content" id="cartContent"></div>
 </div>
-`
-})
 
-document.getElementById("app").innerHTML=html
+<!-- PRODUCT MODAL -->
+<div id="modal" class="modal" onclick="closeModal(event)">
+  <div class="box" onclick="event.stopPropagation()">
+    <div><img id="mImg" src=""></div>
+    <div>
+      <h3 id="mTitle"></h3>
+      <div class="muted" id="mVariant"></div>
+      <div class="price" id="mPrice"></div>
+      <div class="row">
+        <button class="primary" id="mBuy">В корзину</button>
+        <button class="ghost" onclick="closeModal()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===== КАТАЛОГ (официальные изображения Apple) ===== */
+const PRODUCTS = [
+  {
+    name:"iPhone 17",
+    cat:"iphone",
+    variants:[
+      {title:"256GB Black", price:62900, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select-202309"},
+      {title:"256GB Blue", price:62200, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select-202309"},
+      {title:"256GB Pink", price:62900, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select-202309"}
+    ]
+  },
+  {
+    name:"iPhone 17 Pro",
+    cat:"iphone",
+    variants:[
+      {title:"256GB Blue Titanium", price:94300, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-titanium-select-202309"},
+      {title:"256GB Natural Titanium", price:94700, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-titanium-select-202309"},
+      {title:"512GB Blue Titanium", price:108800, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-titanium-select-202309"}
+    ]
+  },
+  {
+    name:"iPhone 17 Pro Max",
+    cat:"iphone",
+    variants:[
+      {title:"256GB Blue Titanium", price:103000, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-titanium-select-202309"},
+      {title:"512GB Natural Titanium", price:127000, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-titanium-select-202309"}
+    ]
+  },
+  {
+    name:"MacBook",
+    cat:"mac",
+    variants:[
+      {title:"Air Midnight", price:91000, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-202306"},
+      {title:"Pro Space Black", price:122500, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-spaceblack-202310"}
+    ]
+  },
+  {
+    name:"iPad",
+    cat:"ipad",
+    variants:[
+      {title:"iPad Air Blue", price:47000, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-blue-202405"},
+      {title:"iPad Pro Space Black", price:96000, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-spaceblack-202405"}
+    ]
+  },
+  {
+    name:"Apple Watch",
+    cat:"watch",
+    variants:[
+      {title:"Series Black", price:25900, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s10-black-202409"},
+      {title:"Ultra", price:59300, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra-202309"}
+    ]
+  },
+  {
+    name:"AirPods",
+    cat:"audio",
+    variants:[
+      {title:"AirPods 4", price:8800, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4-2024"},
+      {title:"AirPods Pro 2", price:14000, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"},
+      {title:"AirPods Max", price:40000, img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-select-202409"}
+    ]
+  },
+  {
+    name:"PlayStation",
+    cat:"gaming",
+    variants:[
+      {title:"PS5 Slim", price:45200, img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
+      {title:"PS5 Pro", price:74500, img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"}
+    ]
+  }
+];
+
+/* ===== STATE ===== */
+let filter="all";
+let searchText="";
+let cart=[];
+
+/* ===== RENDER ===== */
+function render(){
+  let html="";
+  PRODUCTS.forEach((p,i)=>{
+    if(filter!=="all" && p.cat!==filter) return;
+    if(searchText && !p.name.toLowerCase().includes(searchText)) return;
+
+    html += `
+      <div class="card">
+        <img id="img${i}" src="${p.variants[0].img}" alt="">
+        <div class="title">${p.name}</div>
+        <div class="muted">${p.variants.length} варианта</div>
+
+        <select onchange="change(${i},this)">
+          ${p.variants.map((v,idx)=>`<option value="${idx}">${v.title}</option>`).join("")}
+        </select>
+
+        <div id="price${i}" class="price">${p.variants[0].price} ₽</div>
+
+        <div class="row">
+          <button class="primary" onclick="addToCart('${p.name}', ${p.variants[0].price}, '${p.variants[0].img}', '${p.variants[0].title}')">В корзину</button>
+          <button class="ghost" onclick="openModal(${i},0)">Подробнее</button>
+        </div>
+      </div>
+    `;
+  });
+  document.getElementById("app").innerHTML = html;
 }
 
+/* ===== CHANGE VARIANT ===== */
 function change(i,el){
-let v=products[i].variants[el.value]
-document.getElementById("img"+i).src=v.img
-document.getElementById("price"+i).innerText=v.price+" ₽"
+  const v = PRODUCTS[i].variants[el.value];
+  document.getElementById("img"+i).src = v.img;
+  document.getElementById("price"+i).innerText = v.price + " ₽";
 }
 
-render()
+/* ===== FILTER & SEARCH ===== */
+function setFilter(cat,el){
+  filter = cat;
+  document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"));
+  el.classList.add("active");
+  render();
+}
+function onSearch(val){
+  searchText = val.toLowerCase();
+  render();
+}
 
+/* ===== CART ===== */
+function toggleCart(){
+  document.getElementById("cart").classList.toggle("open");
+  renderCart();
+}
+function addToCart(name,price,img,variant){
+  cart.push({name,price,img,variant});
+  renderCart();
+}
+function removeFromCart(idx){
+  cart.splice(idx,1);
+  renderCart();
+}
+function renderCart(){
+  let html="";
+  let total=0;
+
+  cart.forEach((it,idx)=>{
+    total += it.price;
+    html += `
+      <div class="item">
+        <img src="${it.img}">
+        <div>
+          <div class="name">${it.name}</div>
+          <div class="muted">${it.variant}</div>
+          <div class="price">${it.price} ₽</div>
+        </div>
+        <div class="remove" onclick="removeFromCart(${idx})">✕</div>
+      </div>
+    `;
+  });
+
+  html += `<div class="total">Итого: ${total} ₽</div>
+  <div class="field"><input id="cName" placeholder="Имя"></div>
+  <div class="field"><input id="cPhone" placeholder="Телефон"></div>
+  <button class="primary" onclick="checkout()">Оформить заказ</button>`;
+
+  document.getElementById("cartContent").innerHTML = html;
+}
+
+/* ===== CHECKOUT (Telegram) ===== */
+function checkout(){
+  const name = document.getElementById("cName").value;
+  const phone = document.getElementById("cPhone").value;
+  if(!name || !phone){ alert("Введите имя и телефон"); return; }
+
+  let text = "Новый заказ:%0A";
+  cart.forEach(i=>{
+    text += i.name+" ("+i.variant+") — "+i.price+"₽%0A";
+  });
+  text += "%0AИмя: "+name+"%0AТелефон: "+phone;
+
+  window.open("https://t.me/iDeal_Point_Level?text="+text);
+}
+
+/* ===== MODAL ===== */
+function openModal(i,variantIndex){
+  const v = PRODUCTS[i].variants[variantIndex];
+  document.getElementById("mImg").src = v.img;
+  document.getElementById("mTitle").innerText = PRODUCTS[i].name;
+  document.getElementById("mVariant").innerText = v.title;
+  document.getElementById("mPrice").innerText = v.price+" ₽";
+  document.getElementById("mBuy").onclick = ()=> addToCart(PRODUCTS[i].name, v.price, v.img, v.title);
+  document.getElementById("modal").classList.add("open");
+}
+function closeModal(e){
+  if(!e || e.target.id==="modal"){
+    document.getElementById("modal").classList.remove("open");
+  }
+}
+
+/* INIT */
+render();
 </script>
 
 </body>
