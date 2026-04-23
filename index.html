@@ -2,41 +2,267 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ideal Point</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body{margin:0;font-family:sans-serif;background:#f5f5f7}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;padding:15px}
-.card{background:#fff;padding:15px;border-radius:12px}
-img{width:100%;height:180px;object-fit:contain}
-.price{font-weight:bold;margin-top:10px}
+body{margin:0;font-family:Inter;background:#f5f5f7;color:#111}
+
+header{
+display:flex;
+justify-content:space-between;
+padding:20px;
+background:#fff;
+border-bottom:1px solid #eee;
+font-weight:600;
+}
+
+.filters{
+display:flex;
+gap:10px;
+padding:15px;
+flex-wrap:wrap;
+justify-content:center;
+}
+
+.filter{
+padding:8px 14px;
+border-radius:20px;
+border:1px solid #ddd;
+cursor:pointer;
+background:#fff;
+}
+
+.active{background:#000;color:#fff}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card{
+background:#fff;
+border-radius:16px;
+padding:15px;
+box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+.card img{
+width:100%;
+height:220px;
+object-fit:contain;
+}
+
+.price{
+font-weight:700;
+margin-top:10px;
+}
+
+select{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ddd;
+}
+
+button{
+margin-top:10px;
+padding:10px;
+border:none;
+background:#000;
+color:#fff;
+border-radius:10px;
+cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
+<header>
+IDEAL POINT
+<div>+7 969 969 67 67</div>
+</header>
+
+<div class="filters">
+<div class="filter active" onclick="setFilter('all',this)">Все</div>
+<div class="filter" onclick="setFilter('iphone',this)">iPhone</div>
+<div class="filter" onclick="setFilter('watch',this)">Watch</div>
+<div class="filter" onclick="setFilter('ipad',this)">iPad</div>
+<div class="filter" onclick="setFilter('mac',this)">Mac</div>
+<div class="filter" onclick="setFilter('ps',this)">PS</div>
+</div>
+
 <div id="app" class="grid"></div>
 
 <script>
 
-let products = JSON.parse(localStorage.getItem("products")) || []
+var currentFilter="all"
+
+var products=[
+
+/* ================= iPhone ================= */
+
+{
+cat:"iphone",
+name:"iPhone 17",
+variants:[
+{title:"256GB Black",price:59900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select-202309"},
+{title:"256GB Blue",price:59200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select-202309"},
+{title:"512GB White",price:80200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select-202309"}
+]
+},
+
+{
+cat:"iphone",
+name:"iPhone 17 Pro",
+variants:[
+{title:"256GB Blue",price:94300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select-202309"},
+{title:"512GB White",price:105200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select-202309"}
+]
+},
+
+{
+cat:"iphone",
+name:"iPhone 17 Pro Max",
+variants:[
+{title:"256GB Blue",price:102500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select-202309"},
+{title:"512GB White",price:114500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select-202309"}
+]
+},
+
+/* ================= Watch ================= */
+
+{
+cat:"watch",
+name:"Apple Watch S11",
+variants:[
+{title:"42mm Black",price:25900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s10-black"},
+{title:"46mm Silver",price:28500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s10-silver"}
+]
+},
+
+{
+cat:"watch",
+name:"Apple Watch Ultra",
+variants:[
+{title:"Ultra 2",price:49600,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra"},
+{title:"Ultra 3",price:59300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra"}
+]
+},
+
+/* ================= iPad ================= */
+
+{
+cat:"ipad",
+name:"iPad Air M4",
+variants:[
+{title:"128GB",price:47000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-blue"},
+{title:"256GB",price:57000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-purple"}
+]
+},
+
+{
+cat:"ipad",
+name:"iPad Pro M5",
+variants:[
+{title:"256GB",price:96000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-spaceblack"},
+{title:"512GB",price:120000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-spaceblack"}
+]
+},
+
+/* ================= Mac ================= */
+
+{
+cat:"mac",
+name:"MacBook Air M4",
+variants:[
+{title:"16/256",price:80200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight"},
+{title:"16/512",price:91000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-starlight"}
+]
+},
+
+{
+cat:"mac",
+name:"MacBook Pro M5",
+variants:[
+{title:"16/512",price:122500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-spaceblack"},
+{title:"16/1TB",price:136000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-spaceblack"}
+]
+},
+
+/* ================= PS ================= */
+
+{
+cat:"ps",
+name:"PlayStation 5",
+variants:[
+{title:"Slim Disk",price:45200,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
+{title:"Pro Digital",price:74500,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"}
+]
+}
+
+]
 
 function render(){
 
-let html=""
+var html=""
 
-products.forEach(p=>{
+for(var i=0;i<products.length;i++){
 
-html+=`
-<div class="card">
-<img src="${p.img}">
-<h3>${p.name}</h3>
-<div class="price">${p.price} ₽</div>
-</div>
-`
-})
+var p=products[i]
+
+if(currentFilter!="all" && p.cat!=currentFilter) continue
+
+html+="<div class='card'>"
+
+html+="<img id='img"+i+"' src='"+p.variants[0].img+"'>"
+html+="<h3>"+p.name+"</h3>"
+
+html+="<select onchange='change("+i+",this)'>"
+
+for(var j=0;j<p.variants.length;j++){
+html+="<option value='"+j+"'>"+p.variants[j].title+"</option>"
+}
+
+html+="</select>"
+
+html+="<div id='price"+i+"' class='price'>"+p.variants[0].price+" ₽</div>"
+
+html+="<button onclick='buy(\""+p.name+"\")'>Купить</button>"
+
+html+="</div>"
+}
 
 document.getElementById("app").innerHTML=html
+}
+
+function change(i,el){
+var v=products[i].variants[el.value]
+document.getElementById("img"+i).src=v.img
+document.getElementById("price"+i).innerText=v.price+" ₽"
+}
+
+function buy(name){
+window.open("https://t.me/iDeal_Point_Level?text=Хочу "+name)
+}
+
+function setFilter(cat,el){
+currentFilter=cat
+
+var buttons=document.querySelectorAll(".filter")
+for(var i=0;i<buttons.length;i++){
+buttons[i].classList.remove("active")
+}
+
+el.classList.add("active")
+
+render()
 }
 
 render()
