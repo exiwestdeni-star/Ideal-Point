@@ -6,98 +6,105 @@
 
 <style>
 body{margin:0;font-family:sans-serif;background:#f5f5f7}
+header{padding:15px;background:#fff;display:flex;justify-content:space-between}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;padding:15px}
 .card{background:#fff;padding:15px;border-radius:12px}
 img{width:100%;height:180px;object-fit:contain}
 .price{font-weight:bold;margin-top:10px}
-select{width:100%;padding:8px;margin-top:8px}
+button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border:none;border-radius:8px}
 </style>
 </head>
 
 <body>
 
+<header>
+<b>IDEAL POINT</b>
+<button onclick="loadMore()">Показать ещё</button>
+</header>
+
 <div id="app" class="grid"></div>
 
 <script>
 
-/* 👉 СЮДА ВСТАВЛЯЕШЬ СВОЙ ПРАЙС */
-const raw = `
-Sim+eSim 17 256GB Black — 62900
-Sim+eSim 17 256GB Blue — 62200
-Sim+eSim 17 256GB White — 62900
-AirPods Pro 2 — 14000
-MacBook Air M4 16/256 — 80200
-`;
+/* ПОЛНЫЙ ПРАЙС (СЖАТЫЙ И БЕЗ ЛАГОВ) */
 
-/* НЕ ТРОГАЙ НИЖЕ */
+var products = [
 
-function parse(){
+/* iPhone */
+{n:"iPhone 17 Black 256GB",p:62900},
+{n:"iPhone 17 Blue 256GB",p:62200},
+{n:"iPhone 17 White 256GB",p:62900},
+{n:"iPhone 17 Sage 256GB",p:62600},
 
-let lines = raw.split("\n").filter(l=>l.includes("—"))
+{n:"iPhone 17 Pro Blue 256GB",p:94300},
+{n:"iPhone 17 Pro White 256GB",p:94700},
 
-let products = {}
+{n:"iPhone 17 Pro Max Blue 256GB",p:103000},
+{n:"iPhone 17 Pro Max White 256GB",p:104000},
 
-lines.forEach(l=>{
+/* Watch */
+{n:"Apple Watch SE2",p:14400},
+{n:"Apple Watch S11",p:25900},
+{n:"Apple Watch Ultra 3",p:59300},
 
-let parts = l.split("—")
+/* AirPods */
+{n:"AirPods 4",p:8800},
+{n:"AirPods Pro 2",p:14000},
+{n:"AirPods Pro 3",p:17500},
+{n:"AirPods Max",p:40000},
 
-let name = parts[0].trim()
-let price = parseInt(parts[1])
+/* iPad */
+{n:"iPad 11",p:28500},
+{n:"iPad Air M4",p:47000},
+{n:"iPad Pro M5",p:96000},
 
-let model = name.split(" ").slice(0,3).join(" ")
+/* Mac */
+{n:"MacBook Air M2",p:69000},
+{n:"MacBook Air M4",p:91000},
+{n:"MacBook Pro M5",p:122500},
 
-if(!products[model]){
-products[model]={
-name:model,
-variants:[]
-}
-}
+/* PS */
+{n:"PS5 Slim",p:45200},
+{n:"PS5 Pro",p:74500}
 
-products[model].variants.push({
-title:name,
-price:price,
-img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"
-})
+]
 
-})
-
-return Object.values(products)
-}
-
-let products = parse()
+var step = 12
+var index = 0
 
 function render(){
 
 let html=""
 
-products.forEach((p,i)=>{
+for(let i=0;i<index;i++){
+
+let p=products[i]
 
 html+=`
 <div class="card">
-
-<img src="${p.variants[0].img}">
-
-<h3>${p.name}</h3>
-
-<select onchange="change(${i},this)">
-${p.variants.map((v,index)=>`<option value="${index}">${v.title}</option>`).join("")}
-</select>
-
-<div id="price${i}" class="price">${p.variants[0].price} ₽</div>
-
+<img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select">
+<h3>${p.n}</h3>
+<div class="price">${p.p} ₽</div>
+<button onclick="buy('${p.n}')">Купить</button>
 </div>
 `
-})
+}
 
 document.getElementById("app").innerHTML=html
 }
 
-function change(i,el){
-let v=products[i].variants[el.value]
-document.getElementById("price"+i).innerText=v.price+" ₽"
+function loadMore(){
+index += step
+if(index > products.length) index = products.length
+render()
 }
 
-render()
+function buy(name){
+window.open("https://t.me/iDeal_Point_Level?text=Хочу "+name)
+}
+
+/* старт */
+loadMore()
 
 </script>
 
