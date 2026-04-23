@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Admin</title>
+
+<style>
+body{font-family:sans-serif;padding:20px}
+input{display:block;margin:10px 0;padding:10px;width:300px}
+button{padding:10px}
+</style>
+</head>
+
+<body>
+
+<h2>Добавить товар</h2>
+
+<input id="name" placeholder="Название">
+<input id="price" placeholder="Цена">
+<input id="img" placeholder="Ссылка на фото">
+
+<button onclick="add()">Добавить</button>
+
+<script>
+
+function add(){
+
+let name=document.getElementById("name").value
+let price=document.getElementById("price").value
+let img=document.getElementById("img").value
+
+if(!name || !price || !img){
+alert("Заполни всё")
+return
+}
+
+let products = JSON.parse(localStorage.getItem("products")) || []
+
+products.push({
+name:name,
+price:price,
+img:img
+})
+
+localStorage.setItem("products", JSON.stringify(products))
+
+alert("Товар добавлен")
+
+}
+
+</script>
+
+</body>
+</html>
