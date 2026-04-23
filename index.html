@@ -2,16 +2,22 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ideal Point</title>
 
 <style>
 body{margin:0;font-family:sans-serif;background:#f5f5f7}
-header{padding:15px;background:#fff;display:flex;justify-content:space-between}
+header{display:flex;justify-content:space-between;padding:15px;background:#fff;position:sticky;top:0}
+.search{padding:8px;border:1px solid #ddd;border-radius:8px}
+.filters{display:flex;gap:10px;padding:10px;overflow:auto}
+.filter{padding:6px 12px;border:1px solid #ddd;border-radius:20px;cursor:pointer}
+.active{background:#000;color:#fff}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;padding:15px}
 .card{background:#fff;padding:15px;border-radius:12px}
 img{width:100%;height:180px;object-fit:contain}
 .price{font-weight:bold;margin-top:10px}
 button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border:none;border-radius:8px}
+.cart{position:fixed;right:0;top:0;width:320px;height:100%;background:#fff;padding:15px;overflow:auto;box-shadow:-5px 0 20px rgba(0,0,0,0.1)}
 </style>
 </head>
 
@@ -19,93 +25,102 @@ button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border
 
 <header>
 <b>IDEAL POINT</b>
-<button onclick="loadMore()">Показать ещё</button>
+<input class="search" placeholder="Поиск..." oninput="search(this.value)">
+<div onclick="toggleCart()">🛒</div>
 </header>
 
+<div class="filters">
+<div class="filter active" onclick="setFilter('all',this)">Все</div>
+<div class="filter" onclick="setFilter('iphone',this)">iPhone</div>
+<div class="filter" onclick="setFilter('mac',this)">Mac</div>
+<div class="filter" onclick="setFilter('ipad',this)">iPad</div>
+<div class="filter" onclick="setFilter('watch',this)">Watch</div>
+<div class="filter" onclick="setFilter('audio',this)">Audio</div>
+<div class="filter" onclick="setFilter('gaming',this)">Gaming</div>
+</div>
+
 <div id="app" class="grid"></div>
+<div id="cart" class="cart" style="display:none"></div>
+
+<script src="products.js"></script>
 
 <script>
-
-/* ПОЛНЫЙ ПРАЙС (СЖАТЫЙ И БЕЗ ЛАГОВ) */
-
-var products = [
-
-/* iPhone */
-{n:"iPhone 17 Black 256GB",p:62900},
-{n:"iPhone 17 Blue 256GB",p:62200},
-{n:"iPhone 17 White 256GB",p:62900},
-{n:"iPhone 17 Sage 256GB",p:62600},
-
-{n:"iPhone 17 Pro Blue 256GB",p:94300},
-{n:"iPhone 17 Pro White 256GB",p:94700},
-
-{n:"iPhone 17 Pro Max Blue 256GB",p:103000},
-{n:"iPhone 17 Pro Max White 256GB",p:104000},
-
-/* Watch */
-{n:"Apple Watch SE2",p:14400},
-{n:"Apple Watch S11",p:25900},
-{n:"Apple Watch Ultra 3",p:59300},
-
-/* AirPods */
-{n:"AirPods 4",p:8800},
-{n:"AirPods Pro 2",p:14000},
-{n:"AirPods Pro 3",p:17500},
-{n:"AirPods Max",p:40000},
-
-/* iPad */
-{n:"iPad 11",p:28500},
-{n:"iPad Air M4",p:47000},
-{n:"iPad Pro M5",p:96000},
-
-/* Mac */
-{n:"MacBook Air M2",p:69000},
-{n:"MacBook Air M4",p:91000},
-{n:"MacBook Pro M5",p:122500},
-
-/* PS */
-{n:"PS5 Slim",p:45200},
-{n:"PS5 Pro",p:74500}
-
-]
-
-var step = 12
-var index = 0
+let cart=[]
+let filter="all"
+let searchText=""
 
 function render(){
-
 let html=""
+PRODUCTS.forEach((p,i)=>{
 
-for(let i=0;i<index;i++){
-
-let p=products[i]
+if(filter!="all" && p.cat!=filter) return
+if(searchText && !p.name.toLowerCase().includes(searchText)) return
 
 html+=`
 <div class="card">
-<img src="https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select">
-<h3>${p.n}</h3>
-<div class="price">${p.p} ₽</div>
-<button onclick="buy('${p.n}')">Купить</button>
+<img src="${p.variants[0].img}">
+<h3>${p.name}</h3>
+
+<select onchange="change(${i},this)">
+${p.variants.map((v,index)=>`<option value="${index}">${v.title}</option>`).join("")}
+</select>
+
+<div id="price${i}" class="price">${p.variants[0].price} ₽</div>
+
+<button onclick="addToCart('${p.name}',${p.variants[0].price})">
+В корзину
+</button>
 </div>
 `
-}
+})
 
 document.getElementById("app").innerHTML=html
 }
 
-function loadMore(){
-index += step
-if(index > products.length) index = products.length
+function change(i,el){
+let v=PRODUCTS[i].variants[el.value]
+document.getElementById("price"+i).innerText=v.price+" ₽"
+}
+
+function addToCart(name,price){
+cart.push({name,price})
+renderCart()
+}
+
+function renderCart(){
+let html="<h3>Корзина</h3>"
+let total=0
+cart.forEach(i=>{
+total+=i.price
+html+=`<div>${i.name} — ${i.price} ₽</div>`
+})
+html+=`<h3>Итого: ${total} ₽</h3>`
+html+=`<button onclick="checkout()">Оформить</button>`
+document.getElementById("cart").innerHTML=html
+}
+
+function toggleCart(){
+let c=document.getElementById("cart")
+c.style.display=c.style.display=="none"?"block":"none"
+}
+
+function checkout(){
+window.open("https://t.me/iDeal_Point_Level?text=Хочу оформить заказ")
+}
+
+function setFilter(cat,el){
+filter=cat
+document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"))
+el.classList.add("active")
 render()
 }
 
-function buy(name){
-window.open("https://t.me/iDeal_Point_Level?text=Хочу "+name)
+function search(val){
+searchText=val.toLowerCase()
+render()
 }
 
-/* старт */
-loadMore()
-
+render()
 </script>
 
 </body>
