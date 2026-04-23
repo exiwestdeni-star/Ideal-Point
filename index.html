@@ -6,168 +6,95 @@
 
 <style>
 body{margin:0;font-family:sans-serif;background:#f5f5f7}
-header{padding:20px;background:#fff;display:flex;justify-content:space-between}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;padding:15px}
 .card{background:#fff;padding:15px;border-radius:12px}
-img{width:100%;height:200px;object-fit:contain}
+img{width:100%;height:180px;object-fit:contain}
 .price{font-weight:bold;margin-top:10px}
 select{width:100%;padding:8px;margin-top:8px}
-button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border:none;border-radius:8px}
 </style>
 </head>
 
 <body>
 
-<header>
-<b>IDEAL POINT</b>
-<div>+7 969 969 67 67</div>
-</header>
-
 <div id="app" class="grid"></div>
 
 <script>
 
-var products = [
+/* 👉 СЮДА ВСТАВЛЯЕШЬ СВОЙ ПРАЙС */
+const raw = `
+Sim+eSim 17 256GB Black — 62900
+Sim+eSim 17 256GB Blue — 62200
+Sim+eSim 17 256GB White — 62900
+AirPods Pro 2 — 14000
+MacBook Air M4 16/256 — 80200
+`;
 
-/* ================= iPhone 17 ================= */
+/* НЕ ТРОГАЙ НИЖЕ */
 
-{
-name:"iPhone 17",
-variants:[
-{title:"256GB Black",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"},
-{title:"256GB Sage",price:62600,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-green-select"},
-{title:"256GB White",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select"},
-{title:"256GB Blue",price:62200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"}
-]
-},
+function parse(){
 
-/* ================= iPhone 17 Pro ================= */
+let lines = raw.split("\n").filter(l=>l.includes("—"))
 
-{
-name:"iPhone 17 Pro",
-variants:[
-{title:"256GB Blue",price:94300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select"},
-{title:"256GB White",price:94700,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select"},
-{title:"512GB Blue",price:108800,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-select"},
-{title:"512GB White",price:113000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-select"}
-]
-},
+let products = {}
 
-/* ================= iPhone 17 Pro Max ================= */
+lines.forEach(l=>{
 
-{
-name:"iPhone 17 Pro Max",
-variants:[
-{title:"256GB Blue",price:103000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select"},
-{title:"256GB White",price:104000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select"},
-{title:"512GB Blue",price:119000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-select"},
-{title:"512GB White",price:127000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-select"}
-]
-},
+let parts = l.split("—")
 
-/* ================= iPhone 17 Air ================= */
+let name = parts[0].trim()
+let price = parseInt(parts[1])
 
-{
-name:"iPhone 17 Air",
-variants:[
-{title:"256GB Black",price:70800,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"},
-{title:"256GB Blue",price:67000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select"},
-{title:"512GB Black",price:80900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"},
-{title:"1TB Gold",price:97200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-yellow-select"}
-]
-},
+let model = name.split(" ").slice(0,3).join(" ")
 
-/* ================= AirPods ================= */
-
-{
-name:"AirPods",
-variants:[
-{title:"AirPods 4",price:8800,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4"},
-{title:"AirPods Pro 2",price:14000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"},
-{title:"AirPods Pro 3",price:17500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"},
-{title:"AirPods Max",price:40000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max"}
-]
-},
-
-/* ================= Watch ================= */
-
-{
-name:"Apple Watch",
-variants:[
-{title:"SE2",price:14400,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-se"},
-{title:"S11",price:25900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s10"},
-{title:"Ultra 3",price:59300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra"}
-]
-},
-
-/* ================= iPad ================= */
-
-{
-name:"iPad",
-variants:[
-{title:"iPad 11",price:28500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-10th-blue"},
-{title:"iPad Air",price:47000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-blue"},
-{title:"iPad Pro",price:96000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-spaceblack"}
-]
-},
-
-/* ================= Mac ================= */
-
-{
-name:"MacBook",
-variants:[
-{title:"Air M2",price:69000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight"},
-{title:"Air M4",price:91000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-starlight"},
-{title:"Pro M5",price:122500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-spaceblack"}
-]
-},
-
-/* ================= PS ================= */
-
-{
-name:"PlayStation",
-variants:[
-{title:"PS5 Slim",price:45200,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"},
-{title:"PS5 Pro",price:74500,img:"https://images.unsplash.com/photo-1606813907291-d86efa9b94db"}
-]
+if(!products[model]){
+products[model]={
+name:model,
+variants:[]
+}
 }
 
-]
+products[model].variants.push({
+title:name,
+price:price,
+img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select"
+})
+
+})
+
+return Object.values(products)
+}
+
+let products = parse()
 
 function render(){
 
-var html=""
+let html=""
 
-for(var i=0;i<products.length;i++){
+products.forEach((p,i)=>{
 
-var p=products[i]
+html+=`
+<div class="card">
 
-html+="<div class='card'>"
-html+="<img id='img"+i+"' src='"+p.variants[0].img+"'>"
-html+="<h3>"+p.name+"</h3>"
+<img src="${p.variants[0].img}">
 
-html+="<select onchange='change("+i+",this)'>"
-for(var j=0;j<p.variants.length;j++){
-html+="<option value='"+j+"'>"+p.variants[j].title+"</option>"
-}
-html+="</select>"
+<h3>${p.name}</h3>
 
-html+="<div id='price"+i+"' class='price'>"+p.variants[0].price+" ₽</div>"
-html+="<button onclick='buy(\""+p.name+"\")'>Купить</button>"
-html+="</div>"
-}
+<select onchange="change(${i},this)">
+${p.variants.map((v,index)=>`<option value="${index}">${v.title}</option>`).join("")}
+</select>
+
+<div id="price${i}" class="price">${p.variants[0].price} ₽</div>
+
+</div>
+`
+})
 
 document.getElementById("app").innerHTML=html
 }
 
 function change(i,el){
-var v=products[i].variants[el.value]
-document.getElementById("img"+i).src=v.img
+let v=products[i].variants[el.value]
 document.getElementById("price"+i).innerText=v.price+" ₽"
-}
-
-function buy(name){
-window.open("https://t.me/iDeal_Point_Level?text=Хочу "+name)
 }
 
 render()
