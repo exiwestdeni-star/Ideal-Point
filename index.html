@@ -8,25 +8,12 @@
 <style>
 body{margin:0;font-family:sans-serif;background:#f5f5f7}
 header{display:flex;justify-content:space-between;padding:15px;background:#fff}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;padding:15px}
-.card{background:#fff;padding:15px;border-radius:12px}
-img{width:100%;height:180px;object-fit:contain}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:15px;padding:15px}
+.card{background:#fff;padding:15px;border-radius:14px}
+img{width:100%;height:200px;object-fit:contain}
 .price{font-weight:bold;margin-top:10px}
 select{width:100%;padding:8px;margin-top:8px}
 button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border:none;border-radius:8px}
-
-.cart{
-position:fixed;
-right:0;
-top:0;
-width:320px;
-height:100%;
-background:#fff;
-box-shadow:-5px 0 20px rgba(0,0,0,0.1);
-padding:15px;
-overflow:auto;
-}
-input{width:100%;padding:10px;margin-top:10px;border:1px solid #ddd;border-radius:8px}
 </style>
 </head>
 
@@ -34,68 +21,78 @@ input{width:100%;padding:10px;margin-top:10px;border:1px solid #ddd;border-radiu
 
 <header>
 <b>IDEAL POINT</b>
-<div onclick="toggleCart()" style="cursor:pointer">🛒</div>
 </header>
 
 <div id="app" class="grid"></div>
-<div id="cart" class="cart" style="display:none"></div>
 
 <script>
 
 var products = [
 
+/* iPhone */
 {
 name:"iPhone 17",
 variants:[
-{title:"256GB Black",price:62900,img:"https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5"},
-{title:"256GB Blue",price:62200,img:"https://images.unsplash.com/photo-1512499617640-c2f999098c01"},
-{title:"256GB White",price:62900,img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9"}
+{title:"Black",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-black-select-202309"},
+{title:"Blue",price:62200,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-blue-select-202309"},
+{title:"Pink",price:62900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pink-select-202309"}
+]
+},
+
+{
+name:"iPhone 17 Pro",
+variants:[
+{title:"Blue Titanium",price:94300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-blue-titanium-select-202309"},
+{title:"Natural Titanium",price:94700,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-natural-titanium-select-202309"}
 ]
 },
 
 {
 name:"iPhone 17 Pro Max",
 variants:[
-{title:"256GB Blue",price:103000,img:"https://images.unsplash.com/photo-1510552776732-719e0f9c54d0"},
-{title:"512GB White",price:127000,img:"https://images.unsplash.com/photo-1510552776732-719e0f9c54d0"}
+{title:"Blue Titanium",price:103000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-blue-titanium-select-202309"},
+{title:"Natural Titanium",price:127000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/iphone-15-pro-max-natural-titanium-select-202309"}
 ]
 },
 
+/* AirPods */
 {
 name:"AirPods",
 variants:[
-{title:"AirPods Pro 2",price:14000,img:"https://images.unsplash.com/photo-1585386959984-a4155224a1ad"},
-{title:"AirPods Max",price:40000,img:"https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb"}
+{title:"AirPods 4",price:8800,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-4-2024"},
+{title:"AirPods Pro 2",price:14000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/MQD83"},
+{title:"AirPods Max",price:40000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/airpods-max-select-202409"}
 ]
 },
 
+/* Mac */
 {
 name:"MacBook",
 variants:[
-{title:"Air M4",price:91000,img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
-{title:"Pro M5",price:122500,img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"}
+{title:"Air Midnight",price:91000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-air-midnight-202306"},
+{title:"Pro Space Black",price:122500,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/macbook-pro-spaceblack-202310"}
 ]
 },
 
+/* iPad */
 {
 name:"iPad",
 variants:[
-{title:"iPad Air",price:47000,img:"https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0"},
-{title:"iPad Pro",price:96000,img:"https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0"}
+{title:"iPad Air Blue",price:47000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-air-blue-202405"},
+{title:"iPad Pro Space Black",price:96000,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/ipad-pro-spaceblack-202405"}
 ]
 },
 
+/* Watch */
 {
 name:"Apple Watch",
 variants:[
-{title:"S11",price:25900,img:"https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b"},
-{title:"Ultra",price:59300,img:"https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b"}
+{title:"Series Black",price:25900,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-s10-black-202409"},
+{title:"Ultra",price:59300,img:"https://store.storeimages.cdn-apple.com/4668/as-images.apple.com/is/watch-ultra-202309"}
 ]
 }
 
 ]
-
-var cart=[]
 
 function render(){
 
@@ -106,7 +103,7 @@ products.forEach((p,i)=>{
 html+=`
 <div class="card">
 
-<img src="${p.variants[0].img}">
+<img id="img${i}" src="${p.variants[0].img}">
 
 <h3>${p.name}</h3>
 
@@ -116,9 +113,7 @@ ${p.variants.map((v,index)=>`<option value="${index}">${v.title}</option>`).join
 
 <div id="price${i}" class="price">${p.variants[0].price} ₽</div>
 
-<button onclick="addToCart('${p.name}',${p.variants[0].price})">
-В корзину
-</button>
+<button>Купить</button>
 
 </div>
 `
@@ -129,60 +124,8 @@ document.getElementById("app").innerHTML=html
 
 function change(i,el){
 let v=products[i].variants[el.value]
+document.getElementById("img"+i).src=v.img
 document.getElementById("price"+i).innerText=v.price+" ₽"
-}
-
-function addToCart(name,price){
-cart.push({name,price})
-renderCart()
-}
-
-function renderCart(){
-
-let html="<h3>Корзина</h3>"
-let total=0
-
-cart.forEach(i=>{
-total+=i.price
-html+=`<div>${i.name} — ${i.price} ₽</div>`
-})
-
-html+=`<h3>Итого: ${total} ₽</h3>`
-
-html+=`
-<input id="name" placeholder="Имя">
-<input id="phone" placeholder="Телефон">
-<button onclick="checkout()">Оформить</button>
-`
-
-document.getElementById("cart").innerHTML=html
-}
-
-function toggleCart(){
-let c=document.getElementById("cart")
-c.style.display = c.style.display=="none" ? "block" : "none"
-}
-
-function checkout(){
-
-let name=document.getElementById("name").value
-let phone=document.getElementById("phone").value
-
-if(!name || !phone){
-alert("Введите данные")
-return
-}
-
-let text="Заказ:%0A"
-
-cart.forEach(i=>{
-text+=i.name+" — "+i.price+"₽%0A"
-})
-
-text+="%0AИмя: "+name
-text+="%0AТелефон: "+phone
-
-window.open("https://t.me/iDeal_Point_Level?text="+text)
 }
 
 render()
