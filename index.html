@@ -2,22 +2,16 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ideal Point</title>
 
 <style>
 body{margin:0;font-family:sans-serif;background:#f5f5f7}
-header{display:flex;justify-content:space-between;padding:15px;background:#fff;position:sticky;top:0}
-.search{padding:8px;border:1px solid #ddd;border-radius:8px}
-.filters{display:flex;gap:10px;padding:10px;overflow:auto}
-.filter{padding:6px 12px;border:1px solid #ddd;border-radius:20px;cursor:pointer}
-.active{background:#000;color:#fff}
+header{display:flex;justify-content:space-between;padding:15px;background:#fff}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px;padding:15px}
 .card{background:#fff;padding:15px;border-radius:12px}
 img{width:100%;height:180px;object-fit:contain}
 .price{font-weight:bold;margin-top:10px}
 button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border:none;border-radius:8px}
-.cart{position:fixed;right:0;top:0;width:320px;height:100%;background:#fff;padding:15px;overflow:auto;box-shadow:-5px 0 20px rgba(0,0,0,0.1)}
 </style>
 </head>
 
@@ -25,50 +19,34 @@ button{margin-top:10px;padding:10px;width:100%;background:#000;color:#fff;border
 
 <header>
 <b>IDEAL POINT</b>
-<input class="search" placeholder="Поиск..." oninput="search(this.value)">
 <div onclick="toggleCart()">🛒</div>
 </header>
 
-<div class="filters">
-<div class="filter active" onclick="setFilter('all',this)">Все</div>
-<div class="filter" onclick="setFilter('iphone',this)">iPhone</div>
-<div class="filter" onclick="setFilter('mac',this)">Mac</div>
-<div class="filter" onclick="setFilter('ipad',this)">iPad</div>
-<div class="filter" onclick="setFilter('watch',this)">Watch</div>
-<div class="filter" onclick="setFilter('audio',this)">Audio</div>
-<div class="filter" onclick="setFilter('gaming',this)">Gaming</div>
-</div>
-
 <div id="app" class="grid"></div>
-<div id="cart" class="cart" style="display:none"></div>
-
-<script src="products.js"></script>
 
 <script>
+
 let cart=[]
-let filter="all"
-let searchText=""
+
+fetch('products.json')
+.then(res=>res.json())
+.then(products=>{
 
 function render(){
-let html=""
-PRODUCTS.forEach((p,i)=>{
 
-if(filter!="all" && p.cat!=filter) return
-if(searchText && !p.name.toLowerCase().includes(searchText)) return
+let html=""
+
+products.forEach((p,i)=>{
 
 html+=`
 <div class="card">
 <img src="${p.variants[0].img}">
 <h3>${p.name}</h3>
 
-<select onchange="change(${i},this)">
-${p.variants.map((v,index)=>`<option value="${index}">${v.title}</option>`).join("")}
-</select>
-
-<div id="price${i}" class="price">${p.variants[0].price} ₽</div>
+<div class="price">${p.variants[0].price} ₽</div>
 
 <button onclick="addToCart('${p.name}',${p.variants[0].price})">
-В корзину
+Купить
 </button>
 </div>
 `
@@ -77,50 +55,15 @@ ${p.variants.map((v,index)=>`<option value="${index}">${v.title}</option>`).join
 document.getElementById("app").innerHTML=html
 }
 
-function change(i,el){
-let v=PRODUCTS[i].variants[el.value]
-document.getElementById("price"+i).innerText=v.price+" ₽"
-}
-
-function addToCart(name,price){
+window.addToCart=function(name,price){
 cart.push({name,price})
-renderCart()
+alert("Добавлено в корзину")
 }
 
-function renderCart(){
-let html="<h3>Корзина</h3>"
-let total=0
-cart.forEach(i=>{
-total+=i.price
-html+=`<div>${i.name} — ${i.price} ₽</div>`
+render()
+
 })
-html+=`<h3>Итого: ${total} ₽</h3>`
-html+=`<button onclick="checkout()">Оформить</button>`
-document.getElementById("cart").innerHTML=html
-}
 
-function toggleCart(){
-let c=document.getElementById("cart")
-c.style.display=c.style.display=="none"?"block":"none"
-}
-
-function checkout(){
-window.open("https://t.me/iDeal_Point_Level?text=Хочу оформить заказ")
-}
-
-function setFilter(cat,el){
-filter=cat
-document.querySelectorAll(".filter").forEach(b=>b.classList.remove("active"))
-el.classList.add("active")
-render()
-}
-
-function search(val){
-searchText=val.toLowerCase()
-render()
-}
-
-render()
 </script>
 
 </body>
